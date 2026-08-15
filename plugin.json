@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "adaptive-sdd",
+  "description": "Choose and guide TinySpec, LiteSpec, or official GitHub Spec Kit through one approval-gated workflow.",
+  "version": "0.2.0",
+  "author": {
+    "name": "JonC613"
+  }
+}

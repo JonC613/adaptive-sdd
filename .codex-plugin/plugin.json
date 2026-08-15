@@ -1,6 +1,6 @@
 {
   "name": "adaptive-sdd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Adaptive specification-driven development from TinySpec through LiteSpec to GitHub Spec Kit.",
   "author": {
     "name": "JonC613"
@@ -9,10 +9,10 @@
   "interface": {
     "displayName": "Adaptive SDD",
     "shortDescription": "Choose and guide the right specification depth.",
-    "longDescription": "SpecFlow guides TinySpec, LiteSpec, and official GitHub Spec Kit through one approval-gated Codex workflow.",
+    "longDescription": "Adaptive SDD guides TinySpec, LiteSpec, and official GitHub Spec Kit through one approval-gated workflow.",
     "developerName": "JonC613",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": "Use $specflow to choose and guide the right specification depth for this work."
+    "defaultPrompt": "Use $adaptive-sdd to choose and guide the right specification depth for this work."
   }
 }

@@ -1,6 +1,9 @@
 # Adaptive SDD
 
-Adaptive SDD packages TinySpec, LiteSpec, and an adapter to official GitHub Spec Kit behind one Codex skill: `$specflow`.
+Adaptive SDD packages TinySpec, LiteSpec, and an adapter to official GitHub Spec Kit behind one portable skill.
+
+- Codex: `$adaptive-sdd`
+- Cursor: `/adaptive-sdd`
 
 The goal is simple: use the least ceremony that still makes scope, behavior, implementation risk, and verification clear.
 
@@ -18,19 +21,30 @@ Clone this repository, then run from its root:
 ./scripts/install-project.ps1 -Target C:\path\to\your-project
 ```
 
-Restart or reopen Codex in the target repository and invoke:
+The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Restart or reopen the agent in the target repository and invoke the matching form:
 
 ```text
-$specflow Help me define this feature.
+$adaptive-sdd Help me define this feature.   # Codex
+/adaptive-sdd Help me define this feature.   # Cursor
 ```
 
-The installer adds only `.agents/skills/specflow`. Use `-InstallSpecKit` when the target also needs the official full workflow:
+The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 
 ```powershell
 ./scripts/install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
 ```
 
-Read [installation](docs/installation.md), [tier usage](docs/using-specflow.md), and [migration](docs/migration.md) before team rollout.
+Read [installation](docs/installation.md), [tier usage](docs/using-adaptive-sdd.md), and [migration](docs/migration.md) before team rollout.
+
+## Install as a local Cursor plugin
+
+Adaptive SDD includes a root `plugin.json` conforming to the open Agent Plugins standard supported by Cursor. Install a local development copy with:
+
+```powershell
+./scripts/install-cursor-local.ps1
+```
+
+Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See [Cursor support](docs/cursor.md).
 
 ## Principles
 
@@ -43,8 +57,10 @@ Read [installation](docs/installation.md), [tier usage](docs/using-specflow.md),
 
 ## Repository contents
 
-- `skills/specflow/` — installable Codex skill and all tier resources
+- `skills/adaptive-sdd/` — installable Codex skill and all tier resources
 - `scripts/install-project.ps1` — guarded project installer
+- `plugin.json` — portable Agent Plugin manifest used by Cursor
+- `.codex-plugin/plugin.json` — Codex plugin manifest
 - `examples/simple-kanban/` — TinySpec and LiteSpec versions of one feature
 - `tests/` — deterministic scaffold and validation tests
 - `.codex-plugin/plugin.json` — Codex plugin manifest

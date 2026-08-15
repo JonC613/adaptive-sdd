@@ -1,9 +1,9 @@
 ---
-name: specflow
-description: Guide adaptive specification-driven development across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$specflow`, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit with Codex.
+name: adaptive-sdd
+description: Guide adaptive specification-driven development across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$adaptive-sdd`, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit with Codex.
 ---
 
-# SpecFlow
+# Adaptive SDD
 
 Use one orchestrator to select and guide the smallest specification tier that creates sufficient shared understanding. Preserve user control through explicit tier, artifact, and implementation approvals.
 

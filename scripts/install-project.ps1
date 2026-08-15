@@ -4,31 +4,33 @@ param(
     [string]$Target,
     [switch]$Force,
     [switch]$InstallSpecKit,
+    [ValidateSet("codex", "cursor-agent")]
+    [string]$Integration = "codex",
     [string]$SpecKitVersion = "v0.16.4"
 )
 
 $ErrorActionPreference = "Stop"
 $targetPath = (Resolve-Path -LiteralPath $Target).Path
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$sourceSkill = Join-Path $repoRoot "skills/specflow"
+$sourceSkill = Join-Path $repoRoot "skills/adaptive-sdd"
 $targetSkills = Join-Path $targetPath ".agents/skills"
-$targetSkill = Join-Path $targetSkills "specflow"
+$targetSkill = Join-Path $targetSkills "adaptive-sdd"
 
 if (-not (Test-Path -LiteralPath (Join-Path $sourceSkill "SKILL.md"))) {
-    throw "SpecFlow source skill is missing: $sourceSkill"
+    throw "Adaptive SDD source skill is missing: $sourceSkill"
 }
 
 if ((Test-Path -LiteralPath $targetSkill) -and -not $Force) {
-    throw "SpecFlow already exists at $targetSkill. Review it and rerun with -Force to replace it."
+    throw "Adaptive SDD already exists at $targetSkill. Review it and rerun with -Force to replace it."
 }
 
-if ($PSCmdlet.ShouldProcess($targetSkill, "Install SpecFlow skill")) {
+if ($PSCmdlet.ShouldProcess($targetSkill, "Install Adaptive SDD skill")) {
     New-Item -ItemType Directory -Force -Path $targetSkills | Out-Null
     if (Test-Path -LiteralPath $targetSkill) {
         Remove-Item -LiteralPath $targetSkill -Recurse -Force
     }
     Copy-Item -LiteralPath $sourceSkill -Destination $targetSkill -Recurse
-    Write-Host "Installed SpecFlow at $targetSkill"
+    Write-Host "Installed Adaptive SDD at $targetSkill"
 }
 
 if (-not $InstallSpecKit) {
@@ -53,7 +55,7 @@ if ($PSCmdlet.ShouldProcess($targetPath, "Install Spec Kit $SpecKitVersion and i
     if ($LASTEXITCODE -ne 0) { throw "Spec Kit verification failed." }
     Push-Location $targetPath
     try {
-        specify init --here --force --integration codex --script ps
+        specify init --here --force --integration $Integration --script ps
         if ($LASTEXITCODE -ne 0) { throw "Spec Kit project initialization failed." }
     }
     finally {

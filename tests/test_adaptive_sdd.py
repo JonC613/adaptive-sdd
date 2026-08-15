@@ -9,10 +9,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "specflow"
+SKILL = ROOT / "skills" / "adaptive-sdd"
 
 
-class SpecFlowTests(unittest.TestCase):
+class AdaptiveSDDTests(unittest.TestCase):
     def run_script(self, name: str, *args: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [sys.executable, str(SKILL / "scripts" / name), *args],
@@ -25,6 +25,13 @@ class SpecFlowTests(unittest.TestCase):
         manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "adaptive-sdd")
         self.assertEqual(manifest["skills"], "./skills/")
+
+    def test_cursor_agent_plugin_manifest(self) -> None:
+        manifest = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
+        self.assertEqual(manifest["name"], "adaptive-sdd")
+        self.assertEqual(manifest["version"], "0.2.0")
+        self.assertTrue((ROOT / "skills" / "adaptive-sdd" / "SKILL.md").is_file())
 
     def test_tinyspec_scaffold_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as folder:

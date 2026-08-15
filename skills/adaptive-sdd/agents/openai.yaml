@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adaptive SDD"
+  short_description: "Scale specifications from tiny to full SDD"
+  default_prompt: "Use $adaptive-sdd to choose and guide the right specification depth for this work."
