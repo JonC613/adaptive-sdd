@@ -4,11 +4,11 @@
 
 - Git
 - Python 3.11 or newer for validators
-- Codex for the bundled skill
+- Codex or Cursor for the bundled skill
 - PowerShell 7 for the provided installer
 - `uv` only when installing full Spec Kit
 
-## Install SpecFlow only
+## Install Adaptive SDD only
 
 Clone Adaptive SDD and copy its skill into a target project:
 
@@ -18,9 +18,9 @@ cd adaptive-sdd
 ./scripts/install-project.ps1 -Target C:\path\to\project
 ```
 
-The script refuses to replace an existing SpecFlow installation unless `-Force` is supplied.
+The script refuses to replace an existing Adaptive SDD installation unless `-Force` is supplied.
 
-## Install SpecFlow and full Spec Kit
+## Install Adaptive SDD and full Spec Kit
 
 Commit or stash target-project changes first. Then run:
 
@@ -34,7 +34,7 @@ The installer:
 2. Refuses a dirty Git worktree before Spec Kit initialization.
 3. Installs official `specify-cli` from `github/spec-kit` at the tested pin.
 4. Verifies the CLI.
-5. Initializes the Codex integration with PowerShell scripts.
+5. Initializes the selected Spec Kit agent integration with PowerShell scripts.
 
 Equivalent manual commands:
 
@@ -46,17 +46,33 @@ specify init --here --force --integration codex --script ps
 
 Use `--script sh` on Linux or macOS.
 
+For Cursor and full Spec Kit:
+
+```powershell
+./scripts/install-project.ps1 -Target C:\path\to\project -InstallSpecKit -Integration cursor-agent
+```
+
 ## Verify
 
 Confirm these paths:
 
 ```text
-.agents/skills/specflow/SKILL.md
+.agents/skills/adaptive-sdd/SKILL.md       # Codex and Cursor
 .agents/skills/speckit-*/SKILL.md   # only with full Spec Kit
 .specify/                           # only with full Spec Kit
 ```
 
-Then invoke `$specflow` in a fresh Codex session.
+Then invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor.
+
+## Local Cursor plugin installation
+
+To test the repository as a user-level Cursor plugin:
+
+```powershell
+./scripts/install-cursor-local.ps1
+```
+
+This copies only `plugin.json` and `skills/` to `~/.cursor/plugins/local/adaptive-sdd`. Restart Cursor or run `Developer: Reload Window`, then verify the skill in Customize.
 
 ## Update
 

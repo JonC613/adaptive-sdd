@@ -1,12 +1,18 @@
-# Using SpecFlow
+# Using Adaptive SDD
 
 Start with a natural request:
 
 ```text
-$specflow Help me add CSV export to this application.
+$adaptive-sdd Help me add CSV export to this application.
 ```
 
-SpecFlow inspects the repository, recommends a tier with rationale, and waits for confirmation. Discovery proceeds one focused question at a time.
+In Cursor, invoke the same skill as:
+
+```text
+/adaptive-sdd Help me add CSV export to this application.
+```
+
+Adaptive SDD inspects the repository, recommends a tier with rationale, and waits for confirmation. Discovery proceeds one focused question at a time.
 
 ## TinySpec
 
@@ -28,13 +34,13 @@ Each artifact requires explicit approval before the next is created. Implementat
 
 ## Full Spec Kit
 
-SpecFlow explains why the full workflow is warranted and asks before installing it. Once installed, official `$speckit-*` skills own the full workflow. Adaptive SDD does not fork or override those skills.
+Adaptive SDD explains why the full workflow is warranted and asks before installing it. Once installed, official `$speckit-*` skills own the full workflow. Adaptive SDD does not fork or override those skills.
 
 ## Useful direct validation
 
 ```text
-python .agents/skills/specflow/scripts/validate_tinyspec.py .tinyspec/my-feature.md
-python .agents/skills/specflow/scripts/validate_litespec.py .litespec/my-feature
+python .agents/skills/adaptive-sdd/scripts/validate_tinyspec.py .tinyspec/my-feature.md
+python .agents/skills/adaptive-sdd/scripts/validate_litespec.py .litespec/my-feature
 ```
 
 Add `--approved` before implementation to require approved-or-later lifecycle states.
