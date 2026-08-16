@@ -36,6 +36,10 @@ The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` whe
 
 Read [installation](docs/installation.md), [tier usage](docs/using-adaptive-sdd.md), and [migration](docs/migration.md) before team rollout.
 
+## Proof-of-concept presentation
+
+Open [the browser presentation](presentation/index.html) for a 16-slide walkthrough of the problem, three-tier model, Kanban evidence, limitations, work-shaped pilot, success measures, and Monday demo plan. It runs without a build step or network connection and includes keyboard navigation, speaker notes, fullscreen, overview, and print-to-PDF support.
+
 ## Install as a local Cursor plugin
 
 Adaptive SDD includes a root `plugin.json` conforming to the open Agent Plugins standard supported by Cursor. Install a local development copy with:
@@ -62,6 +66,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 - `plugin.json` — portable Agent Plugin manifest used by Cursor
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 - `examples/simple-kanban/` — TinySpec and LiteSpec versions of one feature
+- `presentation/` — self-contained POC presentation and presenter instructions
 - `tests/` — deterministic scaffold and validation tests
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 

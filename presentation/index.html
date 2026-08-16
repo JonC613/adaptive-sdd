@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Adaptive SDD proof-of-concept presentation: TinySpec, LiteSpec, and GitHub Spec Kit.">
+  <title>Adaptive SDD — Right-sized specification-driven development</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f7f5ef;
+      --muted: #b7b8c1;
+      --panel: rgba(23, 25, 35, 0.88);
+      --panel-strong: #1b1e29;
+      --line: rgba(255, 255, 255, 0.13);
+      --red: #ff5b63;
+      --red-soft: rgba(255, 91, 99, 0.14);
+      --gold: #f3c969;
+      --green: #6ee7b7;
+      --blue: #79b8ff;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 14% 18%, rgba(255, 91, 99, 0.18), transparent 30%),
+        radial-gradient(circle at 88% 82%, rgba(121, 184, 255, 0.12), transparent 32%),
+        #0d0f16;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    button, a { font: inherit; }
+    a { color: var(--blue); }
+    strong { color: #fff; }
+
+    .deck { position: relative; width: 100%; height: 100%; }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: clamp(1rem, 2.4vh, 2rem);
+      padding: clamp(2rem, 5vw, 5.5rem) clamp(2rem, 7vw, 8rem) clamp(4.7rem, 8vh, 6.5rem);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(24px) scale(.992);
+      transition: opacity .28s ease, transform .28s ease, visibility .28s;
+    }
+
+    .slide.active { opacity: 1; visibility: visible; transform: none; }
+
+    .eyebrow {
+      margin: 0 0 .65rem;
+      color: var(--red);
+      font-size: clamp(.72rem, 1vw, .9rem);
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { letter-spacing: -.045em; line-height: .98; }
+    h1 { max-width: 12ch; margin-bottom: 1.4rem; font-size: clamp(3.3rem, 7.7vw, 7.8rem); }
+    h2 { max-width: 17ch; margin-bottom: 0; font-size: clamp(2.25rem, 5vw, 5.4rem); }
+    h3 { margin-bottom: .55rem; font-size: clamp(1rem, 1.45vw, 1.35rem); }
+    p, li { font-size: clamp(.96rem, 1.45vw, 1.34rem); line-height: 1.45; }
+    .lede { max-width: 49rem; color: var(--muted); font-size: clamp(1.15rem, 2vw, 1.8rem); }
+    .accent { color: var(--red); }
+    .muted { color: var(--muted); }
+    .small { font-size: clamp(.72rem, .95vw, .88rem); }
+    .big-number { color: var(--red); font-size: clamp(3.2rem, 7vw, 7rem); font-weight: 900; letter-spacing: -.06em; line-height: .9; }
+
+    .content { display: flex; min-height: 0; align-items: center; }
+    .content.top { align-items: flex-start; }
+    .content.column { flex-direction: column; align-items: flex-start; justify-content: center; }
+    .grid { display: grid; width: 100%; gap: clamp(.8rem, 1.6vw, 1.35rem); }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      min-width: 0;
+      padding: clamp(1rem, 1.9vw, 1.6rem);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: 0 12px 32px rgba(0,0,0,.16);
+    }
+
+    .card.red { border-color: rgba(255, 91, 99, .42); background: linear-gradient(145deg, var(--red-soft), var(--panel)); }
+    .card.gold { border-color: rgba(243, 201, 105, .36); }
+    .card.green { border-color: rgba(110, 231, 183, .35); }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card ul { margin: .7rem 0 0; padding-left: 1.2rem; }
+    .card li + li { margin-top: .38rem; }
+
+    .pill {
+      display: inline-flex;
+      margin: 0 .3rem .45rem 0;
+      padding: .28rem .62rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,.035);
+      font-size: clamp(.66rem, .8vw, .78rem);
+      font-weight: 750;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .flow { display: flex; width: 100%; align-items: stretch; gap: .65rem; }
+    .flow-step { flex: 1; position: relative; padding: 1.15rem 1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+    .flow-step:not(:last-child)::after { content: "→"; position: absolute; z-index: 2; top: 50%; right: -.66rem; width: .66rem; color: var(--red); transform: translate(50%, -50%); font-size: 1.3rem; font-weight: 900; }
+    .flow-step b { display: block; margin-bottom: .3rem; color: var(--red); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+    .flow-step span { font-size: clamp(.82rem, 1.15vw, 1.06rem); line-height: 1.25; }
+
+    .trace { display: grid; width: 100%; grid-template-columns: repeat(5, 1fr); gap: .7rem; align-items: stretch; }
+    .trace .card { position: relative; padding: 1rem; }
+    .trace .card:not(:last-child)::after { content: "→"; position: absolute; top: 50%; right: -.72rem; z-index: 2; color: var(--red); transform: translateY(-50%); font-weight: 900; }
+    .trace code { display: block; margin-bottom: .45rem; color: var(--gold); font-weight: 800; }
+    .trace p { margin: 0; font-size: clamp(.74rem, .95vw, .91rem); line-height: 1.32; }
+
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: var(--panel); }
+    th, td { padding: clamp(.6rem, 1.2vw, 1rem); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: clamp(.76rem, 1.08vw, 1rem); line-height: 1.35; }
+    th { color: var(--red); font-size: clamp(.68rem, .8vw, .78rem); letter-spacing: .08em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td:first-child { color: #fff; font-weight: 750; }
+
+    .callout { max-width: 63rem; padding-left: 1.2rem; border-left: 4px solid var(--red); font-size: clamp(1.28rem, 2.25vw, 2.1rem); line-height: 1.35; }
+    .checklist { columns: 2; column-gap: 2.5rem; margin: 0; padding: 0; list-style: none; }
+    .checklist li { break-inside: avoid; position: relative; margin: 0 0 .7rem; padding-left: 1.6rem; }
+    .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 900; }
+
+    .footerline { display: flex; justify-content: space-between; align-items: center; gap: 1rem; color: var(--muted); font-size: .74rem; }
+    .footerline a { color: inherit; text-decoration: none; }
+
+    .controls {
+      position: fixed;
+      z-index: 50;
+      right: 1.2rem;
+      bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .42rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(12, 14, 20, .84);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+    }
+
+    .controls button {
+      min-width: 2.2rem;
+      height: 2.2rem;
+      padding: 0 .75rem;
+      border: 0;
+      border-radius: 999px;
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+    }
+    .controls button:hover, .controls button:focus-visible { outline: none; background: rgba(255,255,255,.1); }
+    .counter { min-width: 3.6rem; color: var(--muted); text-align: center; font-size: .78rem; font-variant-numeric: tabular-nums; }
+
+    .progress { position: fixed; z-index: 60; inset: 0 0 auto; height: 4px; background: rgba(255,255,255,.05); }
+    .progress span { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--red), var(--gold)); transition: width .25s ease; }
+
+    .notes {
+      display: none;
+      position: fixed;
+      z-index: 45;
+      left: 1.2rem;
+      right: 1.2rem;
+      bottom: 4.1rem;
+      max-height: 28vh;
+      overflow: auto;
+      padding: 1rem 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: #dedee5;
+      background: rgba(13, 15, 22, .96);
+      box-shadow: var(--shadow);
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+    body.notes-on .slide.active .notes { display: block; }
+
+    .overview {
+      display: none;
+      position: fixed;
+      z-index: 80;
+      inset: 0;
+      overflow: auto;
+      padding: 2rem;
+      background: rgba(8, 10, 15, .97);
+    }
+    body.overview-on .overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; align-content: start; }
+    .overview button { min-height: 130px; padding: 1.2rem; border: 1px solid var(--line); border-radius: 16px; color: var(--ink); background: var(--panel); text-align: left; cursor: pointer; }
+    .overview button:hover, .overview button:focus-visible { border-color: var(--red); outline: none; transform: translateY(-2px); }
+    .overview b { display: block; margin-bottom: .55rem; color: var(--red); }
+
+    @media (max-width: 850px) {
+      .slide { overflow-y: auto; padding: 2rem 1.25rem 5rem; }
+      .grid.three, .grid.four, .trace { grid-template-columns: 1fr 1fr; }
+      .flow { display: grid; grid-template-columns: 1fr 1fr; }
+      .flow-step::after { display: none; }
+      .trace .card::after { display: none; }
+      .footerline { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 560px) {
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.25rem; }
+      .grid.two, .grid.three, .grid.four, .trace, .flow { grid-template-columns: 1fr; }
+      .checklist { columns: 1; }
+      .controls button[data-label] { padding: 0 .55rem; font-size: 0; }
+      .controls button[data-label]::after { content: attr(data-short); font-size: .88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .001ms !important; }
+    }
+
+    @media print {
+      @page { size: 13.333in 7.5in; margin: 0; }
+      body { overflow: visible; background: #0d0f16; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      body::before, .controls, .progress, .overview { display: none !important; }
+      .deck { height: auto; }
+      .slide { position: relative; display: grid; width: 13.333in; height: 7.5in; break-after: page; opacity: 1; visibility: visible; transform: none; }
+      .notes { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <main class="deck" aria-live="polite">
+    <section class="slide active" data-title="Adaptive SDD">
+      <header>
+        <p class="eyebrow">Proof of concept · Monday presentation</p>
+      </header>
+      <div class="content column">
+        <h1>Right-sized <span class="accent">specification</span> before code.</h1>
+        <p class="lede">Adaptive SDD puts TinySpec, LiteSpec, and official GitHub Spec Kit behind one guided workflow—so teams create enough shared understanding without defaulting to maximum ceremony.</p>
+        <div>
+          <span class="pill">One orchestrator</span>
+          <span class="pill">One question at a time</span>
+          <span class="pill">Approval gates</span>
+          <span class="pill">Traceable evidence</span>
+        </div>
+      </div>
+      <footer class="footerline"><span>Adaptive SDD POC</span><span>JonC613/adaptive-sdd</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Open with the problem, not the tooling. The goal is not more documentation. The goal is to make intent, boundaries, risk, and evidence clear before implementation—using the least process that safely works.</aside>
+    </section>
+
+    <section class="slide" data-title="The problem">
+      <header><p class="eyebrow">01 · The problem</p><h2>Teams usually get two bad defaults.</h2></header>
+      <div class="content">
+        <div class="grid two">
+          <article class="card red">
+            <div class="big-number">Too little</div>
+            <h3>“Just build it”</h3>
+            <ul>
+              <li>Hidden assumptions surface during implementation</li>
+              <li>Acceptance becomes subjective</li>
+              <li>Tests prove code paths, not necessarily intent</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="big-number">Too much</div>
+            <h3>Full process for every change</h3>
+            <ul>
+              <li>Small work receives heavyweight ceremony</li>
+              <li>Artifacts become repetitive or stale</li>
+              <li>People route around the process</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><span>The gap is proportionality</span><span>Use the least ceremony that preserves clarity</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Most teams recognize both failure modes. Adaptive SDD addresses the space between a prompt and full Spec Kit. Emphasize that complexity is driven by uncertainty and blast radius—not merely estimated lines of code.</aside>
+    </section>
+
+    <section class="slide" data-title="Three tiers">
+      <header><p class="eyebrow">02 · The model</p><h2>Three tiers. One entry point.</h2></header>
+      <div class="content">
+        <div class="grid three">
+          <article class="card red">
+            <span class="pill">1 artifact</span>
+            <h3>TinySpec</h3>
+            <p>Bounded, reversible, understood work with one clear implementation path.</p>
+            <p class="small muted"><code>.tinyspec/feature.md</code></p>
+          </article>
+          <article class="card gold">
+            <span class="pill">3 artifacts</span>
+            <h3>LiteSpec</h3>
+            <p>Several stories, meaningful decisions, phased delivery, or acceptance-to-test traceability.</p>
+            <p class="small muted"><code>spec.md · plan.md · tests.md</code></p>
+          </article>
+          <article class="card green">
+            <span class="pill">Full workflow</span>
+            <h3>GitHub Spec Kit</h3>
+            <p>Major architecture, migrations, regulated behavior, complex integrations, or multi-team coordination.</p>
+            <p class="small muted">Official upstream workflow</p>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><span>No scorecard automatically chooses a tier</span><span>Rationale + user confirmation</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> TinySpec is one compact contract. LiteSpec separates what, how, and proof. Full Spec Kit remains GitHub's official upstream workflow. Adaptive SDD does not fork or dilute Spec Kit; it routes to it when the work warrants it.</aside>
+    </section>
+
+    <section class="slide" data-title="Orchestrator workflow">
+      <header><p class="eyebrow">03 · User experience</p><h2>The orchestrator guides the whole journey.</h2></header>
+      <div class="content column" style="gap:1.5rem">
+        <div class="flow">
+          <div class="flow-step"><b>1 · Inspect</b><span>Read codebase, tests, conventions, and deployment surface</span></div>
+          <div class="flow-step"><b>2 · Recommend</b><span>Explain the smallest suitable tier and why</span></div>
+          <div class="flow-step"><b>3 · Discover</b><span>Ask one focused question at a time</span></div>
+          <div class="flow-step"><b>4 · Approve</b><span>Gate artifacts explicitly before moving forward</span></div>
+          <div class="flow-step"><b>5 · Prove</b><span>Map intent to tasks, tests, and release evidence</span></div>
+        </div>
+        <p class="callout">Approval of artifacts is <strong>not</strong> permission to implement. Code changes require a separate, explicit authorization.</p>
+      </div>
+      <footer class="footerline"><span>Codex: <code>$adaptive-sdd</code></span><span>Cursor: <code>/adaptive-sdd</code></span></footer>
+      <aside class="notes"><strong>Talk track:</strong> The user does not have to learn multiple commands or decide the tier alone. The skill inspects first, explains its recommendation, and asks for confirmation. Discovery remains conversational rather than dumping a questionnaire.</aside>
+    </section>
+
+    <section class="slide" data-title="Kanban in TinySpec">
+      <header><p class="eyebrow">04 · Controlled example</p><h2>Kanban starts as one TinySpec.</h2></header>
+      <div class="content">
+        <div class="grid two">
+          <article class="card red">
+            <h3>One compact build contract</h3>
+            <ul>
+              <li>What and context</li>
+              <li>Nine product requirements</li>
+              <li>Five-step implementation plan</li>
+              <li>Task checklist and “done when” evidence</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>What it describes</h3>
+            <ul>
+              <li>Three-column personal Kanban</li>
+              <li>Create, edit, move, and delete tasks</li>
+              <li>Browser-local persistence</li>
+              <li>Responsive and accessible behavior</li>
+              <li>In-app specification viewer</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><a href="https://github.com/JonC613/adaptive-sdd/blob/main/examples/simple-kanban/tiny/simple-kanban.md">Open the TinySpec example</a><span>Best when one file remains sufficient</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> This is the low-ceremony path. It is still a specification: outcome, context, requirements, plan, tasks, and completion evidence are all present. It avoids pretending a small feature needs an elaborate lifecycle.</aside>
+    </section>
+
+    <section class="slide" data-title="Kanban in LiteSpec">
+      <header><p class="eyebrow">05 · Same product, more depth</p><h2>LiteSpec separates intent, delivery, and proof.</h2></header>
+      <div class="content">
+        <div class="grid three">
+          <article class="card red">
+            <span class="pill">What + why</span>
+            <h3>spec.md</h3>
+            <p>Five user stories, rationale, observable acceptance criteria, edge cases, boundaries, and non-functional requirements.</p>
+          </article>
+          <article class="card gold">
+            <span class="pill">How</span>
+            <h3>plan.md</h3>
+            <p>Technical decisions, impacted areas, risks, dependencies, implementation phases, verification, and rollback.</p>
+          </article>
+          <article class="card green">
+            <span class="pill">Evidence</span>
+            <h3>tests.md</h3>
+            <p>Twelve acceptance criteria mapped to automated evidence, plus failure, accessibility, responsive, and touch considerations.</p>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><a href="https://github.com/JonC613/adaptive-sdd/tree/main/examples/simple-kanban/lite/simple-kanban">Open the LiteSpec example</a><span>Each artifact has its own approval gate</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> The value is not simply “more text.” Each file answers a different question. Stable IDs let the team follow a requirement through implementation and evidence. The Kanban example contains both Tiny and Lite versions specifically to make this contrast visible.</aside>
+    </section>
+
+    <section class="slide" data-title="Traceability">
+      <header><p class="eyebrow">06 · The proof chain</p><h2>Intent remains connected to evidence.</h2></header>
+      <div class="content column" style="gap:1.4rem">
+        <div class="trace">
+          <article class="card"><code>US-04</code><p>As a returning user, restore my board.</p></article>
+          <article class="card"><code>AC-04.2</code><p>Unreadable storage still yields a usable board.</p></article>
+          <article class="card"><code>P1-T1</code><p>Implement restoration-safe task state.</p></article>
+          <article class="card"><code>T-09</code><p>Exercise invalid JSON and storage failures.</p></article>
+          <article class="card"><code>Evidence</code><p>Pass result linked to the release decision.</p></article>
+        </div>
+        <p class="callout">A reviewer can ask “why does this code exist?” and follow the answer in either direction.</p>
+      </div>
+      <footer class="footerline"><span>Stable IDs reduce ambiguity</span><span>Validators detect orphaned or incoherent artifacts</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Walk left to right, then right to left. The validator does not decide whether a requirement is good, but it can deterministically detect broken metadata, missing mappings, duplicate IDs, and version inconsistencies.</aside>
+    </section>
+
+    <section class="slide" data-title="What Kanban proves">
+      <header><p class="eyebrow">07 · POC evidence</p><h2>What Kanban proves today.</h2></header>
+      <div class="content">
+        <ul class="checklist">
+          <li>The same feature can be expressed at two useful depths</li>
+          <li>TinySpec stays genuinely compact at one artifact</li>
+          <li>LiteSpec produces exactly three gated artifacts</li>
+          <li>User stories include rationale and edge cases</li>
+          <li>Acceptance criteria map to implementation and tests</li>
+          <li>Validators enforce lifecycle and traceability structure</li>
+          <li>The workflow can reach a deployed, functioning product</li>
+          <li>Documentation can remain inspectable from the product</li>
+        </ul>
+      </div>
+      <footer class="footerline"><span>POC conclusion: the mechanism works end to end</span><span>Controlled example, not enterprise validation</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Be confident but precise. The project demonstrates feasibility and provides a concrete artifact set. It is not evidence that every team or every production system will adopt the workflow successfully.</aside>
+    </section>
+
+    <section class="slide" data-title="What remains unproven">
+      <header><p class="eyebrow">08 · Honest limitations</p><h2>What Kanban does not prove yet.</h2></header>
+      <div class="content">
+        <div class="grid two">
+          <article class="card">
+            <h3>Adoption</h3>
+            <ul>
+              <li>A colleague can install and use it without coaching</li>
+              <li>Codex and Cursor produce acceptably consistent outcomes</li>
+              <li>The artifact burden feels proportional in routine work</li>
+            </ul>
+          </article>
+          <article class="card red">
+            <h3>Production complexity</h3>
+            <ul>
+              <li>Real repository conventions and legacy constraints</li>
+              <li>Cross-system contracts, security, or migrations</li>
+              <li>Reliable promotion from LiteSpec to full Spec Kit</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><span>Current app implementation is maintained in a separate repository</span><span>Touch and responsive visual checks remain explicit manual evidence</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Calling these limitations out strengthens the proposal. The correct conclusion is “ready for a bounded pilot,” not “ready for organization-wide rollout.” The separate app repository should be linked directly when showing implementation evidence.</aside>
+    </section>
+
+    <section class="slide" data-title="Work-shaped pilot">
+      <header><p class="eyebrow">09 · Next proof</p><h2>Run one small, work-shaped pilot.</h2></header>
+      <div class="content">
+        <div class="grid three">
+          <article class="card red">
+            <h3>Choose</h3>
+            <p>A safe feature in an existing codebase: filtered export, approval status, notification preference, API field, or admin action.</p>
+          </article>
+          <article class="card gold">
+            <h3>Require</h3>
+            <p>At least one existing convention, one failure path, one technical decision, and one regression boundary.</p>
+          </article>
+          <article class="card green">
+            <h3>Avoid</h3>
+            <p>Regulated data, irreversible migrations, broad architecture changes, or a deadline-critical production release.</p>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><span>Recommended tier: LiteSpec</span><span>Target: 60–90 minute guided exercise</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> The pilot should be real enough to encounter constraints, but safe enough to stop. LiteSpec is the best test because it exercises the differentiating middle tier. Keep production rollout out of scope.</aside>
+    </section>
+
+    <section class="slide" data-title="Pilot protocol">
+      <header><p class="eyebrow">10 · Repeatable test</p><h2>Test the workflow, not just the output.</h2></header>
+      <div class="content">
+        <div class="flow">
+          <div class="flow-step"><b>Fresh start</b><span>Install into a clean checkout from written instructions</span></div>
+          <div class="flow-step"><b>Minimal prompt</b><span>Provide only a short, realistic feature request</span></div>
+          <div class="flow-step"><b>Independent use</b><span>Let a colleague complete discovery and approvals</span></div>
+          <div class="flow-step"><b>Implement</b><span>Authorize code only after all artifacts validate</span></div>
+          <div class="flow-step"><b>Amend</b><span>Change one requirement and check propagation</span></div>
+        </div>
+      </div>
+      <footer class="footerline"><span>Record screen, elapsed time, questions, corrections, and test results</span><span>Do not coach unless blocked</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> A successful artifact set created by the author is weaker evidence than a colleague independently using the instructions. Introduce one small change after approval to test whether the amendment workflow prevents silent drift.</aside>
+    </section>
+
+    <section class="slide" data-title="Success measures">
+      <header><p class="eyebrow">11 · Evaluation</p><h2>Define success before the pilot.</h2></header>
+      <div class="content top">
+        <table>
+          <thead><tr><th>Measure</th><th>POC target</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td>Fresh installation</td><td>Completed from documentation without author intervention</td><td>Tests portability and onboarding</td></tr>
+            <tr><td>Time to approved LiteSpec</td><td>≤ 30 minutes for a bounded feature</td><td>Tests whether ceremony remains proportional</td></tr>
+            <tr><td>Artifact discipline</td><td>Exactly 3 LiteSpec files; no duplicate documents</td><td>Tests the low-artifact promise</td></tr>
+            <tr><td>Acceptance coverage</td><td>100% of current ACs mapped to evidence</td><td>Tests traceability</td></tr>
+            <tr><td>Quality gates</td><td>Build, new tests, and regression suite pass</td><td>Tests implementation usefulness</td></tr>
+            <tr><td>Amendment integrity</td><td>Versions, IDs, tasks, and tests remain coherent</td><td>Tests change management</td></tr>
+            <tr><td>User judgment</td><td>Participant says artifacts reduced guessing</td><td>Tests practical value</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="footerline"><span>Collect both objective evidence and participant feedback</span><span>One pilot informs—not proves—scale readiness</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> These are POC targets, not universal performance standards. The key measures are independent install, artifact proportionality, acceptance coverage, passing regression tests, and whether the participant had fewer unanswered questions.</aside>
+    </section>
+
+    <section class="slide" data-title="Monday demo">
+      <header><p class="eyebrow">12 · Presentation plan</p><h2>A focused 12-minute Monday demo.</h2></header>
+      <div class="content top">
+        <table>
+          <thead><tr><th>Time</th><th>Show</th><th>Message</th></tr></thead>
+          <tbody>
+            <tr><td>0:00–1:30</td><td>The two bad defaults</td><td>We need proportional specification depth</td></tr>
+            <tr><td>1:30–3:00</td><td>Three tiers and one orchestrator</td><td>The user gets one simple entry point</td></tr>
+            <tr><td>3:00–6:00</td><td>Kanban TinySpec beside LiteSpec</td><td>Same product, deliberately different depth</td></tr>
+            <tr><td>6:00–8:00</td><td>US-04 → AC-04.2 → P1-T1 → T-09</td><td>Intent remains connected to evidence</td></tr>
+            <tr><td>8:00–10:00</td><td>Working app and validation result</td><td>The mechanism reaches executable outcomes</td></tr>
+            <tr><td>10:00–12:00</td><td>Work-shaped pilot proposal</td><td>Ask for a bounded validation, not rollout approval</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="footerline"><span>Keep the terminal commands prepared, not improvised</span><span>Have screenshots or a recording as backup</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Do not conduct a long live discovery session in the presentation. Show two or three representative exchanges, then move to completed artifacts. Keep a local copy or recording available in case the network or agent session fails.</aside>
+    </section>
+
+    <section class="slide" data-title="Installation and demo commands">
+      <header><p class="eyebrow">13 · Demo appendix</p><h2>Install and invoke.</h2></header>
+      <div class="content">
+        <div class="grid two">
+          <article class="card">
+            <h3>Project installation</h3>
+            <pre><code>git clone https://github.com/JonC613/adaptive-sdd.git
+cd adaptive-sdd
+./scripts/install-project.ps1 -Target C:\path\to\project</code></pre>
+            <p class="small muted">Prerequisites: Git, Python 3.11+, PowerShell 7, and Codex or Cursor.</p>
+          </article>
+          <article class="card red">
+            <h3>Start the workflow</h3>
+            <pre><code>$adaptive-sdd Help me add CSV export.
+
+/adaptive-sdd Help me add CSV export.</code></pre>
+            <p class="small muted">First form: Codex. Second form: Cursor.</p>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><a href="https://github.com/JonC613/adaptive-sdd/blob/main/docs/installation.md">Full installation guide</a><span>Full Spec Kit remains optional and version-pinned</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Keep this slide in the appendix unless asked how it installs. For full Spec Kit, the installer can add the official integration at the tested pin. Adaptive SDD then hands control to the official generated workflow.</aside>
+    </section>
+
+    <section class="slide" data-title="Research foundation">
+      <header><p class="eyebrow">14 · Proven foundations</p><h2>Adaptation, not invention from scratch.</h2></header>
+      <div class="content top">
+        <div class="grid two">
+          <article class="card">
+            <h3>Workflow and requirements</h3>
+            <ul>
+              <li><a href="https://github.github.com/spec-kit/">GitHub Spec Kit</a> — phased specification workflow</li>
+              <li><a href="https://agilealliance.org/glossary/user-stories/">Agile Alliance</a> — user stories and evolving detail</li>
+              <li><a href="https://cucumber.io/docs/gherkin/reference/">Cucumber Gherkin</a> — observable Given/When/Then examples</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Decisions, testing, and change</h3>
+            <ul>
+              <li><a href="https://martinfowler.com/bliki/TestPyramid.html">Test Pyramid</a> — lowest practical test layer</li>
+              <li><a href="https://ddt.beta.education.gov.uk/guides/architecture-documentation">Lightweight decision records</a> — context and consequences</li>
+              <li><a href="https://semver.org/">Semantic Versioning</a> — adapted for specification amendments</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <footer class="footerline"><span>LiteSpec combines established practices while reducing artifact count</span><span>Sources are documented in the repository</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> Adaptive SDD's contribution is packaging and proportionality. It reuses known techniques: phased specs, value-centered stories, observable acceptance, traceability, lightweight decisions, and layered testing.</aside>
+    </section>
+
+    <section class="slide" data-title="Recommendation">
+      <header><p class="eyebrow">15 · Recommendation</p></header>
+      <div class="content column">
+        <h2>Approve a bounded pilot—not a broad rollout.</h2>
+        <p class="callout">Kanban demonstrates that Adaptive SDD works end to end. One small work-shaped feature should now test whether it reduces ambiguity and rework in our environment.</p>
+        <div class="grid three" style="margin-top:1.5rem">
+          <article class="card"><h3>Scope</h3><p>One safe, existing-codebase feature</p></article>
+          <article class="card"><h3>People</h3><p>One participant other than the author</p></article>
+          <article class="card red"><h3>Decision</h3><p>Continue, revise, or stop based on recorded evidence</p></article>
+        </div>
+      </div>
+      <footer class="footerline"><a href="https://github.com/JonC613/adaptive-sdd">github.com/JonC613/adaptive-sdd</a><span>Questions?</span></footer>
+      <aside class="notes"><strong>Talk track:</strong> End with a modest, testable ask: permission to run one bounded pilot. That is the decision this POC can responsibly support. The pilot's evidence determines whether the method should be revised, expanded, or stopped.</aside>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Presentation controls">
+    <button id="prev" type="button" aria-label="Previous slide">←</button>
+    <span class="counter" id="counter" aria-live="polite">1 / 15</span>
+    <button id="next" type="button" aria-label="Next slide">→</button>
+    <button id="notesButton" type="button" data-label data-short="N" aria-label="Toggle speaker notes" aria-pressed="false">Notes</button>
+    <button id="overviewButton" type="button" data-label data-short="O" aria-label="Open slide overview">Overview</button>
+    <button id="fullscreenButton" type="button" data-label data-short="F" aria-label="Toggle fullscreen">Full</button>
+  </nav>
+
+  <div class="overview" id="overview" role="dialog" aria-modal="true" aria-label="Slide overview"></div>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    const counter = document.getElementById('counter');
+    const progressBar = document.getElementById('progressBar');
+    const notesButton = document.getElementById('notesButton');
+    const overview = document.getElementById('overview');
+    let index = Math.max(0, Math.min(slides.length - 1, Number(location.hash.slice(1)) - 1 || 0));
+
+    function render(nextIndex, updateHash = true) {
+      index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === index;
+        slide.classList.toggle('active', active);
+        slide.setAttribute('aria-hidden', String(!active));
+      });
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+      document.title = `${slides[index].dataset.title} — Adaptive SDD`;
+      if (updateHash) history.replaceState(null, '', `#${index + 1}`);
+    }
+
+    function toggleNotes() {
+      const active = document.body.classList.toggle('notes-on');
+      notesButton.setAttribute('aria-pressed', String(active));
+    }
+
+    function toggleOverview(force) {
+      const active = typeof force === 'boolean' ? force : !document.body.classList.contains('overview-on');
+      document.body.classList.toggle('overview-on', active);
+      if (active) overview.querySelectorAll('button')[index]?.focus();
+    }
+
+    slides.forEach((slide, slideIndex) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.innerHTML = `<b>${String(slideIndex + 1).padStart(2, '0')}</b>${slide.dataset.title}`;
+      button.addEventListener('click', () => { render(slideIndex); toggleOverview(false); });
+      overview.appendChild(button);
+    });
+
+    document.getElementById('prev').addEventListener('click', () => render(index - 1));
+    document.getElementById('next').addEventListener('click', () => render(index + 1));
+    notesButton.addEventListener('click', toggleNotes);
+    document.getElementById('overviewButton').addEventListener('click', () => toggleOverview());
+    document.getElementById('fullscreenButton').addEventListener('click', () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen?.();
+    });
+
+    addEventListener('hashchange', () => render(Number(location.hash.slice(1)) - 1 || 0, false));
+    addEventListener('keydown', (event) => {
+      if (event.target.closest('a, button')) return;
+      if (['ArrowRight', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); render(index + 1); }
+      if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); render(index - 1); }
+      if (event.key === 'Home') render(0);
+      if (event.key === 'End') render(slides.length - 1);
+      if (event.key.toLowerCase() === 'n') toggleNotes();
+      if (event.key.toLowerCase() === 'o') toggleOverview();
+      if (event.key.toLowerCase() === 'f') document.getElementById('fullscreenButton').click();
+      if (event.key === 'Escape') toggleOverview(false);
+    });
+
+    render(index, false);
+  </script>
+</body>
+</html>
