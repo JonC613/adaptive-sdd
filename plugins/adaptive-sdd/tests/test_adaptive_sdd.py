@@ -121,6 +121,19 @@ class AdaptiveSDDTests(unittest.TestCase):
             self.assertEqual(current.returncode, 0, current.stdout + current.stderr)
             self.assertIn("PASS:", current.stdout)
 
+    def test_project_memory_ignores_its_own_commit_for_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            project = self.init_repository(folder)
+            self.assertEqual(self.run_memory(project, "scaffold").returncode, 0)
+            subprocess.run(["git", "-C", str(project), "add", ".sdd"], check=True)
+            subprocess.run(["git", "-C", str(project), "commit", "-q", "-m", "add memory"], check=True)
+            validation = self.run_memory(project, "verify")
+            self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
+            self.assertIn("PASS:", validation.stdout)
+            status = self.run_memory(project, "status")
+            self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
+            self.assertIn("Only memory or specification artifacts changed", status.stdout)
+
     def test_project_memory_validation_rejects_broken_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             project = self.init_repository(folder)

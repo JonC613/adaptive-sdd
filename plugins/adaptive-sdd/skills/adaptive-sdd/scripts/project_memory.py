@@ -28,6 +28,7 @@ CONCEPT_TYPES = {
 }
 ACTOR_PATTERN = re.compile(r"^(?:human:|process:|[^/\s]+/)[^\s]+$")
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+NON_DURABLE_PREFIXES = (".sdd/", ".tinyspec/", ".litespec/", ".specify/", "specs/")
 
 
 def fail(message: str) -> None:
@@ -76,6 +77,14 @@ def commit_exists(project: Path, commit: str) -> bool:
 def is_ancestor(project: Path, earlier: str, later: str) -> bool:
     result = git(project, "merge-base", "--is-ancestor", earlier, later)
     return result is not None and result.returncode == 0
+
+
+def durable_changes(project: Path, earlier: str, later: str) -> list[str] | None:
+    result = git(project, "diff", "--name-only", f"{earlier}..{later}")
+    if result is None or result.returncode != 0:
+        return None
+    paths = [line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip()]
+    return [path for path in paths if not path.startswith(NON_DURABLE_PREFIXES)]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -296,7 +305,13 @@ def collect_report(project: Path) -> Report:
         elif not isinstance(reconciled, str) or not commit_exists(project, reconciled):
             report.error("memory-state.json: last_reconciled_commit is not available in this Git history")
         elif reconciled != head:
-            report.warn(f"Memory may be stale: reconciled {reconciled[:12]}, HEAD {head[:12]}")
+            changed = durable_changes(project, reconciled, head)
+            if changed is None:
+                report.warn("Unable to inspect changes since reconciliation; confidence is limited")
+            elif changed:
+                report.warn(
+                    f"Memory may be stale: {len(changed)} durable path(s) changed after {reconciled[:12]}"
+                )
     return report
 
 
@@ -388,6 +403,14 @@ def command_status(args: argparse.Namespace) -> None:
         print("WARN: Git history unavailable; reconciliation confidence is limited")
     elif reconciled == head:
         print("PASS: Project Memory is reconciled with HEAD")
+    elif isinstance(reconciled, str) and commit_exists(project, reconciled):
+        changed = durable_changes(project, reconciled, head)
+        if changed is None:
+            print("WARN: Unable to inspect changes since reconciliation")
+        elif changed:
+            print(f"WARN: Project Memory may require reconciliation; {len(changed)} durable path(s) changed")
+        else:
+            print("PASS: Only memory or specification artifacts changed since reconciliation")
     else:
         print("WARN: Project Memory may require reconciliation")
 
