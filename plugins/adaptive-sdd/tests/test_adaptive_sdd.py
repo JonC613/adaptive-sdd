@@ -155,6 +155,23 @@ class AdaptiveSDDTests(unittest.TestCase):
             validation = self.run_memory(project, "verify")
             self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
             self.assertIn("Git history unavailable", validation.stdout)
+
+    def test_project_memory_shallow_checkout_has_limited_confidence(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            project = self.init_repository(folder)
+            self.assertEqual(self.run_memory(project, "scaffold").returncode, 0)
+            state_path = project / ".sdd" / "memory-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            state["last_reconciled_commit"] = "0" * 40
+            state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+            head = subprocess.run(
+                ["git", "-C", str(project), "rev-parse", "HEAD"], check=True, capture_output=True, text=True
+            ).stdout.strip()
+            (project / ".git" / "shallow").write_text(head + "\n", encoding="ascii")
+
+            validation = self.run_memory(project, "verify")
+            self.assertEqual(validation.returncode, 0, validation.stdout + validation.stderr)
+            self.assertIn("outside this shallow checkout", validation.stdout)
             self.assertIn("WARN:", validation.stdout)
 
     def test_project_memory_preserves_unknown_concept_fields(self) -> None:

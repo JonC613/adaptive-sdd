@@ -74,6 +74,11 @@ def commit_exists(project: Path, commit: str) -> bool:
     return result is not None and result.returncode == 0
 
 
+def is_shallow_repository(project: Path) -> bool:
+    result = git(project, "rev-parse", "--is-shallow-repository")
+    return result is not None and result.returncode == 0 and result.stdout.strip() == "true"
+
+
 def is_ancestor(project: Path, earlier: str, later: str) -> bool:
     result = git(project, "merge-base", "--is-ancestor", earlier, later)
     return result is not None and result.returncode == 0
@@ -302,8 +307,13 @@ def collect_report(project: Path) -> Report:
             report.warn("Git history unavailable; reconciliation confidence is limited")
         elif reconciled is None:
             report.warn("No reconciled Git commit is recorded")
-        elif not isinstance(reconciled, str) or not commit_exists(project, reconciled):
+        elif not isinstance(reconciled, str):
             report.error("memory-state.json: last_reconciled_commit is not available in this Git history")
+        elif not commit_exists(project, reconciled):
+            if is_shallow_repository(project):
+                report.warn("Reconciled commit is outside this shallow checkout; confidence is limited")
+            else:
+                report.error("memory-state.json: last_reconciled_commit is not available in this Git history")
         elif reconciled != head:
             changed = durable_changes(project, reconciled, head)
             if changed is None:
