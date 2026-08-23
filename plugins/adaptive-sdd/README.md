@@ -1,17 +1,42 @@
 # Adaptive SDD
 
-Adaptive SDD packages TinySpec, LiteSpec, and an adapter to official GitHub Spec Kit behind one portable skill.
+Adaptive SDD packages TinySpec, LiteSpec, an adapter to official GitHub Spec Kit, and portable Project Memory behind one shared skill.
 
 - Codex: `$adaptive-sdd`
 - Cursor: `/adaptive-sdd`
 
 The goal is simple: use the least ceremony that still makes scope, behavior, implementation risk, and verification clear.
 
+Project Memory complements those point-in-time specifications with an optional, OKF-compatible living description of what the repository has become. It uses the same shared skill in Codex and Cursor and remains readable as ordinary Markdown without either tool.
+
 | Tier | Artifacts | Use |
 |---|---:|---|
 | TinySpec | 1 | Small, reversible, well-understood work |
 | LiteSpec | 3 | Multiple stories, decisions, phases, or test traceability |
 | Spec Kit | Full upstream workflow | High-risk, architectural, regulated, or multi-team work |
+
+## Project Memory
+
+Project Memory is not a fourth specification tier. TinySpec, LiteSpec, Spec Kit, and ordinary Git changes can all contribute provenance to the same current-state bundle:
+
+```text
+.sdd/
+├── memory/
+│   ├── index.md
+│   ├── project.md
+│   ├── architecture.md
+│   └── log.md
+└── memory-state.json
+```
+
+Invoke it through the existing skill:
+
+```text
+$adaptive-sdd initialize memory   # Codex
+/adaptive-sdd initialize memory   # Cursor
+```
+
+The shared operations are `initialize memory`, `status memory`, `update memory`, `refresh memory`, and `verify memory`. Generated knowledge is proposed before it is written. Installation never creates `.sdd/` automatically.
 
 ## Install into a project
 
@@ -53,6 +78,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 ## Principles
 
 - One public orchestrator, not a menu of overlapping skills.
+- One portable Project Memory format and implementation across Codex and Cursor.
 - One focused discovery question at a time.
 - Explicit approval before tier changes, artifacts, tooling installation, or implementation.
 - Native artifact conventions for each tier.
@@ -66,6 +92,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 - `plugin.json` — portable Agent Plugin manifest used by Cursor
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 - `examples/simple-kanban/` — TinySpec and LiteSpec versions of one feature
+- `examples/simple-kanban/.sdd/memory/` — portable living-memory example
 - `presentation/` — self-contained POC presentation and presenter instructions
 - `tests/` — deterministic scaffold and validation tests
 - `.codex-plugin/plugin.json` — Codex plugin manifest

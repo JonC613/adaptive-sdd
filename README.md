@@ -9,4 +9,4 @@ codex plugin marketplace add JonC613/adaptive-sdd
 codex plugin add adaptive-sdd@adaptive-sdd
 ```
 
-The plugin guides TinySpec, LiteSpec, and official GitHub Spec Kit workflows through approval gates.
+The plugin guides TinySpec, LiteSpec, official GitHub Spec Kit, and portable Project Memory through approval gates.

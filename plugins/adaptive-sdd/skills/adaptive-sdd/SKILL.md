@@ -1,6 +1,6 @@
 ---
 name: adaptive-sdd
-description: Guide adaptive specification-driven development across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$adaptive-sdd`, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit with Codex.
+description: Guide adaptive specification-driven development and portable Project Memory across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$adaptive-sdd`, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to initialize, update, refresh, inspect, or verify a living repository memory, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit.
 ---
 
 # Adaptive SDD
@@ -10,13 +10,28 @@ Use one orchestrator to select and guide the smallest specification tier that cr
 ## Orient before writing
 
 1. Resolve the repository, feature, and desired outcome.
-2. Inspect the codebase read-only: architecture, relevant behavior, tests, dependencies, conventions, and deployment surfaces.
-3. Read [references/tier-selection.md](references/tier-selection.md).
-4. Recommend TinySpec, LiteSpec, or full Spec Kit with a project-specific rationale.
-5. Ask for tier confirmation before creating artifacts or installing tooling.
-6. Tell the user before external research. Prefer primary sources for unstable, regulated, unfamiliar, or high-risk facts.
+2. When `.sdd/memory/index.md` exists, read it first and load only relevant Project Memory concepts. Treat them as context, verify consequential claims against current code, and report contradictions or potential staleness.
+3. Inspect the codebase read-only: architecture, relevant behavior, tests, dependencies, conventions, and deployment surfaces.
+4. Read [references/tier-selection.md](references/tier-selection.md).
+5. Recommend TinySpec, LiteSpec, or full Spec Kit with a project-specific rationale.
+6. Ask for tier confirmation before creating artifacts or installing tooling.
+7. Tell the user before external research. Prefer primary sources for unstable, regulated, unfamiliar, or high-risk facts.
 
 Do not use a numerical complexity score. Do not infer implementation permission from approval of a specification.
+
+## Maintain Project Memory
+
+Read [references/project-memory.md](references/project-memory.md) whenever the user asks to initialize, inspect, update, refresh, or verify living repository memory, or when completed implementation may have changed durable repository knowledge.
+
+Use one shared workflow for Codex and Cursor. `$adaptive-sdd` and `/adaptive-sdd` are invocation differences only; never store provider-specific state in the memory bundle.
+
+- **Initialize memory:** inspect the repository read-only, draft the smallest useful project and architecture concepts with evidence or explicit assumptions, show the complete proposal, and wait for approval. After approval, use `scripts/project_memory.py scaffold`, apply the accepted content, verify it, and record the approved commit. Refuse overwrite.
+- **Status memory:** run `scripts/project_memory.py status --project <root>` read-only and explain current, potential drift, or limited-confidence results without claiming drift proves factual error.
+- **Verify memory:** run `scripts/project_memory.py verify --project <root>` read-only. Separate failures from freshness and optional-link warnings.
+- **Update memory:** after approved SDD implementation, propose only durable current-state changes and tier provenance. Do not copy complete specifications. Apply after approval, update `log.md`, verify, then reconcile the approved commit.
+- **Refresh memory:** inspect changes since the recorded commit, propose affected edits or a no-op, and wait for approval. Rejection changes nothing. A reviewed no-op may reconcile after validation.
+
+Project Memory is not a fourth specification tier and does not change tier selection. TinySpec, LiteSpec, official Spec Kit, and repository-only changes may all provide provenance. Preserve promoted artifacts and never modify official Spec Kit-owned files through memory maintenance.
 
 ## Conduct discovery
 
@@ -73,7 +88,8 @@ Read [references/migration-rules.md](references/migration-rules.md).
 2. Set approved artifacts to `implementing`.
 3. Execute approved tasks in dependency order.
 4. Run agreed tests and tier validation.
-5. Set artifacts to `done` only when their completion criteria are satisfied.
+5. Assess whether the completed code changed durable Project Memory. If memory exists, propose the smallest evidence-backed update and obtain approval before applying it.
+6. Set artifacts to `done` only when their completion criteria and any approved memory update are satisfied.
 
 When requirements change, pause affected work, explain the smallest coherent amendment, request approval, update every affected artifact, increment the minor version, and revalidate.
 

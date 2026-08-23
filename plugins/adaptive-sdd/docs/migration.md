@@ -23,3 +23,15 @@ Promotion deepens the contract without destroying the prior tier.
 ## Downgrading
 
 Do not downgrade active work automatically. A completed feature may receive a compact read-only summary, but the deeper artifacts remain the authoritative record.
+
+## Adding Project Memory to an existing repository
+
+Project Memory is independent of specification-tier promotion. After updating the shared skill, invoke `initialize memory`; Adaptive SDD inspects existing code, documentation, and specification artifacts and proposes the first OKF bundle before writing.
+
+- Link existing authoritative architecture or operations documentation instead of replacing it.
+- Cite completed TinySpec, LiteSpec, or Spec Kit artifacts only when they support current implemented state.
+- Preserve historical specifications unchanged.
+- Record unresolved contradictions as assumptions or review items.
+- Pin `okf_version` and the Adaptive SDD profile version independently.
+
+Future profile migrations must operate on an explicit, reviewed proposal, preserve unknown fields, and retain the prior Git history. Never silently rewrite a target repository during plugin installation or upgrade.
