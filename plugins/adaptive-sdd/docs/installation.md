@@ -20,6 +20,8 @@ cd adaptive-sdd
 
 The script refuses to replace an existing Adaptive SDD installation unless `-Force` is supplied.
 
+The installer copies only the shared skill. It does not create TinySpec, LiteSpec, or Project Memory artifacts in the target. Initialize `.sdd/memory/` later through an explicit, review-gated request.
+
 ## Install Adaptive SDD and full Spec Kit
 
 Commit or stash target-project changes first. Then run:

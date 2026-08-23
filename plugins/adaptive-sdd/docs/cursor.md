@@ -12,6 +12,8 @@ Run:
 
 The installed `.agents/skills/adaptive-sdd/` path is discovered by both Cursor and Codex.
 
+Project Memory uses that same shared installation. Invoke `/adaptive-sdd initialize memory`, `/adaptive-sdd refresh memory`, or `/adaptive-sdd verify memory`; the committed OKF bundle and deterministic scripts are identical to the Codex workflow.
+
 ## Local plugin installation
 
 Run:

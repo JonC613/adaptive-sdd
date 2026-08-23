@@ -1,4 +1,4 @@
 interface:
   display_name: "Adaptive SDD"
-  short_description: "Scale specifications from tiny to full SDD"
-  default_prompt: "Use $adaptive-sdd to choose and guide the right specification depth for this work."
+  short_description: "Guide specifications and living repository memory"
+  default_prompt: "Use $adaptive-sdd to guide the right specification depth or maintain portable Project Memory for this work."
