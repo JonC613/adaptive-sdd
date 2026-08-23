@@ -1,7 +1,7 @@
 ---
 feature: project-memory
 artifact: spec
-status: implementing
+status: done
 owner: user
 version: 0.1
 created: 2026-08-22

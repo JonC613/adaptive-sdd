@@ -1,7 +1,7 @@
 ---
 feature: project-memory
 artifact: plan
-status: implementing
+status: done
 owner: user
 version: 0.1
 created: 2026-08-22
@@ -176,7 +176,7 @@ The `proposed` state exists in the interaction, not as an unapproved repository 
 
 ### Phase 4 — Compatibility evidence and dogfooding
 
-- [ ] **P4-T1 — Add cross-platform and cross-agent tests**
+- [x] **P4-T1 — Add cross-platform and cross-agent tests**
   - Covers: AC-02.1, AC-02.2, AC-02.3
   - Depends on: P3-T3
   - Work: Extend deterministic tests and CI coverage for portable paths, Python 3.11+, equivalent shared operations, round trips between agent invocation forms, overwrite safety, and preservation of unknown extensions.

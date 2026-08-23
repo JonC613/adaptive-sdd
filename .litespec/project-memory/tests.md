@@ -1,7 +1,7 @@
 ---
 feature: project-memory
 artifact: tests
-status: implementing
+status: done
 owner: user
 version: 0.1
 created: 2026-08-22
@@ -27,7 +27,7 @@ Test at the lowest practical level: parsing and validation rules as units, files
 | AC-01.3 | T-03 | Automated integration | Passing |
 | AC-01.4 | T-01 | Automated integration | Passing |
 | AC-02.1 | T-04 | Automated end-to-end | Passing |
-| AC-02.2 | T-05 | Automated CI matrix | Windows/Linux passing; macOS CI pending |
+| AC-02.2 | T-05 | Automated CI matrix | Passing |
 | AC-02.3 | T-06 | Automated contract | Passing |
 | AC-02.4 | T-06 | Automated contract | Passing |
 | AC-03.1 | T-07 | Automated contract | Passing |
@@ -183,10 +183,10 @@ None. Qualitative dogfooding observations supplement but do not replace automate
 
 ## Completion criteria
 
-- [ ] Every current-release acceptance criterion maps to passing automated evidence; macOS CI remains pending.
+- [x] Every current-release acceptance criterion maps to passing automated evidence.
 - [x] Critical initialization, cross-agent round-trip, refresh, approval, and orientation flows pass their local and contract checks.
 - [x] Rejection, overwrite, malformed data, broken evidence, Git drift, and non-Git recovery cases pass; shallow history uses the same limited-confidence path.
-- [ ] The supported OS/Python matrix passes with portable artifact output.
+- [x] The supported OS/Python matrix passes with portable artifact output.
 - [x] Existing TinySpec, LiteSpec, Spec Kit adapter, manifest, installer, and example tests pass.
 - [x] The complete LiteSpec package validates with `--approved`.
 - [x] No unresolved local failure blocks an approved story or non-functional requirement.
