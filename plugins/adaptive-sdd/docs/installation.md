@@ -10,12 +10,12 @@
 
 ## Install Adaptive SDD only
 
-Clone Adaptive SDD and copy its skill into a target project:
+Clone Adaptive SDD and run its root bootstrap script to copy the skill into a target project:
 
 ```powershell
 git clone https://github.com/JonC613/adaptive-sdd.git
 cd adaptive-sdd
-./scripts/install-project.ps1 -Target C:\path\to\project
+./install-project.ps1 -Target C:\path\to\project
 ```
 
 The script refuses to replace an existing Adaptive SDD installation unless `-Force` is supplied.
@@ -27,7 +27,7 @@ The installer copies only the shared skill. It does not create TinySpec, LiteSpe
 Commit or stash target-project changes first. Then run:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\project -InstallSpecKit
+./install-project.ps1 -Target C:\path\to\project -InstallSpecKit
 ```
 
 The installer:
@@ -51,7 +51,7 @@ Use `--script sh` on Linux or macOS.
 For Cursor and full Spec Kit:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\project -InstallSpecKit -Integration cursor-agent
+./install-project.ps1 -Target C:\path\to\project -InstallSpecKit -Integration cursor-agent
 ```
 
 ## Verify
@@ -71,7 +71,7 @@ Then invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor.
 To test the repository as a user-level Cursor plugin:
 
 ```powershell
-./scripts/install-cursor-local.ps1
+./install-cursor-local.ps1
 ```
 
 This copies only `plugin.json` and `skills/` to `~/.cursor/plugins/local/adaptive-sdd`. Restart Cursor or run `Developer: Reload Window`, then verify the skill in Customize.

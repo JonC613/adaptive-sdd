@@ -47,6 +47,17 @@ class AdaptiveSDDTests(unittest.TestCase):
         self.assertEqual(manifest["version"], "0.3.0")
         self.assertTrue((ROOT / "skills" / "adaptive-sdd" / "SKILL.md").is_file())
 
+    def test_root_bootstrap_scripts_delegate_to_plugin_installers(self) -> None:
+        marketplace_root = ROOT.parents[1]
+        for name, implementation in (
+            ("install-project.ps1", "plugins/adaptive-sdd/scripts/install-project.ps1"),
+            ("install-cursor-local.ps1", "plugins/adaptive-sdd/scripts/install-cursor-local.ps1"),
+        ):
+            with self.subTest(name=name):
+                script = marketplace_root / name
+                self.assertTrue(script.is_file())
+                self.assertIn(implementation, script.read_text(encoding="utf-8").replace("\\", "/"))
+
     def test_tinyspec_scaffold_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             created = self.run_script(

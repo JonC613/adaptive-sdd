@@ -40,10 +40,10 @@ The shared operations are `initialize memory`, `status memory`, `update memory`,
 
 ## Install into a project
 
-Clone this repository, then run from its root:
+Clone this repository, then run the root bootstrap script:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\your-project
+./install-project.ps1 -Target C:\path\to\your-project
 ```
 
 The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Restart or reopen the agent in the target repository and invoke the matching form:
@@ -56,7 +56,7 @@ $adaptive-sdd Help me define this feature.   # Codex
 The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
+./install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
 ```
 
 Read [installation](docs/installation.md), [tier usage](docs/using-adaptive-sdd.md), and [migration](docs/migration.md) before team rollout.
@@ -70,7 +70,7 @@ Open [the browser presentation](presentation/index.html) for a 16-slide walkthro
 Adaptive SDD includes a root `plugin.json` conforming to the open Agent Plugins standard supported by Cursor. Install a local development copy with:
 
 ```powershell
-./scripts/install-cursor-local.ps1
+./install-cursor-local.ps1
 ```
 
 Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See [Cursor support](docs/cursor.md).
@@ -88,7 +88,8 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 ## Repository contents
 
 - `skills/adaptive-sdd/` — installable Codex skill and all tier resources
-- `scripts/install-project.ps1` — guarded project installer
+- `../../install-project.ps1` — root bootstrap installer for new repositories
+- `scripts/install-project.ps1` — guarded plugin implementation
 - `plugin.json` — portable Agent Plugin manifest used by Cursor
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 - `examples/simple-kanban/` — TinySpec and LiteSpec versions of one feature

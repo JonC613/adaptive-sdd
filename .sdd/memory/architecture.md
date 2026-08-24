@@ -15,6 +15,7 @@ sdd: {"profile_version":1,"assumptions":["Initial dogfood content awaits reposit
 - `skills/adaptive-sdd/SKILL.md` is the shared public orchestrator.
 - `assets/`, `references/`, and `scripts/` provide shared templates, method rules, and deterministic mechanics.
 - The root Agent Plugin manifest and `.codex-plugin/plugin.json` adapt discovery without forking behavior.
+- Root `install-project.ps1` and `install-cursor-local.ps1` bootstrap scripts delegate to the versioned plugin installers, so clone-root commands stay stable for new repositories.
 - `scripts/install-project.ps1` copies the shared skill into a target repository.
 - `tests/` validates manifests, artifact gates, and Project Memory behavior.
 
