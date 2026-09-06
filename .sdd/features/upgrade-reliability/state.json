@@ -5,10 +5,10 @@
         "actions": [
           "implementation"
         ],
-        "at": "2026-09-06T03:09:23Z",
+        "at": "2026-09-06T04:44:12Z",
         "by": "human:user"
       },
-      "approved_fingerprint": "sha256:c63056bc0a228ccb96fd85a76fa8f27f3bdd7c4a2769a063b91a5a33aa4f8825",
+      "approved_fingerprint": "sha256:8a477b46ca801ad965170943845715c2dae9d2ef409df93d61d241bbb89abd21",
       "path": ".litespec/upgrade-reliability/spec.md"
     },
     {
@@ -16,10 +16,10 @@
         "actions": [
           "implementation"
         ],
-        "at": "2026-09-06T03:09:23Z",
+        "at": "2026-09-06T04:44:12Z",
         "by": "human:user"
       },
-      "approved_fingerprint": "sha256:cbc833e0f3c336633a0f0bb0cdda8efc7a98576225eab085f38b655835aeba1a",
+      "approved_fingerprint": "sha256:23eb57b7350630947bee30d3a6e5d20adc5d2cc38523098b5a4651c7b105edca",
       "path": ".litespec/upgrade-reliability/plan.md"
     },
     {
@@ -27,10 +27,10 @@
         "actions": [
           "implementation"
         ],
-        "at": "2026-09-06T03:09:23Z",
+        "at": "2026-09-06T04:44:12Z",
         "by": "human:user"
       },
-      "approved_fingerprint": "sha256:809cb7b904fcb1624cb4cd22479723d219af405faa99fcdd4c397a48a969844c",
+      "approved_fingerprint": "sha256:c1236a2b0ffe4e9eb6f4f43a0584c1bcdb53ad01440bde5d4fff473eed88d981",
       "path": ".litespec/upgrade-reliability/tests.md"
     }
   ],
@@ -257,6 +257,58 @@
       "result": "pass",
       "snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610",
       "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:13Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.1",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-017",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:14Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.2",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-018",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:15Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.3",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-019",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:16Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.4",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-020",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
     }
   ],
   "feature": "upgrade-reliability",
@@ -279,7 +331,7 @@
     }
   ],
   "tier": "lite",
-  "updated_at": "2026-09-06T03:09:27Z",
-  "verified_at": "2026-09-06T03:09:26Z",
-  "verified_snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610"
+  "updated_at": "2026-09-06T04:44:17Z",
+  "verified_at": "2026-09-06T04:44:17Z",
+  "verified_snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5"
 }

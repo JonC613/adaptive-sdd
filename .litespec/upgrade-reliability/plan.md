@@ -3,10 +3,10 @@ feature: upgrade-reliability
 artifact: plan
 status: done
 owner: user
-version: 0.1
+version: 0.2
 created: 2026-09-05
 updated: 2026-09-05
-spec_version: 0.1
+spec_version: 0.2
 ---
 
 # Implementation Plan: Upgrade reliability
@@ -38,3 +38,4 @@ Installers, validators, memory script, regression tests and documentation.
 | Version | Date | Change | Reason | Affected IDs |
 |---|---|---|---|---|
 | 0.1 | 2026-09-05 | Initial slice | Approved upgrade roadmap | All |
+| 0.2 | 2026-09-05 | Canonicalize through the nearest existing ancestor and reject only a linked destination | Preserve installer safety across macOS path conventions | P1-T1, P1-T3 |

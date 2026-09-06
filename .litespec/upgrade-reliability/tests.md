@@ -3,11 +3,11 @@ feature: upgrade-reliability
 artifact: tests
 status: done
 owner: user
-version: 0.1
+version: 0.2
 created: 2026-09-05
 updated: 2026-09-05
-spec_version: 0.1
-plan_version: 0.1
+spec_version: 0.2
+plan_version: 0.2
 ---
 
 # Test Plan: Upgrade reliability
@@ -16,10 +16,10 @@ Use deterministic unit checks and temporary-repository installer integration tes
 ## Acceptance traceability
 | Acceptance criterion | Test IDs | Method | Status |
 |---|---|---|---|
-| AC-01.1 | T-01 | Automated | Passed locally |
+| AC-01.1 | T-01 | Automated | Passed locally and in the 34-test regression suite |
 | AC-01.2 | T-02 | Automated | Passed locally |
 | AC-01.3 | T-03 | Automated | Passed locally |
-| AC-01.4 | T-04 | Automated | Passed locally |
+| AC-01.4 | T-04 | Automated | Passed locally and in 7 deterministic workflow scenarios |
 ## Critical user flows
 ### T-01 — Safe replacement
 - Covers: AC-01.1
@@ -53,3 +53,4 @@ Temporary fixtures only; external commands are mocked.
 | Version | Date | Change | Reason | Affected IDs |
 |---|---|---|---|---|
 | 0.1 | 2026-09-05 | Initial slice | Approved upgrade roadmap | All |
+| 0.2 | 2026-09-05 | Add linked-ancestor portability regression | Reproduce the macOS CI failure while retaining destination-link rejection | T-01, T-04 |

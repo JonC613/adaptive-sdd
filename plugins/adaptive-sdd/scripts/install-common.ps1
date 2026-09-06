@@ -1,27 +1,53 @@
 # Shared install mechanics. Never recursively delete an existing destination.
+function Resolve-CanonicalInstallPath {
+    param([string]$Path)
+    $fullPath = [IO.Path]::GetFullPath($Path)
+    $missingParts = [Collections.Generic.Stack[string]]::new()
+    $cursor = $fullPath
+
+    while (-not (Test-Path -LiteralPath $cursor)) {
+        $missingParts.Push((Split-Path -Leaf $cursor))
+        $parent = Split-Path -Parent $cursor
+        if (-not $parent -or $parent -eq $cursor) {
+            throw "Unable to resolve install path: $Path"
+        }
+        $cursor = $parent
+    }
+
+    $existing = Get-Item -LiteralPath $cursor -Force
+    if (-not $existing.PSIsContainer) {
+        throw "Unsafe install path (ancestor is a file): $cursor"
+    }
+    $resolved = (Resolve-Path -LiteralPath $cursor).Path
+    while ($missingParts.Count -gt 0) {
+        $resolved = Join-Path $resolved $missingParts.Pop()
+    }
+    return [IO.Path]::GetFullPath($resolved)
+}
+
 function Assert-InstallPath {
     param([string]$Destination, [string]$Source, [string]$Marker)
-    $target = [IO.Path]::GetFullPath($Destination)
-    $sourcePath = [IO.Path]::GetFullPath($Source)
+    $requestedTarget = [IO.Path]::GetFullPath($Destination)
+    if ((Split-Path -Leaf $requestedTarget) -ne 'adaptive-sdd') {
+        throw 'Unsafe install destination: use a dedicated adaptive-sdd directory outside the source.'
+    }
+    if (Test-Path -LiteralPath $requestedTarget) {
+        $targetItem = Get-Item -LiteralPath $requestedTarget -Force
+        if (-not $targetItem.PSIsContainer -or ($targetItem.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+            throw "Unsafe install path (file or link): $requestedTarget"
+        }
+    }
+
+    # Resolve the nearest existing ancestor so normal platform links (for example
+    # macOS /var -> /private/var) are accepted without weakening overlap checks.
+    $target = Resolve-CanonicalInstallPath $requestedTarget
+    $sourcePath = Resolve-CanonicalInstallPath $Source
     $separator = [IO.Path]::DirectorySeparatorChar
     $comparison = if ($IsWindows) { [StringComparison]::OrdinalIgnoreCase } else { [StringComparison]::Ordinal }
-    if ((Split-Path -Leaf $target) -ne 'adaptive-sdd' -or
-        $target.Equals($sourcePath, $comparison) -or
+    if ($target.Equals($sourcePath, $comparison) -or
         $sourcePath.StartsWith($target.TrimEnd($separator) + $separator, $comparison) -or
         $target.StartsWith($sourcePath.TrimEnd($separator) + $separator, $comparison)) {
         throw 'Unsafe install destination: use a dedicated adaptive-sdd directory outside the source.'
-    }
-    $cursor = $target
-    while ($cursor) {
-        if (Test-Path -LiteralPath $cursor) {
-            $item = Get-Item -LiteralPath $cursor -Force
-            if (-not $item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-                throw "Unsafe install path (file or link): $cursor"
-            }
-        }
-        $parent = Split-Path -Parent $cursor
-        if ($parent -eq $cursor) { break }
-        $cursor = $parent
     }
     if (Test-Path -LiteralPath $target) {
         $markerPath = Join-Path $target $Marker

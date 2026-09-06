@@ -3,7 +3,7 @@ feature: upgrade-reliability
 artifact: spec
 status: done
 owner: user
-version: 0.1
+version: 0.2
 created: 2026-09-05
 updated: 2026-09-05
 ---
@@ -36,6 +36,7 @@ Users get safe installation and truthful, actionable structural diagnostics.
 - **AC-01.3:** Memory reports committed and working-tree drift without claiming factual error or ignoring specifications by default.
 - **AC-01.4:** Isolated negative regression tests pass alongside existing supported fixtures.
 **Edge cases:** Missing tools, failed copy, duplicate keys, cycles, stale memory, non-Git and shallow repositories.
+Platform-managed symlink ancestors are allowed, while the installation destination itself must not be a link.
 
 ## Non-functional requirements
 - No network or paid API calls in default regression tests.
@@ -52,3 +53,4 @@ Shared Python scripts and PowerShell installers serve both agent integrations.
 | Version | Date | Change | Reason | Affected IDs |
 |---|---|---|---|---|
 | 0.1 | 2026-09-05 | Initial slice | Approved upgrade roadmap | All |
+| 0.2 | 2026-09-05 | Clarify safe handling of linked path ancestors | macOS CI exposed `/var` as a normal platform symlink | AC-01.1, AC-01.4 |

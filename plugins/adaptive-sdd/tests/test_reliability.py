@@ -1,5 +1,6 @@
 """Regression checks for the upgrade audit. All mutations use isolated fixtures."""
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -104,6 +105,38 @@ class ReliabilityTests(unittest.TestCase):
             (destination / 'unrelated.txt').write_text('keep', encoding='utf-8')
             self.assertNotEqual(run('-Destination', destination, '-Force').returncode, 0)
             self.assertEqual((destination / 'unrelated.txt').read_text(), 'keep')
+
+    @unittest.skipUnless(PWSH, 'PowerShell 7 required')
+    def test_installer_allows_linked_ancestor_but_rejects_linked_destination(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            real_parent = root / 'real-parent'
+            linked_parent = root / 'linked-parent'
+            real_parent.mkdir()
+            try:
+                os.symlink(real_parent, linked_parent, target_is_directory=True)
+            except (OSError, NotImplementedError) as error:
+                self.skipTest(f'directory symlinks unavailable: {error}')
+
+            script = ROOT / 'scripts/install-cursor-local.ps1'
+            destination = linked_parent / 'adaptive-sdd'
+            result = subprocess.run(
+                [PWSH, '-NoProfile', '-File', str(script), '-Destination', str(destination)],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertTrue((real_parent / 'adaptive-sdd/plugin.json').is_file())
+
+            linked_destination = root / 'adaptive-sdd'
+            os.symlink(real_parent / 'adaptive-sdd', linked_destination, target_is_directory=True)
+            result = subprocess.run(
+                [PWSH, '-NoProfile', '-File', str(script), '-Destination', str(linked_destination), '-Force'],
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('file or link', result.stdout + result.stderr)
 
     @unittest.skipUnless(PWSH, 'PowerShell 7 required')
     def test_combined_installer_checks_clean_tree_before_copy(self):
