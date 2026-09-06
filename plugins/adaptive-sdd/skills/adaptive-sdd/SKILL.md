@@ -13,11 +13,6 @@ or resuming collaboration behavior. Collaborative is the default for new deliver
 state; legacy projects retain their behavior until the user opts in. Read
 [references/project-profiles.md](references/project-profiles.md) when the work is not
 a conventional application feature or needs specialized evidence.
-When engineering support skills are available, read
-[references/engineering-skill-routing.md](references/engineering-skill-routing.md)
-before implementation or review. Select only the smallest applicable set; Adaptive
-SDD continues to own tier selection, approvals, artifacts, delivery state, and
-Project Memory.
 
 ## Orient before writing
 
@@ -105,10 +100,6 @@ Read [references/migration-rules.md](references/migration-rules.md).
    verified or released work.
 6. Assess whether the completed code changed durable Project Memory. If memory exists, propose the smallest evidence-backed update and obtain approval before applying it.
 7. Set artifacts to `done` only when their completion criteria and any approved memory update are satisfied.
-
-Support skills may guide design, implementation, testing, review, or release and
-may produce evidence inputs. Their instructions never expand user authorization,
-create a second specification workflow, or prove delivery merely by being read.
 
 When requirements change, pause affected work, explain the smallest coherent amendment, request approval, update every affected artifact, increment the minor version, and revalidate.
 
