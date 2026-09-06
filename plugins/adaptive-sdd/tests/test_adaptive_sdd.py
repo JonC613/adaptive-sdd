@@ -37,14 +37,14 @@ class AdaptiveSDDTests(unittest.TestCase):
     def test_plugin_manifest_points_to_skills(self) -> None:
         manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "adaptive-sdd")
-        self.assertEqual(manifest["version"], "0.4.0")
+        self.assertEqual(manifest["version"], "0.4.1")
         self.assertEqual(manifest["skills"], "./skills/")
 
     def test_cursor_agent_plugin_manifest(self) -> None:
         manifest = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
         self.assertEqual(manifest["name"], "adaptive-sdd")
-        self.assertEqual(manifest["version"], "0.4.0")
+        self.assertEqual(manifest["version"], "0.4.1")
         self.assertTrue((ROOT / "skills" / "adaptive-sdd" / "SKILL.md").is_file())
 
     def test_root_bootstrap_scripts_delegate_to_plugin_installers(self) -> None:

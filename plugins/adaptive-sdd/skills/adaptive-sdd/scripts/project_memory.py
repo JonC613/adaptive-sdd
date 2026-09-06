@@ -20,7 +20,7 @@ from urllib.parse import urlparse
 OKF_VERSION = "0.2"
 PROFILE_VERSION = 1
 SCHEMA_VERSION = 1
-PRODUCER = "adaptive-sdd/0.4.0"
+PRODUCER = "adaptive-sdd/0.4.1"
 REQUIRED_MEMORY_FILES = ("index.md", "project.md", "architecture.md", "log.md")
 CONCEPT_TYPES = {
     "project.md": "Software Repository",

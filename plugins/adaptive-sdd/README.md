@@ -60,6 +60,10 @@ $adaptive-sdd Help me define this feature.   # Codex
 
 If the command is unavailable, confirm `.agents/skills/adaptive-sdd/SKILL.md` exists, then open a fresh task in that repository. Installing a skill does not retrofit it into an already-running task.
 
+## Repository examples and QA tooling
+
+Examples and their test tooling are maintained with this source repository. They are not copied by the Codex or Cursor installers, which intentionally distribute only the shared `adaptive-sdd` skill. This keeps installed project guidance focused while preserving runnable reference applications and QA evidence for maintainers.
+
 The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 
 ```powershell

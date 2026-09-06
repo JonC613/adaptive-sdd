@@ -16,7 +16,7 @@ class DistributionTests(unittest.TestCase):
         result = subprocess.run([sys.executable, str(ROOT / 'skills/adaptive-sdd/scripts/doctor.py'), '--plugin', str(ROOT), '--json'], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         report = json.loads(result.stdout); self.assertTrue(report['ok'])
-        self.assertIn('0.4.0', next(c['message'] for c in report['checks'] if c['code'] == 'VERSION_SYNC'))
+        self.assertIn('0.4.1', next(c['message'] for c in report['checks'] if c['code'] == 'VERSION_SYNC'))
 
     def test_distribution_guidance_is_present(self):
         repo = ROOT.parents[1]

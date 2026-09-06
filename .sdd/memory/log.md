@@ -12,3 +12,7 @@
 
 - **Adaptive SDD 0.4:** Added safe staged installation, stronger structural validation, working-tree-aware memory freshness, resumable delivery state, fingerprint-bound approvals, evidence and release gates, interaction modes, project profiles, diagnostics, and deterministic workflow evaluations.
 - **Trust boundary:** Recorded that structural validation and attributed delivery state are audit aids; live agent, marketplace, and upstream Spec Kit compatibility require separate evidence.
+
+## 2026-09-06
+
+- **Daymark example:** Added a runnable, dependency-free habit tracker with LiteSpec provenance, browser-local persistence, daily check-ins, calendar history, Node-based automated checks, and delivery-state evidence.

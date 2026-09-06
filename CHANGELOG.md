@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 - 2026-09-06
+
+- Add the Daymark runnable habit-tracker example with a QA-oriented Playwright suite and committed visual baselines.
+- Keep examples, browser-test tooling, QA documentation, and development dependencies repository-local; Codex and Cursor installations continue to ship only the shared Adaptive SDD skill.
+
 ## 0.4.0 - 2026-09-05
 
 - Harden installation with preflight checks, staged copies, and recoverable backups.

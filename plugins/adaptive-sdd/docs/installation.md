@@ -29,6 +29,8 @@ manually when no longer needed. Failed staging is retained for inspection.
 
 The installer copies only the shared skill. It does not create TinySpec, LiteSpec, or Project Memory artifacts in the target. Initialize `.sdd/memory/` later through an explicit, review-gated request.
 
+The runnable examples, Playwright suite, QA catalog, screenshot baselines, and Node development dependencies remain in this source repository. They are maintainers' reference and validation assets, not installed plugin content.
+
 ## Activate the skill
 
 Codex and Cursor discover project skills when a task or agent session starts. After installation, start a new task in the target repository or reopen the existing one; an already-running task may not see a newly copied skill.

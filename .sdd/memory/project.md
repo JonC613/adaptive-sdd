@@ -3,9 +3,9 @@ type: Software Repository
 title: "Adaptive SDD"
 description: "Portable adaptive specification, evidence-backed delivery, and living repository memory workflows."
 status: stable
-generated: {"by":"adaptive-sdd/0.4.0","at":"2026-09-06T17:28:12Z"}
+generated: {"by":"adaptive-sdd/0.4.0","at":"2026-09-06T21:04:26Z"}
 verified: [{"by":"human:user","at":"2026-09-06T03:01:31Z"},{"by":"human:user","at":"2026-09-06T16:39:41Z"},{"by":"human:user","at":"2026-09-06T17:28:12Z"}]
-sources: [{"id":"marketplace-readme","resource":"../../README.md","title":"Marketplace README"},{"id":"plugin-readme","resource":"../../plugins/adaptive-sdd/README.md","title":"Adaptive SDD README"},{"id":"skill","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/SKILL.md","title":"Shared Adaptive SDD skill"},{"id":"delivery","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/references/delivery-evidence.md","title":"Delivery evidence contract"},{"id":"profiles","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/references/project-profiles.md","title":"Project profiles"}]
+sources: [{"id":"marketplace-readme","resource":"../../README.md","title":"Marketplace README"},{"id":"plugin-readme","resource":"../../plugins/adaptive-sdd/README.md","title":"Adaptive SDD README"},{"id":"skill","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/SKILL.md","title":"Shared Adaptive SDD skill"},{"id":"delivery","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/references/delivery-evidence.md","title":"Delivery evidence contract"},{"id":"profiles","resource":"../../plugins/adaptive-sdd/skills/adaptive-sdd/references/project-profiles.md","title":"Project profiles"},{"id":"habit-tracker","resource":"../../plugins/adaptive-sdd/examples/habit-tracker/README.md","title":"Daymark habit tracker example"},{"id":"habit-tracker-litespec","resource":"../../.litespec/habit-tracker-example/spec.md","title":"Habit tracker LiteSpec"}]
 sdd: {"profile_version":1,"assumptions":[]}
 ---
 
@@ -25,6 +25,7 @@ Help diverse projects use proportionate specification ceremony while preserving 
 - Offers Guided, Collaborative, and explicitly opted-in Delegated interaction modes independently of specification depth.
 - Supplies optional application, API/library, AI-system, data-pipeline, infrastructure, and research/design/documentation profiles.
 - Provides local installation diagnostics and deterministic workflow safety evaluations.
+- Includes Daymark, a runnable dependency-free habit-tracker example governed by LiteSpec and delivery evidence.
 
 ## Boundaries
 

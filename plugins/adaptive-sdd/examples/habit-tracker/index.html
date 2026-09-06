@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A dependency-free local habit tracker example." />
+    <title>Daymark — Habit tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Adaptive SDD example</p>
+        <h1>Daymark</h1>
+        <p>Small daily actions, kept close.</p>
+      </header>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <section class="card" aria-labelledby="today-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Today</p>
+            <h2 id="today-heading">Your daily check-in</h2>
+          </div>
+          <time id="today-date"></time>
+        </div>
+        <form id="add-form" class="add-form">
+          <label for="habit-name">New habit</label>
+          <div class="input-row">
+            <input id="habit-name" name="habit-name" maxlength="80" autocomplete="off" placeholder="e.g. Take a walk" required />
+            <button type="submit">Add habit</button>
+          </div>
+        </form>
+        <div id="habit-list" class="habit-list" aria-live="polite"></div>
+      </section>
+
+      <section class="card calendar-card" aria-labelledby="history-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">History</p>
+            <h2 id="history-heading">Calendar</h2>
+          </div>
+          <div class="calendar-actions">
+            <button id="previous-month" type="button" aria-label="Previous month">‹</button>
+            <strong id="month-label" aria-live="polite"></strong>
+            <button id="next-month" type="button" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <p id="selected-habit" class="selected-habit">Choose a habit from the daily list to see its history.</p>
+        <div id="calendar" class="calendar" aria-label="Habit completion calendar"></div>
+      </section>
+    </main>
+  </body>
+</html>

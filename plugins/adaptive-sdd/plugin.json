@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "adaptive-sdd",
   "description": "Guide adaptive specifications, resumable evidence-backed delivery, and portable Project Memory.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "author": {
     "name": "JonC613"
   }
