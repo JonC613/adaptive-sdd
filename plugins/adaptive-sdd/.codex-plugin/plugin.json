@@ -1,6 +1,6 @@
 {
   "name": "adaptive-sdd",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Adaptive specification-driven development and portable Project Memory from TinySpec through LiteSpec to GitHub Spec Kit.",
   "author": {
     "name": "JonC613"
@@ -8,8 +8,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Adaptive SDD",
-    "shortDescription": "Guide specifications and living repository memory.",
-    "longDescription": "Adaptive SDD guides TinySpec, LiteSpec, official GitHub Spec Kit, and portable Project Memory through one approval-gated workflow.",
+    "shortDescription": "Guide specifications and verified delivery.",
+    "longDescription": "Adaptive SDD guides proportionate specifications, resumable evidence-backed delivery, and portable Project Memory.",
     "developerName": "JonC613",
     "category": "Productivity",
     "capabilities": [],

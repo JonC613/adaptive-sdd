@@ -2,6 +2,11 @@
 
 Adaptive SDD packages TinySpec, LiteSpec, an adapter to official GitHub Spec Kit, and portable Project Memory behind one shared skill.
 
+Version 0.4 adds resumable feature state, fingerprint-bound approvals, attributable
+evidence, a real verification gate, interaction modes, and optional project profiles.
+Markdown validation remains explicitly structural; it never claims implementation
+or tests passed.
+
 - Codex: `$adaptive-sdd`
 - Cursor: `/adaptive-sdd`
 
@@ -46,12 +51,14 @@ Clone this repository, then run the root bootstrap script:
 ./install-project.ps1 -Target C:\path\to\your-project
 ```
 
-The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Restart or reopen the agent in the target repository and invoke the matching form:
+The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Skills are loaded when a task starts, so start a new task or reopen the existing task in the target repository after installation. Then invoke the matching form:
 
 ```text
 $adaptive-sdd Help me define this feature.   # Codex
 /adaptive-sdd Help me define this feature.   # Cursor
 ```
+
+If the command is unavailable, confirm `.agents/skills/adaptive-sdd/SKILL.md` exists, then open a fresh task in that repository. Installing a skill does not retrofit it into an already-running task.
 
 The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 

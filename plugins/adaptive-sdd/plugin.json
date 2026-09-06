@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "adaptive-sdd",
-  "description": "Guide TinySpec, LiteSpec, official GitHub Spec Kit, and portable Project Memory through one approval-gated workflow.",
-  "version": "0.3.0",
+  "description": "Guide adaptive specifications, resumable evidence-backed delivery, and portable Project Memory.",
+  "version": "0.4.0",
   "author": {
     "name": "JonC613"
   }

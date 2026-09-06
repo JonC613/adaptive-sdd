@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from collections import Counter
 from pathlib import Path
+from validate_litespec import Validation, parse_frontmatter, finish
 
 
 REQUIRED_SECTIONS = ("Summary", "Scope", "Requirements", "Implementation outline", "Verification", "Done when", "Amendment history")
@@ -17,23 +19,16 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artifact", type=Path)
     parser.add_argument("--approved", action="store_true")
+    parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     path = args.artifact.resolve()
+    validation = Validation()
+    validation.json_output = args.json
     if not path.is_file():
-        raise SystemExit(f"ERROR: artifact does not exist: {path}")
-
-    text = path.read_text(encoding="utf-8")
-    errors: list[str] = []
-    match = re.match(r"^---\n(.*?)\n---\n", text, flags=re.DOTALL)
-    if not match:
-        errors.append("missing YAML front matter")
-        metadata = {}
-    else:
-        metadata = {}
-        for line in match.group(1).splitlines():
-            if ":" in line:
-                key, value = line.split(":", 1)
-                metadata[key.strip()] = value.strip()
+        validation.errors.append(f"FILE_MISSING: artifact does not exist: {path}")
+        finish(validation)
+    metadata, text = parse_frontmatter(path, validation)
+    errors = validation.errors
 
     for key in ("feature", "artifact", "status", "owner", "version", "created", "updated"):
         if not metadata.get(key):
@@ -58,10 +53,8 @@ def main() -> None:
         errors.append("unresolved template placeholder")
 
     if errors:
-        for error in errors:
-            print(f"ERROR: {error}")
-        raise SystemExit(1)
-    print(f"OK: validated TinySpec with {len(requirement_ids)} requirement(s)")
+        finish(validation)
+    finish(validation, len(requirement_ids), 1)
 
 
 if __name__ == "__main__":

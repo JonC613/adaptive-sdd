@@ -37,14 +37,14 @@ class AdaptiveSDDTests(unittest.TestCase):
     def test_plugin_manifest_points_to_skills(self) -> None:
         manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["name"], "adaptive-sdd")
-        self.assertEqual(manifest["version"], "0.3.0")
+        self.assertEqual(manifest["version"], "0.4.0")
         self.assertEqual(manifest["skills"], "./skills/")
 
     def test_cursor_agent_plugin_manifest(self) -> None:
         manifest = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
         self.assertEqual(manifest["name"], "adaptive-sdd")
-        self.assertEqual(manifest["version"], "0.3.0")
+        self.assertEqual(manifest["version"], "0.4.0")
         self.assertTrue((ROOT / "skills" / "adaptive-sdd" / "SKILL.md").is_file())
 
     def test_root_bootstrap_scripts_delegate_to_plugin_installers(self) -> None:
@@ -57,6 +57,20 @@ class AdaptiveSDDTests(unittest.TestCase):
                 script = marketplace_root / name
                 self.assertTrue(script.is_file())
                 self.assertIn(implementation, script.read_text(encoding="utf-8").replace("\\", "/"))
+
+    def test_project_installer_and_litespec_cover_activation_and_external_inputs(self) -> None:
+        installer = (ROOT / "scripts" / "install-project.ps1").read_text(encoding="utf-8")
+        tier_selection = (SKILL / "references" / "tier-selection.md").read_text(encoding="utf-8")
+        litespec = (SKILL / "references" / "litespec-method.md").read_text(encoding="utf-8")
+        spec_template = (SKILL / "assets" / "spec.md").read_text(encoding="utf-8")
+        tests_template = (SKILL / "assets" / "tests.md").read_text(encoding="utf-8")
+
+        self.assertIn("Activation required", installer)
+        self.assertIn("Existing tasks may not discover skills", installer)
+        self.assertIn("Application integration signals", tier_selection)
+        for text in (tier_selection, litespec, spec_template, tests_template):
+            self.assertIn("remote", text.lower())
+            self.assertIn("external", text.lower())
 
     def test_tinyspec_scaffold_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
@@ -143,7 +157,7 @@ class AdaptiveSDDTests(unittest.TestCase):
             self.assertIn("PASS:", validation.stdout)
             status = self.run_memory(project, "status")
             self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
-            self.assertIn("Only memory or specification artifacts changed", status.stdout)
+            self.assertIn("Only excluded memory artifacts", status.stdout)
 
     def test_project_memory_validation_rejects_broken_evidence(self) -> None:
         with tempfile.TemporaryDirectory() as folder:

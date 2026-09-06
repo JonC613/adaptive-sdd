@@ -7,6 +7,13 @@ description: Guide adaptive specification-driven development and portable Projec
 
 Use one orchestrator to select and guide the smallest specification tier that creates sufficient shared understanding. Preserve user control through explicit tier, artifact, and implementation approvals.
 
+For implemented work, read [references/delivery-evidence.md](references/delivery-evidence.md).
+Read [references/interaction-modes.md](references/interaction-modes.md) when choosing
+or resuming collaboration behavior. Collaborative is the default for new delivery
+state; legacy projects retain their behavior until the user opts in. Read
+[references/project-profiles.md](references/project-profiles.md) when the work is not
+a conventional application feature or needs specialized evidence.
+
 ## Orient before writing
 
 1. Resolve the repository, feature, and desired outcome.
@@ -88,8 +95,11 @@ Read [references/migration-rules.md](references/migration-rules.md).
 2. Set approved artifacts to `implementing`.
 3. Execute approved tasks in dependency order.
 4. Run agreed tests and tier validation.
-5. Assess whether the completed code changed durable Project Memory. If memory exists, propose the smallest evidence-backed update and obtain approval before applying it.
-6. Set artifacts to `done` only when their completion criteria and any approved memory update are satisfied.
+5. Record task outcomes and attributable evidence in delivery state. Structural
+   validation is never delivery evidence. Run the completion gate before reporting
+   verified or released work.
+6. Assess whether the completed code changed durable Project Memory. If memory exists, propose the smallest evidence-backed update and obtain approval before applying it.
+7. Set artifacts to `done` only when their completion criteria and any approved memory update are satisfied.
 
 When requirements change, pause affected work, explain the smallest coherent amendment, request approval, update every affected artifact, increment the minor version, and revalidate.
 

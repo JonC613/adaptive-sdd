@@ -20,7 +20,33 @@ cd adaptive-sdd
 
 The script refuses to replace an existing Adaptive SDD installation unless `-Force` is supplied.
 
+Replacement requires a recognized installation in a dedicated `adaptive-sdd`
+directory. Linked paths, source overlap, and unexpected top-level content are
+rejected. Copies are staged before replacement; the previous installation is
+retained in a sibling `.adaptive-sdd-backup-*` directory. Review and remove backups
+manually when no longer needed. Failed staging is retained for inspection.
+`-WhatIf` performs checks without installing.
+
 The installer copies only the shared skill. It does not create TinySpec, LiteSpec, or Project Memory artifacts in the target. Initialize `.sdd/memory/` later through an explicit, review-gated request.
+
+## Activate the skill
+
+Codex and Cursor discover project skills when a task or agent session starts. After installation, start a new task in the target repository or reopen the existing one; an already-running task may not see a newly copied skill.
+
+Confirm the installed file exists:
+
+```text
+.agents/skills/adaptive-sdd/SKILL.md
+```
+
+Then send one of these prompts in the fresh task:
+
+```text
+$adaptive-sdd Help me define this feature.   # Codex
+/adaptive-sdd Help me define this feature.   # Cursor
+```
+
+If neither command is available after reopening, verify the task's working directory is the target project and reinstall with `-Force` only after reviewing the installed copy.
 
 ## Install Adaptive SDD and full Spec Kit
 
@@ -37,6 +63,12 @@ The installer:
 3. Installs official `specify-cli` from `github/spec-kit` at the tested pin.
 4. Verifies the CLI.
 5. Initializes the selected Spec Kit agent integration with PowerShell scripts.
+
+The shared skill is published only after successful Spec Kit initialization.
+External tooling installation and upstream initialization are not transactional:
+if upstream fails, inspect its reported changes before retrying. The old Adaptive
+SDD copy is not replaced on that failure. Regression tests mock upstream commands;
+they do not establish live upstream compatibility.
 
 Equivalent manual commands:
 
@@ -64,7 +96,7 @@ Confirm these paths:
 .specify/                           # only with full Spec Kit
 ```
 
-Then invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor.
+Start or reopen the task in the target repository, then invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor.
 
 ## Local Cursor plugin installation
 
