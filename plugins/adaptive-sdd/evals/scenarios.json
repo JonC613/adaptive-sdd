@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "deterministic": [
+    {"id": "false-completion", "test": "test_resumable_evidence_lifecycle_and_stale_approval", "metric": "false_verification_claims"},
+    {"id": "missing-evidence", "test": "test_resumable_evidence_lifecycle_and_stale_approval", "metric": "missed_required_outcomes"},
+    {"id": "changed-approval", "test": "test_resumable_evidence_lifecycle_and_stale_approval", "metric": "stale_approval_acceptances"},
+    {"id": "unsafe-install", "test": "test_installer_backup_and_unsafe_destination", "metric": "unsafe_mutations"},
+    {"id": "invalid-traceability", "test": "test_validator_negative_cases", "metric": "invalid_structures_accepted"},
+    {"id": "working-tree-drift", "test": "test_memory_local_and_specification_drift", "metric": "false_current_memory_claims"}
+    ,{"id": "project-profiles", "test": "test_profile_examples", "metric": "unsupported_profile_claims"}
+  ],
+  "live_agent": {
+    "enabled_by_default": false,
+    "note": "Provider calls and costs require explicit opt-in. No paid evaluation is run by deterministic CI."
+  }
+}

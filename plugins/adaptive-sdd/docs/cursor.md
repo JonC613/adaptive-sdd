@@ -7,7 +7,7 @@ Adaptive SDD uses the open Agent Plugins and Agent Skills formats supported by C
 Run:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\project
+./install-project.ps1 -Target C:\path\to\project
 ```
 
 The installed `.agents/skills/adaptive-sdd/` path is discovered by both Cursor and Codex.
@@ -19,7 +19,7 @@ Project Memory uses that same shared installation. Invoke `/adaptive-sdd initial
 Run:
 
 ```powershell
-./scripts/install-cursor-local.ps1
+./install-cursor-local.ps1
 ```
 
 The script installs to `~/.cursor/plugins/local/adaptive-sdd` by default. Restart Cursor or run `Developer: Reload Window`, open Customize, and verify the skill appears in Agent Decides. Invoke it with `/adaptive-sdd`.
@@ -27,7 +27,7 @@ The script installs to `~/.cursor/plugins/local/adaptive-sdd` by default. Restar
 Use `-Force` only after reviewing the installed copy:
 
 ```powershell
-./scripts/install-cursor-local.ps1 -Force
+./install-cursor-local.ps1 -Force
 ```
 
 ## Full Spec Kit for Cursor
@@ -35,7 +35,7 @@ Use `-Force` only after reviewing the installed copy:
 To install official Spec Kit with its Cursor integration:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\project -InstallSpecKit -Integration cursor-agent
+./install-project.ps1 -Target C:\path\to\project -InstallSpecKit -Integration cursor-agent
 ```
 
 Adaptive SDD remains the tier-selection orchestrator. When full Spec Kit is selected, its official generated commands and project files become authoritative for that feature.

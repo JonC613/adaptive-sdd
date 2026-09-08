@@ -1,0 +1,337 @@
+{
+  "artifacts": [
+    {
+      "approval": {
+        "actions": [
+          "implementation"
+        ],
+        "at": "2026-09-06T04:44:12Z",
+        "by": "human:user"
+      },
+      "approved_fingerprint": "sha256:8a477b46ca801ad965170943845715c2dae9d2ef409df93d61d241bbb89abd21",
+      "path": ".litespec/upgrade-reliability/spec.md"
+    },
+    {
+      "approval": {
+        "actions": [
+          "implementation"
+        ],
+        "at": "2026-09-06T04:44:12Z",
+        "by": "human:user"
+      },
+      "approved_fingerprint": "sha256:23eb57b7350630947bee30d3a6e5d20adc5d2cc38523098b5a4651c7b105edca",
+      "path": ".litespec/upgrade-reliability/plan.md"
+    },
+    {
+      "approval": {
+        "actions": [
+          "implementation"
+        ],
+        "at": "2026-09-06T04:44:12Z",
+        "by": "human:user"
+      },
+      "approved_fingerprint": "sha256:c1236a2b0ffe4e9eb6f4f43a0584c1bcdb53ad01440bde5d4fff473eed88d981",
+      "path": ".litespec/upgrade-reliability/tests.md"
+    }
+  ],
+  "authorization": {
+    "allowed": [
+      "implementation"
+    ],
+    "excluded": [
+      "release"
+    ]
+  },
+  "blockers": [],
+  "criteria": [
+    "AC-01.1",
+    "AC-01.2",
+    "AC-01.3",
+    "AC-01.4"
+  ],
+  "evidence": [
+    {
+      "at": "2026-09-06T02:57:42Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.1",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-001",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:32c09681ca478e12bdffaf72b12df4f660612742ff4a40b001ba9e23963d95e0",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:57:43Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.2",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-002",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:32c09681ca478e12bdffaf72b12df4f660612742ff4a40b001ba9e23963d95e0",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:57:44Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.3",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-003",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:32c09681ca478e12bdffaf72b12df4f660612742ff4a40b001ba9e23963d95e0",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:57:45Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.4",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-004",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:32c09681ca478e12bdffaf72b12df4f660612742ff4a40b001ba9e23963d95e0",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:58:56Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.1",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-005",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:2b0c1265b00493f95310e6e2b5dfdbe5f345584739fc52947ef26250b42f2781",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:58:57Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.2",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-006",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:2b0c1265b00493f95310e6e2b5dfdbe5f345584739fc52947ef26250b42f2781",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:58:58Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.3",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-007",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:2b0c1265b00493f95310e6e2b5dfdbe5f345584739fc52947ef26250b42f2781",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T02:58:59Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.4",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-008",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:2b0c1265b00493f95310e6e2b5dfdbe5f345584739fc52947ef26250b42f2781",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:03:05Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.1",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-009",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:750916bf3a771832ba7fda7e80eea519200afdd298e22489b6fb36f50c944fe6",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:03:06Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.2",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-010",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:750916bf3a771832ba7fda7e80eea519200afdd298e22489b6fb36f50c944fe6",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:03:07Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.3",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-011",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:750916bf3a771832ba7fda7e80eea519200afdd298e22489b6fb36f50c944fe6",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:03:08Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.4",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-012",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "worktree:750916bf3a771832ba7fda7e80eea519200afdd298e22489b6fb36f50c944fe6",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:09:23Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.1",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-013",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:09:24Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.2",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-014",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:09:25Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.3",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-015",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T03:09:26Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -q",
+      "criterion": "AC-01.4",
+      "detail": null,
+      "exit_code": 0,
+      "id": "E-016",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:630da706f467fa967a89e1d9a9de1e8d0602c9b4ccc74156e93008724b33b610",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:13Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.1",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-017",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:14Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.2",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-018",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:15Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.3",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-019",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    },
+    {
+      "at": "2026-09-06T04:44:16Z",
+      "command": "python -m unittest discover -s plugins/adaptive-sdd/tests -v",
+      "criterion": "AC-01.4",
+      "detail": "34 tests passed locally; linked-ancestor regression included",
+      "exit_code": 0,
+      "id": "E-020",
+      "method": "automated",
+      "recorded_by": "process:codex",
+      "result": "pass",
+      "snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5",
+      "source": "plugins/adaptive-sdd/tests/test_reliability.py"
+    }
+  ],
+  "feature": "upgrade-reliability",
+  "interaction_mode": "collaborative",
+  "lifecycle": "verified",
+  "release": null,
+  "schema_version": 1,
+  "tasks": [
+    {
+      "id": "P1-T1",
+      "status": "done"
+    },
+    {
+      "id": "P1-T2",
+      "status": "done"
+    },
+    {
+      "id": "P1-T3",
+      "status": "done"
+    }
+  ],
+  "tier": "lite",
+  "updated_at": "2026-09-06T04:44:17Z",
+  "verified_at": "2026-09-06T04:44:17Z",
+  "verified_snapshot": "content:24f11d56b07430c60ebfe753033cbbd3e6e95bcfd8a12cf5403aada401b66de5"
+}

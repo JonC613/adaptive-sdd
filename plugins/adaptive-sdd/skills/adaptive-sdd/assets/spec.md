@@ -70,6 +70,14 @@ updated: YYYY-MM-DD
 
 - **NFR-01 — <Quality>:** <Measurable accessibility, performance, security, privacy, reliability, or compatibility expectation>
 
+<!-- Include for URL, pasted-content, file, or third-party imports. Remove when no external input is in scope. -->
+## External input and data handling
+
+- **Sources and validation:** <Accepted source types; validation; size, timeout, or format limits>
+- **Remote retrieval:** <Allowed URLs, redirect behavior, server-side request protections, attribution, and fallback>
+- **Files:** <Supported formats, extraction limits, incomplete-result behavior, storage, retention, and cleanup>
+- **Data and access:** <Ownership, privacy-sensitive fields, authentication/access assumptions, deletion, and export>
+
 ## Codebase context
 
 <Summarize architecture, conventions, tests, dependencies, and relevant implementation surfaces discovered through repository assessment. Do not reproduce general repository documentation.>

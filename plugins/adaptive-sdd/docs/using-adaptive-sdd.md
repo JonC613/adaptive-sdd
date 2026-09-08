@@ -1,5 +1,28 @@
 # Using Adaptive SDD
 
+## Delivery status versus document status
+
+TinySpec and LiteSpec validators establish structure only. For implementation,
+initialize `.sdd/features/<feature>/state.json` with `delivery_state.py`, record
+fingerprint-bound approval, update tasks, attach real evidence, and run `verify`.
+Only `release --reference <external-reference>` may advance verified work to released.
+Legacy `done` artifacts are not automatically treated as verified.
+
+## Interaction mode and project profile
+
+New delivery state defaults to Collaborative mode. Guided adds review pauses;
+Delegated requires an explicit allowed/excluded boundary. Choose project profiles
+independently: application, API/library, AI system, data pipeline, infrastructure,
+or research/design/documentation. Profiles add relevant questions and evidence,
+not mandatory ceremony.
+
+## Diagnostics and evaluations
+
+Run `python skills/adaptive-sdd/scripts/doctor.py --plugin <plugin-root>` for local,
+read-only diagnostics. Run `python evals/evaluate.py --plugin <plugin-root>` for the
+deterministic safety scenarios. Neither command claims live marketplace, Spec Kit,
+or paid-agent compatibility.
+
 Start with a natural request:
 
 ```text

@@ -37,7 +37,7 @@ type: Software Repository
 title: Example
 description: Current overview of the Example repository.
 status: stable
-generated: {"by":"adaptive-sdd/0.3.0","at":"2026-08-22T18:00:00Z"}
+generated: {"by":"adaptive-sdd/0.4.0","at":"2026-08-22T18:00:00Z"}
 verified: [{"by":"human:owner","at":"2026-08-22T18:05:00Z"}]
 sources: [{"id":"readme","resource":"../../README.md","title":"Repository README"}]
 sdd: {"profile_version":1,"assumptions":[]}
@@ -81,6 +81,13 @@ Rejecting the proposal must leave the repository unchanged. Refuse to overwrite 
 ### Status and verify
 
 Run the portable script. Report `PASS`, `WARN`, or `FAIL`. Drift, shallow history, unavailable Git, and broken optional links warn. Malformed required metadata, required evidence, state, or declared Git references fail.
+
+Freshness includes staged, unstaged, and relevant untracked paths. Specification
+changes are review signals too. Only `.sdd/memory/` and `.sdd/memory-state.json`
+are excluded by default to avoid self-generated drift. Optional `.sdd/config.json`
+may contain `"memory_exclude": ["build/"]`; a trailing slash means a directory
+prefix, otherwise an entry is an exact repository-relative path. Exclusions reduce
+coverage and must be chosen deliberately. Drift never proves factual error.
 
 ### Update after SDD work
 

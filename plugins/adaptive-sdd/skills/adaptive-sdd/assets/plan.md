@@ -44,6 +44,13 @@ spec_version: <approved-spec-version>
 |---|---|---|---|
 | <Risk> | <Impact> | <Mitigation> | <How it will be detected> |
 
+<!-- Include for URL, pasted-content, file, or third-party imports. -->
+## External-input implementation notes
+
+- **Boundary controls:** <Validation, size/time limits, redirect/remote-fetch policy, and safe failure behavior>
+- **Persistence lifecycle:** <Where imported content is stored, retention/cleanup, and deletion or export path>
+- **Operational safeguards:** <Configuration, logging/metrics, safe-disable or rollback approach>
+
 ## Implementation phases
 
 ### Phase 1 — <Verifiable outcome>

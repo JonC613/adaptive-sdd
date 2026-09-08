@@ -2,6 +2,11 @@
 
 Adaptive SDD packages TinySpec, LiteSpec, an adapter to official GitHub Spec Kit, and portable Project Memory behind one shared skill.
 
+Version 0.4 adds resumable feature state, fingerprint-bound approvals, attributable
+evidence, a real verification gate, interaction modes, and optional project profiles.
+Markdown validation remains explicitly structural; it never claims implementation
+or tests passed.
+
 - Codex: `$adaptive-sdd`
 - Cursor: `/adaptive-sdd`
 
@@ -40,23 +45,29 @@ The shared operations are `initialize memory`, `status memory`, `update memory`,
 
 ## Install into a project
 
-Clone this repository, then run from its root:
+Clone this repository, then run the root bootstrap script:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\your-project
+./install-project.ps1 -Target C:\path\to\your-project
 ```
 
-The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Restart or reopen the agent in the target repository and invoke the matching form:
+The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Skills are loaded when a task starts, so start a new task or reopen the existing task in the target repository after installation. Then invoke the matching form:
 
 ```text
 $adaptive-sdd Help me define this feature.   # Codex
 /adaptive-sdd Help me define this feature.   # Cursor
 ```
 
+If the command is unavailable, confirm `.agents/skills/adaptive-sdd/SKILL.md` exists, then open a fresh task in that repository. Installing a skill does not retrofit it into an already-running task.
+
+## Repository examples and QA tooling
+
+Examples and their test tooling are maintained with this source repository. They are not copied by the Codex or Cursor installers, which intentionally distribute only the shared `adaptive-sdd` skill. This keeps installed project guidance focused while preserving runnable reference applications and QA evidence for maintainers.
+
 The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 
 ```powershell
-./scripts/install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
+./install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
 ```
 
 Read [installation](docs/installation.md), [tier usage](docs/using-adaptive-sdd.md), and [migration](docs/migration.md) before team rollout.
@@ -70,7 +81,7 @@ Open [the browser presentation](presentation/index.html) for a 16-slide walkthro
 Adaptive SDD includes a root `plugin.json` conforming to the open Agent Plugins standard supported by Cursor. Install a local development copy with:
 
 ```powershell
-./scripts/install-cursor-local.ps1
+./install-cursor-local.ps1
 ```
 
 Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See [Cursor support](docs/cursor.md).
@@ -88,7 +99,8 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 ## Repository contents
 
 - `skills/adaptive-sdd/` — installable Codex skill and all tier resources
-- `scripts/install-project.ps1` — guarded project installer
+- `../../install-project.ps1` — root bootstrap installer for new repositories
+- `scripts/install-project.ps1` — guarded plugin implementation
 - `plugin.json` — portable Agent Plugin manifest used by Cursor
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 - `examples/simple-kanban/` — TinySpec and LiteSpec versions of one feature

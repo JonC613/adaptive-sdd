@@ -45,6 +45,14 @@ Every current-release acceptance criterion must appear exactly once in this tabl
 - Action: <Trigger>
 - Expected: <Safe failure, feedback, and recovery behavior>
 
+<!-- Include for URL, pasted-content, file, or third-party imports. -->
+## External-input coverage
+
+- <Valid source-to-review-to-save integration fixture>
+- <Malformed, oversized, unsupported, or timed-out input fixture and expected safe recovery>
+- <Remote URL policy, redirect, and parser-fallback coverage when applicable>
+- <Storage retention, cleanup, deletion, or export evidence when applicable>
+
 ## Manual exceptions
 
 <!-- Remove the example and write "None" when all criteria are automated. -->

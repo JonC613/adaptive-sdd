@@ -20,7 +20,7 @@ from urllib.parse import urlparse
 OKF_VERSION = "0.2"
 PROFILE_VERSION = 1
 SCHEMA_VERSION = 1
-PRODUCER = "adaptive-sdd/0.3.0"
+PRODUCER = "adaptive-sdd/0.4.1"
 REQUIRED_MEMORY_FILES = ("index.md", "project.md", "architecture.md", "log.md")
 CONCEPT_TYPES = {
     "project.md": "Software Repository",
@@ -28,7 +28,7 @@ CONCEPT_TYPES = {
 }
 ACTOR_PATTERN = re.compile(r"^(?:human:|process:|[^/\s]+/)[^\s]+$")
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
-NON_DURABLE_PREFIXES = (".sdd/", ".tinyspec/", ".litespec/", ".specify/", "specs/")
+NON_DURABLE_PREFIXES = (".sdd/memory/", ".sdd/memory-state.json")
 
 
 def fail(message: str) -> None:
@@ -85,11 +85,37 @@ def is_ancestor(project: Path, earlier: str, later: str) -> bool:
 
 
 def durable_changes(project: Path, earlier: str, later: str) -> list[str] | None:
-    result = git(project, "diff", "--name-only", f"{earlier}..{later}")
+    result = git(project, "diff", "--name-only", "-z", f"{earlier}..{later}")
     if result is None or result.returncode != 0:
         return None
-    paths = [line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip()]
-    return [path for path in paths if not path.startswith(NON_DURABLE_PREFIXES)]
+    return relevant_paths(project, result.stdout.split("\0"))
+
+
+def relevant_paths(project: Path, paths: list[str]) -> list[str]:
+    exclusions = list(NON_DURABLE_PREFIXES)
+    config = project / ".sdd" / "config.json"
+    if config.is_file():
+        settings = load_json(config)
+        custom = settings.get("memory_exclude", [])
+        if not isinstance(custom, list) or any(not isinstance(p, str) or not p or p.startswith(("/", "\\")) or ".." in p.split("/") or ":" in p for p in custom):
+            raise ValueError("config.json: memory_exclude must contain nonempty repository-relative paths")
+        exclusions.extend(custom)
+    return sorted({p for p in paths if p and not any(p.startswith(e) if e.endswith("/") else p == e for e in exclusions)})
+
+
+def working_tree_changes(project: Path) -> dict[str, list[str]] | None:
+    commands = {
+        "staged": ("diff", "--cached", "--name-only", "-z"),
+        "unstaged": ("diff", "--name-only", "-z"),
+        "untracked": ("ls-files", "--others", "--exclude-standard", "-z"),
+    }
+    changes = {}
+    for label, command in commands.items():
+        result = git(project, *command)
+        if result is None or result.returncode:
+            return None
+        changes[label] = relevant_paths(project, result.stdout.split("\0"))
+    return changes
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -205,7 +231,7 @@ def validate_concept(project: Path, bundle: Path, path: Path, report: Report) ->
     for key in ("title", "description"):
         if not isinstance(meta.get(key), str) or not meta[key].strip():
             report.error(f"{path.name}: {key} is required")
-    if meta.get("status", "stable") not in {"draft", "stable", "deprecated"}:
+    if meta.get("status") not in {"draft", "stable", "deprecated"}:
         report.error(f"{path.name}: invalid OKF status")
 
     generated = meta.get("generated")
@@ -322,6 +348,14 @@ def collect_report(project: Path) -> Report:
                 report.warn(
                     f"Memory may be stale: {len(changed)} durable path(s) changed after {reconciled[:12]}"
                 )
+    try:
+        local = working_tree_changes(project)
+        if local is not None:
+            for kind, paths in local.items():
+                if paths:
+                    report.warn(f"Working-tree drift ({kind}): {len(paths)} path(s) require review")
+    except ValueError as exc:
+        report.error(str(exc))
     return report
 
 
@@ -409,6 +443,16 @@ def command_status(args: argparse.Namespace) -> None:
     print(f"Profile: {state.get('profile_version')}")
     print(f"Last reconciled: {reconciled or 'none'}")
     print(f"HEAD: {head or 'unavailable'}")
+    try:
+        local = working_tree_changes(project)
+    except ValueError as exc:
+        fail(str(exc))
+    if local and any(local.values()):
+        for kind, paths in local.items():
+            if paths:
+                print(f"WARN: Working-tree drift ({kind}): {len(paths)} path(s) require review")
+        print("INFO: Committed reconciliation does not cover these local changes")
+        return
     if head is None:
         print("WARN: Git history unavailable; reconciliation confidence is limited")
     elif reconciled == head:
@@ -420,7 +464,7 @@ def command_status(args: argparse.Namespace) -> None:
         elif changed:
             print(f"WARN: Project Memory may require reconciliation; {len(changed)} durable path(s) changed")
         else:
-            print("PASS: Only memory or specification artifacts changed since reconciliation")
+            print("PASS: Only excluded memory artifacts or configured exclusions changed since reconciliation")
     else:
         print("WARN: Project Memory may require reconciliation")
 

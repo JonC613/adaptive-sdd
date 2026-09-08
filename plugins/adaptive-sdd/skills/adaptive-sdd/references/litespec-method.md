@@ -147,6 +147,18 @@ Every current-release acceptance criterion maps to automated evidence. Permit a 
 - Summarize only facts that constrain or inform the feature.
 - Do not reproduce general repository documentation.
 
+### External-input applications
+
+For applications that import URLs, pasted content, files, or third-party responses, add only relevant requirements and tests for:
+
+- allowed sources and validation; size, timeout, and malformed-input limits;
+- remote-fetch protections, redirects, source attribution, and parser fallbacks;
+- file extraction, retention, cleanup, and incomplete-result recovery;
+- data ownership, privacy, access, deletion, and export expectations; and
+- source-to-review-to-save integration coverage, including hostile or invalid fixtures.
+
+State concrete behavior rather than assuming a framework or hosting provider supplies these protections.
+
 ### Size controls
 
 - Keep summary, problem, outcome, and approach to one to three short paragraphs each.
@@ -190,6 +202,11 @@ Use two requirement priorities:
 Compatible approved amendments increment `1.0` to `1.1`. Scope invalidation triggers a recommendation to review under full Spec Kit. Record version, date, change, reason, and affected IDs in each changed artifact.
 
 ## 6. Quality checks
+
+The CLI performs structural validation only, not delivery verification. `--json`
+returns schema version 1 with `kind: structural`, validity, and diagnostic codes.
+Passing metadata and mappings does not prove that implementation exists or tests
+ran. Never use structural success as evidence to mark work complete.
 
 ### Specification
 
