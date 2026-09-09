@@ -34,5 +34,5 @@ Recommend full Spec Kit for multi-team coordination, major architecture, irrever
 - Explain the concrete signals behind the recommendation.
 - Treat uncertainty and blast radius as more important than code size.
 - Do not use point totals or automatic thresholds.
-- Require explicit confirmation before changing tiers.
+- Proceed within scope; ask only when changing tiers materially expands work or tooling.
 - Reassess when discovery or implementation exposes materially greater risk.

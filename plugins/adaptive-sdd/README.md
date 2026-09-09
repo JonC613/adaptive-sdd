@@ -91,7 +91,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 - One public orchestrator, not a menu of overlapping skills.
 - One portable Project Memory format and implementation across Codex and Cursor.
 - One focused discovery question at a time.
-- Explicit approval before tier changes, artifacts, tooling installation, or implementation.
+- Reuse authorization for routine planning, implementation, checks, and affected documentation; ask only for consequential choices or work outside scope.
 - Native artifact conventions for each tier.
 - Official Spec Kit remains upstream-managed and version-pinned.
 - Promotion preserves source artifacts and provenance.

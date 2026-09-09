@@ -2,7 +2,7 @@
 
 ## TinySpec to LiteSpec
 
-Preserve the approved TinySpec unchanged. Seed a draft LiteSpec specification with its summary, scope, requirements, constraints, verification conditions, and a provenance link. Ask for missing user stories, acceptance criteria, edge cases, and non-functional requirements. Then follow normal LiteSpec approval gates.
+Preserve the approved TinySpec unchanged. Seed a draft LiteSpec specification with its summary, scope, requirements, constraints, verification conditions, and a provenance link. Ask for missing user stories, acceptance criteria, edge cases, and non-functional requirements. Then prepare the package under existing authorization, using guided checkpoints only if requested.
 
 ## LiteSpec to Spec Kit
 
@@ -17,6 +17,6 @@ Record the LiteSpec feature, version, and path as provenance. Let official Spec 
 ## Compatibility
 
 - Keep stable IDs where the target format permits them.
-- Never mark promoted artifacts approved automatically.
+- Mark promoted artifacts approved only when covered by existing authorization; never claim human review that did not occur.
 - Never delete the source tier during promotion.
-- Treat a changed core outcome as a new approval cycle, not a mechanical conversion.
+- Ask about a changed core outcome when outside existing authorization.

@@ -5,12 +5,11 @@ description: Guide adaptive specification-driven development and portable Projec
 
 # Adaptive SDD
 
-Use one orchestrator to select and guide the smallest specification tier that creates sufficient shared understanding. Preserve user control through explicit tier, artifact, and implementation approvals.
+Select the smallest specification tier that creates sufficient shared understanding. A request to build or fix authorizes routine planning, implementation, relevant tests, and maintenance of affected existing documentation within that scope. Reuse authorization already given; do not ask again at each stage. A request only to plan, review, or explain does not authorize implementation.
 
 For implemented work, read [references/delivery-evidence.md](references/delivery-evidence.md).
 Read [references/interaction-modes.md](references/interaction-modes.md) when choosing
-or resuming collaboration behavior. Collaborative is the default for new delivery
-state; legacy projects retain their behavior until the user opts in. Read
+or resuming collaboration behavior. Collaborative is the default, including when resuming older projects unless the user requested guided checkpoints. Read
 [references/project-profiles.md](references/project-profiles.md) when the work is not
 a conventional application feature or needs specialized evidence.
 
@@ -21,7 +20,7 @@ a conventional application feature or needs specialized evidence.
 3. Inspect the codebase read-only: architecture, relevant behavior, tests, dependencies, conventions, and deployment surfaces.
 4. Read [references/tier-selection.md](references/tier-selection.md).
 5. Recommend TinySpec, LiteSpec, or full Spec Kit with a project-specific rationale.
-6. Ask for tier confirmation before creating artifacts or installing tooling.
+6. Proceed with the appropriate tier within the requested scope. Ask before adding tooling or materially expanding the work unless already authorized.
 7. Tell the user before external research. Prefer primary sources for unstable, regulated, unfamiliar, or high-risk facts.
 
 Do not use a numerical complexity score. Do not infer implementation permission from approval of a specification.
@@ -32,11 +31,11 @@ Read [references/project-memory.md](references/project-memory.md) whenever the u
 
 Use one shared workflow for Codex and Cursor. `$adaptive-sdd` and `/adaptive-sdd` are invocation differences only; never store provider-specific state in the memory bundle.
 
-- **Initialize memory:** inspect the repository read-only, draft the smallest useful project and architecture concepts with evidence or explicit assumptions, show the complete proposal, and wait for approval. After approval, use `scripts/project_memory.py scaffold`, apply the accepted content, verify it, and record the approved commit. Refuse overwrite.
+- **Initialize memory:** when requested, inspect the repository, use `scripts/project_memory.py scaffold`, write the smallest useful concepts with sources or explicit assumptions, and verify once. Refuse overwrite. Do not claim human review unless it occurred.
 - **Status memory:** run `scripts/project_memory.py status --project <root>` read-only and explain current, potential drift, or limited-confidence results without claiming drift proves factual error.
 - **Verify memory:** run `scripts/project_memory.py verify --project <root>` read-only. Separate failures from freshness and optional-link warnings.
-- **Update memory:** after approved SDD implementation, propose only durable current-state changes and tier provenance. Do not copy complete specifications. Apply after approval, update `log.md`, verify, then reconcile the approved commit.
-- **Refresh memory:** inspect changes since the recorded commit, propose affected edits or a no-op, and wait for approval. Rejection changes nothing. A reviewed no-op may reconcile after validation.
+- **Update memory:** maintain affected existing memory as part of the requested implementation. Record only durable current-state changes and provenance, update `log.md`, and verify once after the batch. Do not copy complete specifications or claim human review.
+- **Refresh memory:** when requested, inspect changes since the recorded commit and apply supported corrections or record a no-op. Reconcile the inspected commit after relevant validation; ask only about consequential unresolved contradictions.
 
 Project Memory is not a fourth specification tier and does not change tier selection. TinySpec, LiteSpec, official Spec Kit, and repository-only changes may all provide provenance. Preserve promoted artifacts and never modify official Spec Kit-owned files through memory maintenance.
 
@@ -56,13 +55,13 @@ Read [references/tinyspec-method.md](references/tinyspec-method.md). Create exac
 python <skill-dir>/scripts/scaffold_tinyspec.py --project <root> --feature <slug> --title "<title>"
 ```
 
-Fill the artifact, set it to `review`, validate it, and request approval. After approval, set `status: approved` and offer implementation separately.
+Fill the artifact and proceed to implementation when the user's request authorizes it. For planning-only work, leave it in `review`. `approved` records intent covered by the user's authorization, not a claim that the user reviewed generated text. Validate the completed artifact once; repeat only after relevant structural changes or failures.
 
 Use TinySpec only while behavior, boundaries, implementation direction, and verification remain clear in one concise artifact.
 
 ## Run LiteSpec
 
-Read [references/litespec-method.md](references/litespec-method.md). Create three approval-gated artifacts in order:
+Read [references/litespec-method.md](references/litespec-method.md). Prepare three related artifacts as one planning batch:
 
 ```text
 .litespec/<feature>/
@@ -71,7 +70,7 @@ Read [references/litespec-method.md](references/litespec-method.md). Create thre
 └── tests.md
 ```
 
-Use `scripts/scaffold_litespec.py` and `scripts/validate_litespec.py`. Never create `plan.md` before specification approval or `tests.md` before plan approval.
+Use `scripts/scaffold_litespec.py` to create spec, plan, and tests in dependency order without intermediate approvals. Validate the completed package once. Use `--guided` on the scaffolder only when the user requested individual artifact checkpoints.
 
 ## Run full Spec Kit
 
@@ -89,20 +88,18 @@ Read [references/migration-rules.md](references/migration-rules.md).
 - Ask follow-up questions for missing information; never manufacture approval, user stories, acceptance criteria, or architectural decisions.
 - Do not automatically downgrade active work. A completed feature may receive a read-only summary.
 
-## Implement through explicit approval
+## Complete authorized work
 
-1. Wait for explicit implementation authorization.
+1. Determine authorization from the current request and prior conversation. Ask only when implementation is not already authorized or a consequential decision cannot be inferred.
 2. Set approved artifacts to `implementing`.
 3. Execute approved tasks in dependency order.
-4. Run agreed tests and tier validation.
-5. Record task outcomes and attributable evidence in delivery state. Structural
-   validation is never delivery evidence. Run the completion gate before reporting
-   verified or released work.
-6. Assess whether the completed code changed durable Project Memory. If memory exists, propose the smallest evidence-backed update and obtain approval before applying it.
-7. Set artifacts to `done` only when their completion criteria and any approved memory update are satisfied.
+4. Run relevant checks at meaningful milestones and before handoff. Reuse passing results while their tested behavior and dependencies remain unchanged. Repeat affected checks for relevant changes, failures, or unresolved concerns; do not rerun suites for status requests or unrelated documentation edits.
+5. Report actual outcomes and test evidence. Structural validation is not delivery evidence. Use delivery-state tracking when requested or already active; it is optional for ordinary work. Its strict `verify` and `release` claims still require their recorded evidence.
+6. Update affected existing Project Memory within scope, batching edits and validation.
+7. Set artifacts to `done` when completion criteria are met. Do not invent test results or human verification.
 
-When requirements change, pause affected work, explain the smallest coherent amendment, request approval, update every affected artifact, increment the minor version, and revalidate.
+Handle routine implementation decisions and compatible amendments within existing authorization. Update affected artifacts together. Pause only for consequential unresolved choices, material scope or risk expansion, or actions outside existing authority. Do not turn an in-scope amendment into another approval cycle.
 
 ## Report clearly
 
-Lead with the current outcome or decision. At each gate, state what changed, what remains unresolved, and what the next approval permits. End with artifact paths, statuses, validation evidence, and the next authorized action.
+Lead with the outcome. Surface validation failures or decisions requiring user action; keep routine bookkeeping quiet. At handoff, summarize changes, relevant checks, and limitations without requiring acknowledgment to finish.

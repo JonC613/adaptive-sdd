@@ -15,7 +15,7 @@ codex plugin add adaptive-sdd@adaptive-sdd
 
 Open a new Codex task after installing the plugin before invoking `$adaptive-sdd`; an already-running task may not load newly installed skills.
 
-The plugin guides TinySpec, LiteSpec, official GitHub Spec Kit, and portable Project Memory through approval gates.
+The plugin guides TinySpec, LiteSpec, official GitHub Spec Kit, and portable Project Memory with scoped authorization and batched validation.
 
 To install the shared skill into one repository for both Codex and Cursor, run the root bootstrap script:
 
