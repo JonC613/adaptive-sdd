@@ -91,6 +91,26 @@ class AdaptiveSDDTests(unittest.TestCase):
             self.assertNotEqual(second.returncode, 0)
             self.assertIn("refusing to overwrite", second.stderr.lower())
 
+    def test_litespec_batch_and_optional_guided_checkpoints(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            args = ("--project", folder, "--feature", "batch", "--title", "Batch")
+            self.assertNotEqual(self.run_script("scaffold_litespec.py", *args, "--artifact", "plan").returncode, 0)
+            self.assertEqual(self.run_script("scaffold_litespec.py", *args, "--artifact", "spec").returncode, 0)
+            self.assertNotEqual(self.run_script("scaffold_litespec.py", *args, "--artifact", "plan", "--guided").returncode, 0)
+            for artifact in ("plan", "tests"):
+                result = self.run_script("scaffold_litespec.py", *args, "--artifact", artifact)
+                self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertNotEqual(self.run_script("scaffold_litespec.py", *args, "--artifact", "spec").returncode, 0)
+            spec = Path(folder) / ".litespec/batch/spec.md"
+            self.assertIn("status: draft", spec.read_text())
+        with tempfile.TemporaryDirectory() as folder:
+            args = ("--project", folder, "--feature", "guided", "--title", "Guided", "--guided")
+            for artifact in ("spec", "plan", "tests"):
+                result = self.run_script("scaffold_litespec.py", *args, "--artifact", artifact)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                path = Path(folder) / ".litespec/guided" / f"{artifact}.md"
+                path.write_text(path.read_text().replace("status: draft", "status: approved"))
+
     def test_litespec_example_validates(self) -> None:
         result = self.run_script("validate_litespec.py", str(ROOT / "examples" / "simple-kanban" / "lite" / "simple-kanban"), "--approved")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -252,13 +272,11 @@ class AdaptiveSDDTests(unittest.TestCase):
             self.assertNotEqual(backward.returncode, 0)
             self.assertIn("cannot move backward", backward.stderr)
 
-    def test_project_memory_workflow_contract_requires_review_and_supports_all_sources(self) -> None:
+    def test_project_memory_workflow_supports_all_sources(self) -> None:
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         reference = (SKILL / "references" / "project-memory.md").read_text(encoding="utf-8")
         for operation in ("Initialize memory", "Status memory", "Verify memory", "Update memory", "Refresh memory"):
             self.assertIn(operation, skill)
-        self.assertIn("Rejection changes nothing", skill)
-        self.assertIn("reviewed no-op", skill)
         self.assertIn("Verify consequential claims", reference)
         for source in ("TinySpec", "LiteSpec", "Spec Kit", "Repository-only work"):
             self.assertIn(source, reference)

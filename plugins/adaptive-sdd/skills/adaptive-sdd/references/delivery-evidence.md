@@ -1,7 +1,7 @@
 # Delivery state and evidence
 
 Specification approval states intent. Structural validation checks document shape.
-Neither proves delivery. For implemented work, initialize repository-local state:
+Neither proves delivery. Delivery state is an optional strict audit: use it when requested or already active, not as a prerequisite for ordinary implementation. Otherwise report real checks and outcomes directly. To initialize state:
 
 ```text
 python scripts/delivery_state.py --project <root> init --feature <slug> --tier lite
@@ -31,3 +31,11 @@ earlier evidence stale; never silently refresh or manufacture it.
 Existing `done` artifacts are legacy/unverified until state and evidence are added.
 Do not rewrite them during initialization. Official Spec Kit files remain upstream
 owned and are referenced read-only.
+
+Record existing authorization without asking again. Use `--by process:<id>` for
+artifacts recorded under a build/fix request; reserve human attribution for actual
+human review. In-scope amendments can refresh artifact fingerprints under that
+authority, but never refresh evidence unless its check actually ran. Batch final
+artifact and memory edits before checks to avoid snapshot invalidation. Run `verify`
+once after the completed batch; repeat after changes or failures. These strict
+snapshot rules apply only to the audit, not to ordinary implementation.

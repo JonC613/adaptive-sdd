@@ -18,7 +18,7 @@ Use stable `R-*` requirement IDs when there is more than one requirement. Avoid 
 
 ## Lifecycle
 
-Use `draft → review → approved → implementing → done`. Approval of the artifact does not authorize implementation.
+Use `draft → review → approved → implementing → done`. A build/fix request can authorize the full sequence without separate artifact review. Planning-only work stops at review. Never claim human review of generated text unless it occurred.
 
 ## Size control
 
@@ -26,4 +26,4 @@ Prefer one to three short paragraphs and compact lists. If the artifact needs mu
 
 ## Validation
 
-Run `validate_tinyspec.py`. Validation checks structure and metadata but never grants approval.
+Run `validate_tinyspec.py` once on the completed artifact; repeat only for relevant structural edits or failures. Validation checks structure and metadata but never grants approval.

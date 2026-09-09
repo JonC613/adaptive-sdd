@@ -2,7 +2,7 @@
 
 ## Delivery status versus document status
 
-TinySpec and LiteSpec validators establish structure only. For implementation,
+TinySpec and LiteSpec validators establish structure only. For an optional strict delivery audit (requested or already active),
 initialize `.sdd/features/<feature>/state.json` with `delivery_state.py`, record
 fingerprint-bound approval, update tasks, attach real evidence, and run `verify`.
 Only `release --reference <external-reference>` may advance verified work to released.
@@ -35,7 +35,7 @@ In Cursor, invoke the same skill as:
 /adaptive-sdd Help me add CSV export to this application.
 ```
 
-Adaptive SDD inspects the repository, recommends a tier with rationale, and waits for confirmation. Discovery proceeds one focused question at a time.
+Adaptive SDD inspects the repository, selects a tier with rationale, and proceeds within the requested scope. Ask focused questions only when consequential information is missing.
 
 When `.sdd/memory/` exists, Adaptive SDD reads its index first, loads only relevant concepts, and verifies consequential claims against the code before using them. Memory is context, not authority.
 
@@ -47,7 +47,7 @@ Use it when the change is bounded and reversible. Promote when separate stories,
 
 ## LiteSpec
 
-LiteSpec creates three gated artifacts:
+LiteSpec prepares three related artifacts as one batch:
 
 ```text
 .litespec/<feature>/spec.md
@@ -55,7 +55,9 @@ LiteSpec creates three gated artifacts:
 .litespec/<feature>/tests.md
 ```
 
-Each artifact requires explicit approval before the next is created. Implementation requires separate authorization after all three are approved.
+A build/fix request authorizes routine planning, implementation, checks, and affected existing documentation. No separate sign-offs are required. Planning-only work remains planning-only. Use scaffolder `--guided` for user-requested artifact checkpoints.
+
+Validate the completed planning batch once and run relevant tests at meaningful milestones and handoff. Repeat affected checks only when relevant changes, failures, or unresolved concerns justify it. Surface actionable failures and summarize results at handoff.
 
 ## Full Spec Kit
 
@@ -68,7 +70,7 @@ python .agents/skills/adaptive-sdd/scripts/validate_tinyspec.py .tinyspec/my-fea
 python .agents/skills/adaptive-sdd/scripts/validate_litespec.py .litespec/my-feature
 ```
 
-Add `--approved` before implementation to require approved-or-later lifecycle states.
+Optional `--approved` requires approved-or-later lifecycle states; it does not require another user approval.
 
 ## Project Memory
 

@@ -71,12 +71,12 @@ For promotion, preserve the earlier artifacts as `promoted_from` provenance and 
 ### Initialize
 
 1. Inspect the repository and existing documentation read-only.
-2. Draft the smallest useful `project.md` and `architecture.md` content in the conversation.
+2. Draft the smallest useful `project.md` and `architecture.md` content.
 3. Cite sources or mark assumptions.
-4. Show the complete proposal and ask for approval.
-5. After approval, scaffold and write the accepted content, verify it, and record the approved Git commit.
+4. Proceed under the initialization request; ask only about consequential unresolved choices.
+5. Scaffold and write the content, verify once, and record the inspected Git commit without claiming human review.
 
-Rejecting the proposal must leave the repository unchanged. Refuse to overwrite existing memory.
+A proposal-only request leaves the repository unchanged. Refuse to overwrite existing memory.
 
 ### Status and verify
 
@@ -91,11 +91,11 @@ coverage and must be chosen deliberately. Drift never proves factual error.
 
 ### Update after SDD work
 
-Before marking implemented specifications done, assess whether the work changed repository purpose, capabilities, component boundaries, flows, public contracts, durable decisions, or constraints. Propose only the affected current-state text and provenance. Apply it after approval, add a log entry, verify, then reconcile the approved commit.
+Before marking implemented specifications done, assess whether the work changed repository purpose, capabilities, component boundaries, flows, public contracts, durable decisions, or constraints. Update affected existing concepts and provenance within the implementation request, add a log entry, verify the batch once, and reconcile the inspected commit. No separate approval is needed; do not claim human verification.
 
 ### Refresh external work
 
-Compare `last_reconciled_commit` with `HEAD`, inspect the changed code and evidence, and propose additions, corrections, deprecations, or a no-op. Do not advance state before approval. A reviewed no-op may advance the reconciliation point after validation.
+Compare `last_reconciled_commit` with `HEAD`, inspect the changed code and evidence, and apply supported corrections or record a no-op under the refresh request. Reconcile after relevant validation. Ask only about consequential unresolved contradictions. Inspection-only requests remain read-only.
 
 ## Orientation
 

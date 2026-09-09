@@ -20,7 +20,7 @@ LiteSpec occupies the middle tier between TinySpec and full Spec Kit:
 | LiteSpec | 3 | TinySpec no longer creates enough shared understanding |
 | Full Spec Kit | Full workflow | LiteSpec becomes insufficient |
 
-Do not use mandatory scores or automatic thresholds. Explain a project-specific rationale and get user confirmation before changing tiers.
+Do not use mandatory scores or automatic thresholds. Explain a project-specific rationale and proceed within scope; ask only if changing tiers materially expands work or tooling.
 
 ## 2. Artifact contracts
 
@@ -190,7 +190,7 @@ Lifecycle:
 draft → review → approved → implementing → done
 ```
 
-Each artifact has its own status. Never infer approval from silence or approval of another artifact.
+Each artifact has its own status. A build/fix request can authorize the whole package and implementation without intermediate sign-offs. Planning-only work stops at review; guided checkpoints apply only when requested. Never infer authorization from silence or claim human review that did not occur.
 
 ## 5. Priority and versioning
 
@@ -253,3 +253,8 @@ LiteSpec adapts established practices without reproducing their full ceremony:
 - Lightweight decision records: context, decisions, and consequences in source control — https://ddt.beta.education.gov.uk/guides/architecture-documentation
 - Test Pyramid: prefer the lowest practical test layer and a balanced portfolio — https://martinfowler.com/bliki/TestPyramid.html
 - Semantic Versioning: meaning-bearing version increments, adapted here to specification amendments — https://semver.org/
+
+Validate the completed planning batch once. Run relevant implementation checks at
+meaningful milestones and handoff. Repeat affected checks only for relevant changes,
+failures, or unresolved concerns; status requests and unrelated edits do not trigger
+another validation cycle. Summarize results at handoff and surface actionable failures.

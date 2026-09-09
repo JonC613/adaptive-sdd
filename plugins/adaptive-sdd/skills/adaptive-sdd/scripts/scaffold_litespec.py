@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create one LiteSpec artifact while enforcing approval-gate order."""
+"""Create one LiteSpec artifact with optional guided approval checkpoints."""
 
 from __future__ import annotations
 
@@ -39,9 +39,9 @@ def frontmatter(path: Path) -> dict[str, str]:
     return values
 
 
-def require_approved(path: Path) -> dict[str, str]:
+def require_approved(path: Path, guided: bool = True) -> dict[str, str]:
     metadata = frontmatter(path)
-    if metadata.get("status") not in ALLOWED_READY_STATUSES:
+    if guided and metadata.get("status") not in ALLOWED_READY_STATUSES:
         fail(f"{path.name} must be approved before creating the next artifact")
     if not metadata.get("version"):
         fail(f"{path.name} has no version")
@@ -55,6 +55,7 @@ def main() -> None:
     parser.add_argument("--title", required=True, help="Human-readable feature name")
     parser.add_argument("--artifact", required=True, choices=ARTIFACTS)
     parser.add_argument("--owner", default="user")
+    parser.add_argument("--guided", action="store_true", help="Require prior artifact approval for requested checkpoints")
     args = parser.parse_args()
 
     if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", args.feature):
@@ -69,9 +70,9 @@ def main() -> None:
     spec_meta: dict[str, str] = {}
     plan_meta: dict[str, str] = {}
     if args.artifact in {"plan", "tests"}:
-        spec_meta = require_approved(feature_dir / "spec.md")
+        spec_meta = require_approved(feature_dir / "spec.md", args.guided)
     if args.artifact == "tests":
-        plan_meta = require_approved(feature_dir / "plan.md")
+        plan_meta = require_approved(feature_dir / "plan.md", args.guided)
 
     skill_dir = Path(__file__).resolve().parent.parent
     template = skill_dir / "assets" / f"{args.artifact}.md"
