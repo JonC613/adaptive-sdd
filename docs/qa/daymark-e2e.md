@@ -8,6 +8,8 @@ Committed baselines are `chromium-win32`. CI uses **windows-2022** (Windows Serv
 
 Use Windows for visual comparisons. Linux/macOS have no approved baselines; a normal run fails on missing baselines and must not generate them automatically. An intentional expansion to another platform needs separately reviewed images. Config sets `updateSnapshots: "none"`; only the explicit local update command overrides it.
 
+The original Windows baseline environment has font smoothing disabled. The hosted runner enables it by default, which produced text-rendering differences and a one-pixel layout shift in the initial CI run. CI explicitly sets and verifies disabled smoothing on its disposable runner using [Windows SystemParametersInfo](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-systemparametersinfow). This does not change developer machines, application styling, image tolerances, or baseline files. For local reproduction, use a disposable Windows environment with the same font setting; investigate differences before changing images.
+
 Before the first run:
 
 ```text
