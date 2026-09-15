@@ -62,6 +62,15 @@ def check_packaging(root):
     entries = [item for item in marketplace['plugins'] if item['name'] == 'adaptive-sdd']
     if len(entries) != 1 or (root / entries[0]['source']['path']).resolve() != plugin.resolve():
         errors.append('marketplace source must resolve to the plugin directory')
+    cursor_marketplace = json.loads((root / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))
+    cursor_entries = [item for item in cursor_marketplace['plugins'] if item['name'] == 'adaptive-sdd']
+    cursor_manifest = json.loads((plugin / '.cursor-plugin/plugin.json').read_text(encoding='utf-8'))
+    if len(cursor_entries) != 1 or (root / cursor_entries[0]['source']).resolve() != plugin.resolve():
+        errors.append('Cursor marketplace source must resolve to the plugin directory')
+    if cursor_manifest.get('name') != 'adaptive-sdd' or cursor_manifest.get('skills') != 'skills/':
+        errors.append('Cursor plugin manifest must name adaptive-sdd and expose skills/')
+    if any(item.get('version') != version for item in cursor_entries) or cursor_manifest.get('version') != version:
+        errors.append('Cursor marketplace and plugin manifest versions must match plugin manifests')
     if not re.search(rf'^## {re.escape(version)}\s+-', (root / 'CHANGELOG.md').read_text(), re.M):
         errors.append('manifest version is missing from changelog')
     if f'**{version}**' not in (root / 'README.md').read_text(encoding='utf-8-sig'):

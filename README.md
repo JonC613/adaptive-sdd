@@ -96,3 +96,5 @@ Start a new task in the target project and invoke `$adaptive-sdd` in Codex or `/
 - **Licensing:** no repository license has been selected. An owner decision is pending; dependency licenses do not license this project.
 
 Current manifest version: **0.4.1**. These improvements are recorded under Unreleased in the [changelog](CHANGELOG.md). [Project status](docs/upgrade-roadmap.md) · [Release-readiness checklist](docs/release-readiness.md) · [Full usage guide](plugins/adaptive-sdd/docs/using-adaptive-sdd.md)
+
+Cursor submission preparation is documented in the [Cursor Marketplace guide](docs/cursor-marketplace.md). The project is not submitted or approved for any marketplace.
