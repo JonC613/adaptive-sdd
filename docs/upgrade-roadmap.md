@@ -1,27 +1,20 @@
-# Adaptive SDD upgrade execution
+# Project status
 
-Approved in conversation: phased roadmap, Collaborative default for new projects,
-and explicit implementation authorization. Existing project defaults are unchanged.
-This record is a work tracker, not evidence that the roadmap is delivered.
+Current manifest version: **0.4.1**. See the [changelog](../CHANGELOG.md) for released-version history and unreleased changes. This status describes repository contents; it is not a record of deployment or live-agent performance.
 
-| Release | Priority | Work | Status |
-|---|---|---|---|
-| 1 | P0 | Installer safety; structural validator correctness; memory drift; regressions | Implemented locally |
-| 2 | P1 | Feature state; evidence; verification; fingerprint-bound approvals; legacy compatibility | Implemented locally |
-| 3 | P1 | Interaction modes; grouped approval; authority boundaries; resume; memory integration | Implemented locally |
-| 4 | P2 | Optional project profiles and representative examples | Implemented locally; broader pilots pending |
-| 5 | P2 | Workflow evaluations; doctor; compatibility; distribution readiness | Partial: deterministic local checks implemented; live compatibility and owner license decision pending |
+| Area | Implemented evidence | Remaining work |
+|---|---|---|
+| Installer safety | [Guarded installers](../plugins/adaptive-sdd/scripts/) and temporary-directory integration tests | Fresh live Spec Kit and marketplace checks |
+| Specification validation | TinySpec/LiteSpec validators and [negative cases](../plugins/adaptive-sdd/tests/test_reliability.py) | Broader real-project format feedback |
+| Delivery state | Optional approvals, evidence, snapshots, and [strict verification regressions](../plugins/adaptive-sdd/tests/test_delivery_state.py) | Evidence attribution remains a stated claim |
+| Shared workflow | [Codex/Cursor guidance](../plugins/adaptive-sdd/skills/adaptive-sdd/SKILL.md), interaction modes, and portable Project Memory | Broader usability evidence |
+| Profiles and examples | Six [profile examples](../plugins/adaptive-sdd/examples/profiles/) and runnable [Daymark](../plugins/adaptive-sdd/examples/habit-tracker/) | Additional representative projects |
+| Evaluation | Explicit [deterministic scenario results](../plugins/adaptive-sdd/evals/) | Optional live-agent evaluation; no measurements yet |
+| CI and presentation | Python, JavaScript, browser, and repository checks; [case study](case-study.md) and [demo](demo.md) | Review actual CI runs for each proposed release |
+| Distribution | Versioned manifests and installation guidance | Owner license decision and release checklist |
 
-Release 1 must be verified independently before later changes. No release, remote
-push, installation into another project, paid API call, or license selection is
-authorized by this execution record. A license choice remains an owner decision.
-Existing uncommitted changes belong to the user and must be preserved.
-
-Implementation, local verification, and the approved Project Memory update are
-complete. Git reconciliation and release evidence remain post-commit operations.
+No deployment, productivity, or production-maturity conclusion is recorded.
 
 ## Verification policy
 
-Structural validation is not delivery verification. Local tests do not establish
-cross-platform CI success. Mocked installer commands do not establish live Spec Kit
-compatibility. Missing evidence remains missing rather than inferred from status.
+Structural validation is not delivery verification. Local tests do not establish cross-platform CI success. Mocked installer commands do not establish live Spec Kit compatibility. Missing evidence remains missing. Use the [release-readiness checklist](release-readiness.md) to collect evidence before any future release.

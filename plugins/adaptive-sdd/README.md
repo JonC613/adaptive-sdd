@@ -3,7 +3,7 @@
 Adaptive SDD packages TinySpec, LiteSpec, an adapter to official GitHub Spec Kit, and portable Project Memory behind one shared skill.
 
 Version 0.4 adds resumable feature state, fingerprint-bound approvals, attributable
-evidence, a real verification gate, interaction modes, and optional project profiles.
+evidence, an optional recorded-evidence gate, interaction modes, and optional project profiles.
 Markdown validation remains explicitly structural; it never claims implementation
 or tests passed.
 
@@ -74,7 +74,7 @@ Read [installation](docs/installation.md), [tier usage](docs/using-adaptive-sdd.
 
 ## Proof-of-concept presentation
 
-Open [the browser presentation](presentation/index.html) for a 16-slide walkthrough of the problem, three-tier model, Kanban evidence, limitations, work-shaped pilot, success measures, and Monday demo plan. It runs without a build step or network connection and includes keyboard navigation, speaker notes, fullscreen, overview, and print-to-PDF support.
+Open [the browser presentation](presentation/index.html) for a 16-slide walkthrough of the problem, three-tier model, Kanban evidence, limitations, work-shaped pilot, success measures, and demo plan. It runs without a build step or network connection and includes keyboard navigation, speaker notes, fullscreen, overview, and print-to-PDF support.
 
 ## Install as a local Cursor plugin
 
@@ -109,6 +109,6 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 - `tests/` — deterministic scaffold and validation tests
 - `.codex-plugin/plugin.json` — Codex plugin manifest
 
-## Tested Spec Kit version
+## Pinned Spec Kit version
 
-The current pin is GitHub Spec Kit `v0.16.4`. Check the official release notes before changing it.
+The current pin is GitHub Spec Kit `v0.16.4`. Local mocked installer checks do not establish live upstream compatibility. See the [release checklist](../../docs/release-readiness.md) before changing or distributing the pin.

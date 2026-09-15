@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Reject empty, malformed, and unsupported strict delivery criteria; preserve task-free TinySpec and recognize the documented legacy and Spec Kit formats.
+- Recheck discovered criteria, current evidence, and evidence-source fingerprints; a later failure supersedes an earlier pass. Old evidence lacking a source fingerprint must be rerun and recorded.
+- Replace inferred evaluation metrics with exact per-scenario unittest outcomes and document an optional, unrun live-agent protocol.
+- Correct unsupported-Python diagnostics and test dependency availability independently of the host.
+- Add JavaScript, Windows Chromium, and repository checks to CI; pin browser tooling and disable implicit snapshot updates.
+- Lead documentation with the product and runnable example; add a case study, demo script, and release checklist.
+
 ## 0.4.1 - 2026-09-06
 
 - Add the Daymark runnable habit-tracker example with a QA-oriented Playwright suite and committed visual baselines.

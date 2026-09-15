@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  python:
     strategy:
       fail-fast: false
       matrix:
@@ -21,3 +21,61 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -m unittest discover -s plugins/adaptive-sdd/tests -v
+
+  javascript:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+      - run: npm test
+
+  browser:
+    # Existing visual baselines are Chromium/win32. Never regenerate them in CI.
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install chromium
+      - name: Match baseline font rendering on the disposable runner
+        shell: pwsh
+        run: |
+          Add-Type @'
+          using System.Runtime.InteropServices;
+          public static class FontRendering {
+            [DllImport("user32.dll", EntryPoint="SystemParametersInfoW", SetLastError=true)]
+            public static extern bool Configure(uint action, uint parameter, ref int value, uint flags);
+          }
+          '@
+          $smoothing = 0
+          if (-not [FontRendering]::Configure(0x004B, 0, [ref]$smoothing, 3)) {
+            throw "Could not disable font smoothing to match committed baselines."
+          }
+          if (-not [FontRendering]::Configure(0x004A, 0, [ref]$smoothing, 0) -or $smoothing -ne 0) {
+            throw "Font smoothing does not match the baseline environment."
+          }
+          Write-Output "Baseline font smoothing: disabled"
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-windows-chromium
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  repository:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python scripts/check_repository.py

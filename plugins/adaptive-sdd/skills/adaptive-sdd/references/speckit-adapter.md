@@ -11,7 +11,7 @@ Use GitHub Spec Kit as an upstream tool; do not vendor its templates or generate
 
 ## Pinned installation
 
-The repository documents a tested version. Verify the current pin before changing it.
+The repository pins a version. Mocked installer tests do not establish live compatibility; record a real installation check separately before claiming it. Verify the current pin before changing it.
 
 ```text
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@v0.16.4

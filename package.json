@@ -1,9 +1,10 @@
 {
   "scripts": {
+    "test": "node --test plugins/adaptive-sdd/examples/habit-tracker/app.test.mjs",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "1.63.0"
   }
 }
