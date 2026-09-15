@@ -58,7 +58,7 @@ function Assert-InstallPath {
             if ((Get-Content -LiteralPath $markerPath -Raw | ConvertFrom-Json).name -ne 'adaptive-sdd') {
                 throw 'Existing plugin identity is not adaptive-sdd.'
             }
-            $allowed = @('plugin.json', 'skills')
+            $allowed = @('plugin.json', '.cursor-plugin', 'skills')
         } else {
             if ((Get-Content -LiteralPath $markerPath -Raw) -notmatch '(?m)^name:\s*adaptive-sdd\s*$') {
                 throw 'Existing skill identity is not adaptive-sdd.'

@@ -22,7 +22,10 @@ Run:
 ./install-cursor-local.ps1
 ```
 
-The script installs to `~/.cursor/plugins/local/adaptive-sdd` by default. Restart Cursor or run `Developer: Reload Window`, open Customize, and verify the skill appears in Agent Decides. Invoke it with `/adaptive-sdd`.
+The script installs the portable Agent Plugin manifest, Cursor manifest, and skill
+directory to `~/.cursor/plugins/local/adaptive-sdd` by default. Restart Cursor or
+run `Developer: Reload Window`, open Customize, and verify the skill appears in
+Agent Decides. Invoke it with `/adaptive-sdd`.
 
 Use `-Force` only after reviewing the installed copy:
 

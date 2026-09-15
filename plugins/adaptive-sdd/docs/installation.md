@@ -108,7 +108,9 @@ To test the repository as a user-level Cursor plugin:
 ./install-cursor-local.ps1
 ```
 
-This copies only `plugin.json` and `skills/` to `~/.cursor/plugins/local/adaptive-sdd`. Restart Cursor or run `Developer: Reload Window`, then verify the skill in Customize.
+This copies `plugin.json`, `.cursor-plugin/plugin.json`, and `skills/` to
+`~/.cursor/plugins/local/adaptive-sdd`. Restart Cursor or run `Developer: Reload
+Window`, then verify the skill in Customize.
 
 ## Update
 

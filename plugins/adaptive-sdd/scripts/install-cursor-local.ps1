@@ -8,11 +8,15 @@ $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot 'install-common.ps1')
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $manifest = Join-Path $repoRoot "plugin.json"
+$cursorManifest = Join-Path $repoRoot ".cursor-plugin"
 $skills = Join-Path $repoRoot "skills"
 $Destination = Assert-InstallPath -Destination $Destination -Source $repoRoot -Marker 'plugin.json'
 
 if (-not (Test-Path -LiteralPath $manifest)) {
     throw "Agent Plugin manifest is missing: $manifest"
+}
+if (-not (Test-Path -LiteralPath (Join-Path $cursorManifest "plugin.json"))) {
+    throw "Cursor plugin manifest is missing: $cursorManifest"
 }
 if (-not (Test-Path -LiteralPath (Join-Path $skills "adaptive-sdd/SKILL.md"))) {
     throw "Adaptive SDD skill is missing: $skills"
@@ -25,6 +29,7 @@ if ($PSCmdlet.ShouldProcess($Destination, "Install Adaptive SDD Cursor plugin"))
     Publish-Install -Destination $Destination -Populate {
         param($stage)
         Copy-Item -LiteralPath $manifest -Destination (Join-Path $stage "plugin.json")
+        Copy-Item -LiteralPath $cursorManifest -Destination (Join-Path $stage ".cursor-plugin") -Recurse
         Copy-Item -LiteralPath $skills -Destination (Join-Path $stage "skills") -Recurse
     }
     Write-Host "Installed Adaptive SDD Cursor plugin at $Destination"

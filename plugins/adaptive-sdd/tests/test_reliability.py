@@ -95,6 +95,7 @@ class ReliabilityTests(unittest.TestCase):
                 return subprocess.run([PWSH, '-NoProfile', '-File', str(script), *map(str, args)], capture_output=True, text=True)
             self.assertEqual(run('-Destination', destination).returncode, 0)
             previous = (destination / 'plugin.json').read_bytes()
+            self.assertTrue((destination / '.cursor-plugin/plugin.json').is_file())
             self.assertEqual(run('-Destination', destination, '-Force').returncode, 0)
             backups = list(Path(folder).glob('.adaptive-sdd-backup-*'))
             self.assertEqual(len(backups), 1)
@@ -127,6 +128,7 @@ class ReliabilityTests(unittest.TestCase):
             )
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertTrue((real_parent / 'adaptive-sdd/plugin.json').is_file())
+            self.assertTrue((real_parent / 'adaptive-sdd/.cursor-plugin/plugin.json').is_file())
 
             linked_destination = root / 'adaptive-sdd'
             os.symlink(real_parent / 'adaptive-sdd', linked_destination, target_is_directory=True)
