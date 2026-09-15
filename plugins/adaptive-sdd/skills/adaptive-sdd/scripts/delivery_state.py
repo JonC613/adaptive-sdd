@@ -9,6 +9,7 @@ import argparse, hashlib, json, re, subprocess, sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from delivery_spec import inspect_spec
 
 SCHEMA_VERSION = 1
 MODES = ("guided", "collaborative", "delegated")
@@ -89,21 +90,6 @@ def artifact_paths(project: Path, feature: str, tier: str, supplied: list[str]) 
     if tier == "tiny": return [f".tinyspec/{feature}.md"]
     if tier == "lite": return [f".litespec/{feature}/{name}.md" for name in ("spec", "plan", "tests")]
     return [f"specs/{feature}"]
-
-
-def parse_ids(project: Path, artifacts: list[str]) -> tuple[list[str], list[str]]:
-    acceptance, requirements, tasks = set(), set(), set()
-    for item in artifacts:
-        path = project / item
-        candidates = [path] if path.is_file() else sorted(path.rglob("*.md")) if path.is_dir() else []
-        for candidate in candidates:
-            text = candidate.read_text(encoding="utf-8")
-            acceptance.update(re.findall(r"\bAC-\d{2}\.\d+\b", text))
-            requirements.update(re.findall(r"\bR-\d{2}\b", text))
-            tasks.update(re.findall(r"\*\*(P\d+-T\d+)\s+—", text))
-    return sorted(acceptance or requirements), sorted(tasks)
-
-
 def stale_artifacts(project: Path, state: dict[str, Any]) -> list[str]:
     stale = []
     for artifact in state["artifacts"]:
@@ -114,12 +100,19 @@ def stale_artifacts(project: Path, state: dict[str, Any]) -> list[str]:
 
 
 def blockers(project: Path, state: dict[str, Any]) -> list[str]:
-    problems = [f"stale or unapproved artifact: {p}" for p in stale_artifacts(project, state)]
+    criteria, tasks, problems = inspect_spec(project, [a["path"] for a in state["artifacts"]], state["tier"])
+    if criteria != state["criteria"] or tasks != sorted(t["id"] for t in state["tasks"]):
+        problems.append("discovered criteria/tasks differ from recorded state; review artifacts and record approval again")
+    problems += [f"stale or unapproved artifact: {p}" for p in stale_artifacts(project, state)]
     problems += [f"unfinished task: {t['id']}" for t in state["tasks"] if t["status"] != "done"]
     current = snapshot(project)
-    for criterion in state["criteria"]:
-        matches = [e for e in state["evidence"] if e["criterion"] == criterion and e["result"] == "pass" and e["snapshot"] == current]
-        if not matches: problems.append(f"missing current passing evidence: {criterion}")
+    for criterion in criteria:
+        records = [e for e in state["evidence"] if e["criterion"] == criterion]
+        latest = records[-1] if records else None
+        if not latest or latest["result"] != "pass" or latest["snapshot"] != current:
+            problems.append(f"missing current passing evidence: {criterion}")
+        elif not latest.get("source_fingerprint") or fingerprint(project / latest["source"]) != latest["source_fingerprint"]:
+            problems.append(f"missing or changed evidence source: {criterion}; rerun the check and record evidence")
     problems += [f"blocking condition: {b}" for b in state.get("blockers", [])]
     return problems
 
@@ -130,7 +123,7 @@ def command_init(args: argparse.Namespace) -> None:
     artifacts = artifact_paths(project, args.feature, args.tier, args.artifact)
     for item in artifacts:
         if not (project / item).exists(): die(f"artifact does not exist: {item}")
-    criteria, tasks = parse_ids(project, artifacts)
+    criteria, tasks, _ = inspect_spec(project, artifacts, args.tier)
     state = {"schema_version": 1, "feature": args.feature, "tier": args.tier,
              "interaction_mode": args.mode, "lifecycle": "planned", "updated_at": now(),
              "artifacts": [{"path": p, "approved_fingerprint": None, "approval": None} for p in artifacts],
@@ -149,7 +142,7 @@ def command_approve(args: argparse.Namespace) -> None:
         if not current: die(f"approval requires existing artifact: {artifact['path']}")
         artifact["approved_fingerprint"] = current
         artifact["approval"] = {"by": args.by, "at": now(), "actions": args.action}
-    criteria, tasks = parse_ids(project, [a["path"] for a in state["artifacts"]])
+    criteria, tasks, _ = inspect_spec(project, [a["path"] for a in state["artifacts"]], state["tier"])
     prior = {item["id"]: item["status"] for item in state["tasks"]}
     state["criteria"] = criteria
     state["tasks"] = [{"id": item, "status": prior.get(item, "pending")} for item in tasks]
@@ -181,7 +174,7 @@ def command_evidence(args: argparse.Namespace) -> None:
     if not source_path.exists(): die(f"evidence source does not exist: {source}")
     state["evidence"].append({"id": f"E-{len(state['evidence'])+1:03}", "criterion": args.criterion,
         "method": args.method, "result": args.result, "source": source,
-        "recorded_by": args.by, "at": now(), "snapshot": snapshot(project),
+        "source_fingerprint": fingerprint(source_path), "recorded_by": args.by, "at": now(), "snapshot": snapshot(project),
         "command": args.command, "exit_code": args.exit_code, "detail": args.detail})
     state["updated_at"] = now(); write(path, state); print(f"Recorded {args.result} evidence for {args.criterion}")
 
@@ -198,18 +191,18 @@ def command_status(args: argparse.Namespace) -> None:
 def command_verify(args: argparse.Namespace) -> None:
     project = args.project.resolve(); path, state = read_state(project, args.feature); problems = blockers(project, state)
     if problems:
-        if args.json: print(json.dumps({"schema_version":1,"verified":False,"blockers":problems}))
+        if args.json: print(json.dumps({"schema_version":1,"verified":False,"kind":"recorded_evidence_gate","executed_checks":False,"blockers":problems}))
         else:
             for problem in problems: print(f"BLOCKED: {problem}")
         raise SystemExit(1)
     state["lifecycle"] = "verified"; state["verified_at"] = now(); state["verified_snapshot"] = snapshot(project)
     state["updated_at"] = now(); write(path, state)
-    print(json.dumps({"schema_version":1,"verified":True,"blockers":[]}) if args.json else "VERIFIED: completion gate passed")
+    print(json.dumps({"schema_version":1,"verified":True,"kind":"recorded_evidence_gate","executed_checks":False,"blockers":[]}) if args.json else "VERIFIED: recorded-evidence gate passed; no checks executed by this command")
 
 
 def command_release(args: argparse.Namespace) -> None:
     project = args.project.resolve(); path, state = read_state(project, args.feature)
-    if state["lifecycle"] != "verified" or state.get("verified_snapshot") != snapshot(project): die("current snapshot is not verified")
+    if state["lifecycle"] != "verified" or state.get("verified_snapshot") != snapshot(project) or blockers(project, state): die("current snapshot is not verified")
     actions = {a for artifact in state["artifacts"] for a in (artifact.get("approval") or {}).get("actions", [])}
     delegated = state["interaction_mode"] == "delegated" and "deployment" in state["authorization"]["allowed"] and "deployment" not in state["authorization"]["excluded"]
     if "release" not in actions and not delegated: die("release is outside recorded authorization")

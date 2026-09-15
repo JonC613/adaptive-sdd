@@ -3,9 +3,9 @@ feature: habit-tracker-example
 artifact: tests
 status: implementing
 owner: user
-version: 0.1
+version: 0.2
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-14
 spec_version: 0.1
 plan_version: 0.1
 ---
@@ -14,7 +14,7 @@ plan_version: 0.1
 
 ## Strategy
 
-Use Node's built-in test runner for the state, storage-validation, date-key, and calendar functions. These pure functions cover the persistence and date boundary behavior more reliably than browser-only checks. Use a short manual browser walkthrough for semantic controls, keyboard behavior, and direct-open operation, which cannot be reliably verified without introducing a browser-test dependency to this otherwise dependency-free example.
+Use Node's built-in test runner for the state, storage-validation, date-key, and calendar functions. These pure functions cover the persistence and date boundary behavior more reliably than browser-only checks. Use the repository-local Playwright suite for add/check-in/history/rename/removal/reload interactions and a narrow keyboard focus path. Keep the manual walkthrough for full keyboard coverage, direct-open behavior, and local-only network inspection; the browser suite is not a complete accessibility or privacy audit.
 
 ## Acceptance traceability
 
@@ -121,14 +121,14 @@ Use Node's built-in test runner for the state, storage-validation, date-key, and
 ### M-01 — Keyboard and accessible-control walkthrough
 
 - Covers: NFR-01
-- Automation limitation: The dependency-free example deliberately has no browser automation runtime or accessibility-tree tooling.
+- Automation limitation: The repository has Playwright coverage for a narrow keyboard path, but full keyboard and accessibility behavior remains a manual check.
 - Method: Open `index.html` directly, use only Tab, Shift+Tab, Enter, and Space to add a habit, toggle it, select it, navigate the calendar, rename it, and cancel then confirm deletion.
 - Expected evidence: Every control receives focus in a usable order; visible labels or accessible names communicate purpose and completion state; validation and deletion confirmation are understandable.
 
 ### M-02 — Local-only data walkthrough
 
 - Covers: NFR-02
-- Automation limitation: Verifying actual browser storage and direct-open network behavior requires a browser environment.
+- Automation limitation: Playwright covers reload persistence through a local server; direct-open storage and network inspection remain manual.
 - Method: In browser developer tools, complete a habit, reload, inspect that the saved document is in local storage, and confirm the Network panel shows no request used to save or load habit data.
 - Expected evidence: The state persists after reload, a local-storage entry contains the tracker document, and no remote persistence request appears.
 
@@ -138,6 +138,12 @@ Use Node's built-in test runner for the state, storage-validation, date-key, and
 - Fixture habits with stable IDs and completion dates for both selected and unselected habits.
 - A minimal in-memory local-storage adapter for automated load and save behavior.
 - Run the documented `node --test` command from the example directory; no package install, account, service, or environment variable is required.
+
+## Repository browser coverage
+
+[Playwright scenarios](../../tests/e2e/daymark.spec.mjs) cover first visit (E2E-01), adding and toggling habits (E2E-02), calendar history/navigation (E2E-03), rename/removal/reload (E2E-04), and a narrow keyboard path (E2E-05). See [QA catalog and environment](../../docs/qa/daymark-e2e.md). These are repository development dependencies; the example remains a static application with no runtime packages.
+
+The traceability table above records planned checks, not historical passing evidence. Automated run results belong in the relevant CI/report output. Manual exceptions remain unverified until their walkthroughs are actually completed and recorded.
 
 ## Completion criteria
 
@@ -152,3 +158,4 @@ Use Node's built-in test runner for the state, storage-validation, date-key, and
 | Version | Date | Change | Reason | Affected IDs |
 |---|---|---|---|---|
 | 0.1 | 2026-09-06 | Initial draft | Derived from approved specification and plan | All |
+| 0.2 | 2026-09-14 | Document existing Playwright coverage and remaining manual checks | Reconcile test strategy with repository tooling | T-01–T-10, M-01, M-02 |

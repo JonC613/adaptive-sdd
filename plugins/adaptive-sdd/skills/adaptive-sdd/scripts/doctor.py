@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Read-only Adaptive SDD installation and compatibility diagnostics."""
-import argparse, json, re, shutil, subprocess
+import argparse, json, re, shutil, sys
 from pathlib import Path
 
 def main():
@@ -13,10 +13,10 @@ def main():
         try: versions.append(json.loads(path.read_text(encoding='utf-8'))['version']); add('MANIFEST', True, f'{path.name} readable')
         except Exception as exc: add('MANIFEST', False, f'{path}: {exc}')
     add('VERSION_SYNC', len(set(versions)) == 1 and bool(versions), f'manifest versions: {versions}')
-    add('PYTHON', True, 'running on supported Python' if __import__('sys').version_info >= (3,11) else 'Python 3.11+ required')
+    add('PYTHON', sys.version_info >= (3,11), 'running on supported Python' if sys.version_info >= (3,11) else 'Python 3.11+ required')
     add('GIT', shutil.which('git') is not None, 'Git available' if shutil.which('git') else 'Git unavailable')
     add('POWERSHELL', shutil.which('pwsh') is not None, 'PowerShell 7 available' if shutil.which('pwsh') else 'PowerShell 7 unavailable')
-    for name in ('validate_litespec.py','validate_tinyspec.py','project_memory.py','delivery_state.py'):
+    for name in ('validate_litespec.py','validate_tinyspec.py','project_memory.py','delivery_state.py','delivery_spec.py'):
         add('SCRIPT', (root / 'skills/adaptive-sdd/scripts' / name).is_file(), name)
     installer = (root / 'scripts/install-project.ps1').read_text(encoding='utf-8')
     pin = re.search(r'SpecKitVersion = "([^"]+)"', installer)
