@@ -35,4 +35,4 @@ Provider calls require explicit opt-in and a cost budget. No paid calls are made
 
 6. Publish raw counts, denominators, skipped/unscorable/incomplete runs and reasons, reviewer agreement, uncertainty intervals, and repeat variability. Report zero only when an actual measured numerator is zero; use not evaluated when no measurement exists.
 
-These measurements would evaluate behavior on that request set. They would not by themselves establish workplace productivity or production reliability. Departmental pilot observations require their own consent, privacy boundaries, and measurement design.
+These measurements would evaluate behavior on that request set. They would not by themselves establish workplace productivity or production reliability.

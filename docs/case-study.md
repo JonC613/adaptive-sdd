@@ -29,11 +29,9 @@ The browser example can be opened locally without a server. Automated checks exe
 
 A correctness review also exposed an empty-set bug: a heading-only specification could be approved and marked verified because there were no criteria to fail. The gate now validates the supported structure, requires meaningful criteria, and checks current passing evidence for each discovered criterion. [Regression coverage](../plugins/adaptive-sdd/tests/test_delivery_state.py) includes empty criteria, valid minimal formats, missing and stale evidence, and a later failure superseding a pass.
 
-## Ongoing pilot
+## Current limits
 
-I am piloting SDD within my department, primarily using GitHub Spec Kit and Adaptive-SDD guidance. I lead three-person teams spanning product ownership, development, and testing on individual projects or features. Smoke tests and Playwright tests are being incorporated into that process.
-
-This is an ongoing pilot. It does not establish company-wide deployment, measured productivity gains, or production maturity. Employer, customer, and proprietary project details are intentionally absent.
+The repository does not establish deployment, measured productivity gains, or production maturity. Employer, customer, and proprietary project details are intentionally absent.
 
 ## What this demonstrates
 

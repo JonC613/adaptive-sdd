@@ -49,6 +49,6 @@ Open `test_empty_criteria_cannot_verify` in [the test source](../plugins/adaptiv
 
 ## 4:45 — Close with limits
 
-“Strict tracking is optional. The project is in an ongoing departmental pilot. Deterministic tests do not measure how consistently a live agent chooses tiers or finds requirements. Those measurements and live upstream compatibility checks remain future work.”
+“Strict tracking is optional. Deterministic tests do not measure how consistently a live agent chooses tiers or finds requirements. Those measurements and live upstream compatibility checks remain future work.”
 
 Link the [case study](case-study.md), [evaluation protocol](../plugins/adaptive-sdd/evals/README.md), and [release checklist](release-readiness.md).
