@@ -1,0 +1,29 @@
+{
+  "name": "adaptive-sdd-marketplace",
+  "owner": {
+    "name": "JonC613"
+  },
+  "metadata": {
+    "description": "Adaptive specification-driven development guidance for Codex and Cursor."
+  },
+  "plugins": [
+    {
+      "name": "adaptive-sdd",
+      "source": "plugins/adaptive-sdd",
+      "description": "Choose proportionate TinySpec, LiteSpec, or GitHub Spec Kit workflows.",
+      "version": "0.4.1",
+      "author": {
+        "name": "JonC613"
+      },
+      "homepage": "https://github.com/JonC613/adaptive-sdd",
+      "repository": "https://github.com/JonC613/adaptive-sdd",
+      "keywords": [
+        "specification-driven-development",
+        "agent-skills",
+        "github-spec-kit",
+        "project-memory"
+      ],
+      "category": "Productivity"
+    }
+  ]
+}

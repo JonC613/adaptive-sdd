@@ -13,11 +13,11 @@ No release is published by this checklist. Current manifests remain **0.4.1**; p
 - [ ] Separately run the pinned Spec Kit installation in a disposable clean repository; record `specify version`, expected generated files, and the actual commands/results. Mocked `uv`/`specify` tests do not fulfill this item.
 - [ ] Review supported delivery formats and migration notes. Old evidence without a source fingerprint requires a fresh check and recording; do not fabricate a migration pass.
 - [ ] Run `python scripts/check_repository.py` for local documentation targets and packaging/version consistency. External links and hosted services require separate review.
-- [ ] Obtain the owner's license decision. No root LICENSE currently grants reuse rights; no license is selected by this work.
+- [x] Owner selected Apache-2.0; root [LICENSE](../LICENSE) and [NOTICE](../NOTICE) record the grant and attribution.
 - [ ] When authorized to prepare a version, synchronize both plugin manifests, changelog, README, and version assertions; review marketplace layout and installed payload.
 - [ ] Keep evidence limitations accurate; exclude employer, customer, and proprietary details.
 - [ ] Obtain explicit release authorization after the above evidence is reviewable.
 
 ## Remaining application-readiness considerations
 
-The portfolio can show implementation and test evidence today. A licensing decision is still needed before claiming open-source distribution rights. Live agent-quality measurements, fresh marketplace activation checks, and live Spec Kit installation evidence remain outstanding. No adoption, productivity gain, or production maturity is established.
+The portfolio can show implementation and test evidence today. Live agent-quality measurements, fresh marketplace activation checks, and live Spec Kit installation evidence remain outstanding. No adoption, productivity gain, or production maturity is established.

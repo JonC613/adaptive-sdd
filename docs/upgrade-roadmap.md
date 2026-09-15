@@ -11,7 +11,7 @@ Current manifest version: **0.4.1**. See the [changelog](../CHANGELOG.md) for re
 | Profiles and examples | Six [profile examples](../plugins/adaptive-sdd/examples/profiles/) and runnable [Daymark](../plugins/adaptive-sdd/examples/habit-tracker/) | Additional representative projects |
 | Evaluation | Explicit [deterministic scenario results](../plugins/adaptive-sdd/evals/) | Optional live-agent evaluation; no measurements yet |
 | CI and presentation | Python, JavaScript, browser, and repository checks; [case study](case-study.md) and [demo](demo.md) | Review actual CI runs for each proposed release |
-| Distribution | Versioned manifests and installation guidance | Owner license decision and release checklist |
+| Distribution | Versioned manifests, Apache-2.0 licensing, and installation guidance | Release checklist and marketplace review |
 
 No deployment, productivity, or production-maturity conclusion is recorded.
 

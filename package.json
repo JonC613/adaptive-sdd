@@ -4,6 +4,7 @@
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots"
   },
+  "license": "Apache-2.0",
   "devDependencies": {
     "@playwright/test": "1.63.0"
   }

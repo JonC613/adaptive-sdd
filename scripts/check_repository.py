@@ -62,12 +62,29 @@ def check_packaging(root):
     entries = [item for item in marketplace['plugins'] if item['name'] == 'adaptive-sdd']
     if len(entries) != 1 or (root / entries[0]['source']['path']).resolve() != plugin.resolve():
         errors.append('marketplace source must resolve to the plugin directory')
+    cursor_marketplace = json.loads((root / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))
+    cursor_entries = [item for item in cursor_marketplace['plugins'] if item['name'] == 'adaptive-sdd']
+    cursor_manifest = json.loads((plugin / '.cursor-plugin/plugin.json').read_text(encoding='utf-8'))
+    if len(cursor_entries) != 1 or (root / cursor_entries[0]['source']).resolve() != plugin.resolve():
+        errors.append('Cursor marketplace source must resolve to the plugin directory')
+    if cursor_manifest.get('name') != 'adaptive-sdd' or cursor_manifest.get('skills') != 'skills/':
+        errors.append('Cursor plugin manifest must name adaptive-sdd and expose skills/')
+    if any(item.get('version') != version for item in cursor_entries) or cursor_manifest.get('version') != version:
+        errors.append('Cursor marketplace and plugin manifest versions must match plugin manifests')
     if not re.search(rf'^## {re.escape(version)}\s+-', (root / 'CHANGELOG.md').read_text(), re.M):
         errors.append('manifest version is missing from changelog')
     if f'**{version}**' not in (root / 'README.md').read_text(encoding='utf-8-sig'):
         errors.append('README must state the current manifest version')
     package = json.loads((root / 'package.json').read_text())
     lock = json.loads((root / 'package-lock.json').read_text())
+    license_file = root / 'LICENSE'
+    notice_file = root / 'NOTICE'
+    if not license_file.is_file() or not license_file.read_text(encoding='utf-8-sig').lstrip().startswith('Apache License'):
+        errors.append('root LICENSE must contain Apache License 2.0')
+    if not notice_file.is_file() or 'Copyright 2026 JonC613' not in notice_file.read_text(encoding='utf-8-sig'):
+        errors.append('root NOTICE must identify the Adaptive SDD copyright holder')
+    if package.get('license') != 'Apache-2.0' or lock['packages'][''].get('license') != 'Apache-2.0':
+        errors.append('package and lockfile must declare Apache-2.0')
     dependency = package['devDependencies']['@playwright/test']
     if dependency != lock['packages']['']['devDependencies']['@playwright/test'] or dependency != lock['packages']['node_modules/@playwright/test']['version']:
         errors.append('Playwright must be exactly pinned consistently with the lockfile')

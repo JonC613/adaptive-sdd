@@ -29,4 +29,7 @@ CI runs Python on Linux/macOS/Windows with Python 3.11 and 3.13, Node unit tests
 
 Use a feature branch. Pull requests default to the `origin` repository; verify the head and base repository/branch before creating one. Keep releases separate from routine fixes. Record unreleased changes in the changelog without bumping manifests speculatively.
 
-The repository owner must choose a license before public distribution rights are claimed. Contributions do not imply a license grant while that decision is absent. See the [release checklist](docs/release-readiness.md).
+Adaptive SDD is licensed under [Apache License 2.0](LICENSE). By submitting a
+contribution, you license that contribution under Apache-2.0 unless you state
+different terms in writing before it is accepted. See the
+[release checklist](docs/release-readiness.md).

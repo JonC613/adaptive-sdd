@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- License Adaptive SDD under Apache-2.0; add the root `LICENSE` and attribution `NOTICE`.
 - Reject empty, malformed, and unsupported strict delivery criteria; preserve task-free TinySpec and recognize the documented legacy and Spec Kit formats.
 - Recheck discovered criteria, current evidence, and evidence-source fingerprints; a later failure supersedes an earlier pass. Old evidence lacking a source fingerprint must be rerun and recorded.
 - Replace inferred evaluation metrics with exact per-scenario unittest outcomes and document an optional, unrun live-agent protocol.

@@ -1,0 +1,17 @@
+{
+  "name": "adaptive-sdd",
+  "version": "0.4.1",
+  "description": "Choose proportionate TinySpec, LiteSpec, or GitHub Spec Kit workflows.",
+  "author": {
+    "name": "JonC613"
+  },
+  "homepage": "https://github.com/JonC613/adaptive-sdd",
+  "repository": "https://github.com/JonC613/adaptive-sdd",
+  "keywords": [
+    "specification-driven-development",
+    "agent-skills",
+    "github-spec-kit",
+    "project-memory"
+  ],
+  "skills": "skills/"
+}
