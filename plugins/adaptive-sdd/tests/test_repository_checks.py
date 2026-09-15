@@ -31,6 +31,10 @@ class RepositoryCheckTests(unittest.TestCase):
     def test_distribution_versions_and_paths_are_consistent(self):
         self.assertEqual(checks.check_packaging(REPO), [])
 
+    def test_root_apache_license_and_notice_are_present(self):
+        self.assertTrue((REPO / 'LICENSE').read_text(encoding='utf-8-sig').lstrip().startswith('Apache License'))
+        self.assertIn('Copyright 2026 JonC613', (REPO / 'NOTICE').read_text(encoding='utf-8-sig'))
+
     def test_cursor_marketplace_entry_resolves_to_the_plugin(self):
         marketplace = checks.json.loads((REPO / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))
         entry = next(item for item in marketplace['plugins'] if item['name'] == 'adaptive-sdd')

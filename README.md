@@ -93,7 +93,7 @@ Start a new task in the target project and invoke `$adaptive-sdd` in Codex or `/
 - **Compatibility:** Python 3.11+; PowerShell 7 for installers; one shared skill for Codex/Cursor. Spec Kit is pinned to `v0.16.4`. Strict tracking supports current TinySpec, the numbered legacy TinySpec example, LiteSpec, and the documented Spec Kit artifact subset. [Delivery formats and migration limits](plugins/adaptive-sdd/skills/adaptive-sdd/references/delivery-evidence.md)
 - **Experimental:** tier recommendations and clarification quality have no live-agent benchmark results. [Evaluation design](plugins/adaptive-sdd/evals/README.md) separates regression outcomes from proposed measurements.
 - **Adoption:** no deployment, productivity, or production-maturity claim is made. [Portfolio case study](docs/case-study.md)
-- **Licensing:** no repository license has been selected. An owner decision is pending; dependency licenses do not license this project.
+- **Licensing:** Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE). Dependency licenses do not license this project.
 
 Current manifest version: **0.4.1**. These improvements are recorded under Unreleased in the [changelog](CHANGELOG.md). [Project status](docs/upgrade-roadmap.md) · [Release-readiness checklist](docs/release-readiness.md) · [Full usage guide](plugins/adaptive-sdd/docs/using-adaptive-sdd.md)
 

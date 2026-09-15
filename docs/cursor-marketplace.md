@@ -8,9 +8,9 @@ manifest for portable Codex/Cursor use.
 
 ## Submission sequence
 
-1. Choose and commit a repository license. Cursor’s public Marketplace reviews
-   open-source plugins; do not submit this repository until the license decision
-   is recorded.
+1. Review the committed [Apache-2.0 license](../LICENSE) and
+   [NOTICE](../NOTICE). Cursor’s public Marketplace reviews open-source plugins;
+   include the license in the release candidate.
 2. Create a release candidate: synchronize manifest versions, changelog, README,
    package lockfile, and marketplace version. Keep unreleased work out of the
    candidate.
@@ -53,5 +53,5 @@ check or Cursor’s marketplace review.
 
 ## Scope of this preparation
 
-This adds Cursor marketplace metadata only. It does not create a release, submit
-the repository, install a plugin in Cursor, choose a license, or claim approval.
+This adds Cursor marketplace metadata and Apache-2.0 licensing. It does not
+create a release, submit the repository, or claim approval.

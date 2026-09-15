@@ -77,6 +77,14 @@ def check_packaging(root):
         errors.append('README must state the current manifest version')
     package = json.loads((root / 'package.json').read_text())
     lock = json.loads((root / 'package-lock.json').read_text())
+    license_file = root / 'LICENSE'
+    notice_file = root / 'NOTICE'
+    if not license_file.is_file() or not license_file.read_text(encoding='utf-8-sig').lstrip().startswith('Apache License'):
+        errors.append('root LICENSE must contain Apache License 2.0')
+    if not notice_file.is_file() or 'Copyright 2026 JonC613' not in notice_file.read_text(encoding='utf-8-sig'):
+        errors.append('root NOTICE must identify the Adaptive SDD copyright holder')
+    if package.get('license') != 'Apache-2.0' or lock['packages'][''].get('license') != 'Apache-2.0':
+        errors.append('package and lockfile must declare Apache-2.0')
     dependency = package['devDependencies']['@playwright/test']
     if dependency != lock['packages']['']['devDependencies']['@playwright/test'] or dependency != lock['packages']['node_modules/@playwright/test']['version']:
         errors.append('Playwright must be exactly pinned consistently with the lockfile')
