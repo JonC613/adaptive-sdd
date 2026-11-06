@@ -9,7 +9,7 @@ No release is published by this checklist. Current manifests remain **0.4.1**; p
 - [ ] Review Playwright report and any trace/screenshot failures. Never regenerate baselines just to pass CI; intentional changes need image review on the documented Windows environment.
 - [ ] Run the deterministic evaluator; inspect each scenario's status and the unique-test count. There are no live-agent measurements unless a separately approved evaluation ran.
 - [ ] Run doctor on each intended installation environment. A missing dependency should produce a failed diagnostic; a skipped integration test supplies no compatibility evidence.
-- [ ] Exercise a real shared-skill installation in a disposable target and verify discovery in fresh Codex and Cursor tasks.
+- [ ] Exercise a real shared-skill installation in a disposable target and verify discovery in fresh Codex, Cursor, and GitHub Copilot tasks.
 - [ ] Separately run the pinned Spec Kit installation in a disposable clean repository; record `specify version`, expected generated files, and the actual commands/results. Mocked `uv`/`specify` tests do not fulfill this item.
 - [ ] Review supported delivery formats and migration notes. Old evidence without a source fingerprint requires a fresh check and recording; do not fabricate a migration pass.
 - [ ] Run `python scripts/check_repository.py` for local documentation targets and packaging/version consistency. External links and hosted services require separate review.

@@ -72,6 +72,12 @@ class AdaptiveSDDTests(unittest.TestCase):
             self.assertIn("remote", text.lower())
             self.assertIn("external", text.lower())
 
+    def test_copilot_skill_uses_natural_language_activation(self) -> None:
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("asks to use Adaptive SDD", skill)
+        self.assertIn("GitHub Copilot", skill)
+        self.assertIn("natural-language task requests", skill)
+
     def test_tinyspec_scaffold_and_validation(self) -> None:
         with tempfile.TemporaryDirectory() as folder:
             created = self.run_script(
@@ -289,7 +295,7 @@ class AdaptiveSDDTests(unittest.TestCase):
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         reference = (SKILL / "references" / "project-memory.md").read_text(encoding="utf-8")
         self.assertIn("Maintain Project Memory", skill)
-        self.assertIn("one shared workflow for Codex and Cursor", skill)
+        self.assertIn("one shared workflow for Codex, Cursor, and GitHub Copilot", skill)
         self.assertIn("TinySpec", reference)
         self.assertIn("LiteSpec", reference)
         self.assertIn("Spec Kit", reference)

@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/JonC613/adaptive-sdd/actions/workflows/test.yml/badge.svg)](https://github.com/JonC613/adaptive-sdd/actions/workflows/test.yml)
 
-**Specification depth that matches the change.** AI-assisted development can miss requirements when the brief is vague, while a full planning process can overwhelm a small fix. Adaptive-SDD gives developers and small product teams one shared Codex/Cursor workflow for choosing enough specification to make scope, implementation decisions, and verification reviewable.
+**Specification depth that matches the change.** AI-assisted development can miss requirements when the brief is vague, while a full planning process can overwhelm a small fix. Adaptive-SDD gives developers and small product teams one shared workflow for Codex, Cursor, and GitHub Copilot to choose enough specification to make scope, implementation decisions, and verification reviewable.
 
 The agent inspects the work and explains its recommendation using scope, complexity, uncertainty, and risk. Small, reversible changes stay lightweight; larger or riskier changes get more structure. This is guidance and judgment, not a scored classifier or a guarantee of correct code.
 
@@ -16,7 +16,7 @@ The agent inspects the work and explains its recommendation using scope, complex
 
 ## What I built
 
-Adaptive-SDD adds tier selection, TinySpec and LiteSpec conventions, promotion guidance, a shared Codex/Cursor skill, guarded installers, and portable Project Memory around the official Spec Kit workflow. Python tooling checks document structure and tracks optional approval/evidence state. Spec Kit remains an upstream dependency; its templates and implementation are not vendored here.
+Adaptive-SDD adds tier selection, TinySpec and LiteSpec conventions, promotion guidance, a shared skill for Codex, Cursor, and GitHub Copilot, guarded installers, and portable Project Memory around the official Spec Kit workflow. Python tooling checks document structure and tracks optional approval/evidence state. Spec Kit remains an upstream dependency; its templates and implementation are not vendored here.
 
 Strict delivery tracking is **optional**. When enabled, it requires recognized criteria and current recorded evidence. Document validation checks structure; evidence commands record attributed claims; actual tests must run separately. The gate does not execute checks or authenticate the person recording them.
 
@@ -78,19 +78,19 @@ Expected: `kind: structural`, `valid: true`. This does **not** mean the applicat
 
 ### Use the workflow in another project
 
-The shared project installer requires **PowerShell 7** and copies the skill for both Codex and Cursor:
+The shared project installer requires **PowerShell 7** and copies the skill for Codex, Cursor, and GitHub Copilot:
 
 ```powershell
 ./install-project.ps1 -Target C:\path\to\your-project
 ```
 
-Start a new task in the target project and invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor. Expect a tier recommendation based on the change and repository context. Add `-InstallSpecKit` only when the project needs the full upstream workflow. [Installation and marketplace options](plugins/adaptive-sdd/docs/installation.md)
+Start a new task in the target project and invoke `$adaptive-sdd` in Codex, `/adaptive-sdd` in Cursor, or ask naturally in Copilot—for example, “Use Adaptive SDD to help me define this feature.” Expect a tier recommendation based on the change and repository context. Add `-InstallSpecKit` only when the project needs the full upstream workflow. [Installation and marketplace options](plugins/adaptive-sdd/docs/installation.md)
 
 ## Coverage, compatibility, and limits
 
 - **Deterministic coverage:** scaffold and validator behavior, traceability failures, approval/evidence staleness, memory drift, installer safety, evaluation reporting, diagnostics, JavaScript logic, and browser interactions. [CI workflow](.github/workflows/test.yml)
 - **Evidence boundaries:** local installer integration tests exercise real PowerShell copies in temporary folders. The Spec Kit command path also has mocked tests; those do not establish a live upstream installation. [Contribution/check guide](CONTRIBUTING.md)
-- **Compatibility:** Python 3.11+; PowerShell 7 for installers; one shared skill for Codex/Cursor. Spec Kit is pinned to `v0.16.4`. Strict tracking supports current TinySpec, the numbered legacy TinySpec example, LiteSpec, and the documented Spec Kit artifact subset. [Delivery formats and migration limits](plugins/adaptive-sdd/skills/adaptive-sdd/references/delivery-evidence.md)
+- **Compatibility:** Python 3.11+; PowerShell 7 for installers; one shared skill for Codex, Cursor, and GitHub Copilot. Spec Kit is pinned to `v0.16.4`. Strict tracking supports current TinySpec, the numbered legacy TinySpec example, LiteSpec, and the documented Spec Kit artifact subset. [Delivery formats and migration limits](plugins/adaptive-sdd/skills/adaptive-sdd/references/delivery-evidence.md)
 - **Experimental:** tier recommendations and clarification quality have no live-agent benchmark results. [Evaluation design](plugins/adaptive-sdd/evals/README.md) separates regression outcomes from proposed measurements.
 - **Adoption:** no deployment, productivity, or production-maturity claim is made. [Portfolio case study](docs/case-study.md)
 - **Licensing:** Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE). Dependency licenses do not license this project.

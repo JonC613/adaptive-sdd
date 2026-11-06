@@ -1,6 +1,6 @@
 ---
 name: adaptive-sdd
-description: Guide adaptive specification-driven development and portable Project Memory across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$adaptive-sdd`, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to initialize, update, refresh, inspect, or verify a living repository memory, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit.
+description: Guide adaptive specification-driven development and portable Project Memory across TinySpec, LiteSpec, and official GitHub Spec Kit. Use when the user invokes `$adaptive-sdd`, asks to use Adaptive SDD, asks which specification depth fits a change, wants one-question-at-a-time discovery, needs TinySpec or LiteSpec artifacts, wants to initialize, update, refresh, inspect, or verify a living repository memory, wants to promote an existing specification to a deeper tier, or asks to install and use full Spec Kit.
 ---
 
 # Adaptive SDD
@@ -29,7 +29,7 @@ Do not use a numerical complexity score. Do not infer implementation permission 
 
 Read [references/project-memory.md](references/project-memory.md) whenever the user asks to initialize, inspect, update, refresh, or verify living repository memory, or when completed implementation may have changed durable repository knowledge.
 
-Use one shared workflow for Codex and Cursor. `$adaptive-sdd` and `/adaptive-sdd` are invocation differences only; never store provider-specific state in the memory bundle.
+Use one shared workflow for Codex, Cursor, and GitHub Copilot. `$adaptive-sdd` and `/adaptive-sdd` are invocation forms for Codex and Cursor; Copilot activation uses natural-language task requests. Never store provider-specific state in the memory bundle.
 
 - **Initialize memory:** when requested, inspect the repository, use `scripts/project_memory.py scaffold`, write the smallest useful concepts with sources or explicit assumptions, and verify once. Refuse overwrite. Do not claim human review unless it occurred.
 - **Status memory:** run `scripts/project_memory.py status --project <root>` read-only and explain current, potential drift, or limited-confidence results without claiming drift proves factual error.

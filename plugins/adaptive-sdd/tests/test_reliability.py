@@ -151,6 +151,30 @@ class ReliabilityTests(unittest.TestCase):
             result = subprocess.run([PWSH, '-NoProfile', '-Command', command], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertTrue((Path(folder) / '.agents/skills/adaptive-sdd/SKILL.md').is_file())
+            self.assertTrue((Path(folder) / '.github/skills/adaptive-sdd/SKILL.md').is_file())
+            self.assertIn('ask Copilot naturally', result.stdout)
+
+    @unittest.skipUnless(PWSH, 'PowerShell 7 required')
+    def test_installer_preflights_copilot_destination_before_spec_kit_writes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder)
+            copilot_skill = target / '.github/skills/adaptive-sdd'
+            copilot_skill.mkdir(parents=True)
+            (copilot_skill / 'unrelated.txt').write_text('keep', encoding='utf-8')
+            sentinel = target / 'external-tool-called'
+            script = str(ROOT / 'scripts/install-project.ps1').replace("'", "''")
+            escaped_target = str(target).replace("'", "''")
+            escaped_sentinel = str(sentinel).replace("'", "''")
+            command = (
+                f"function uv {{ Set-Content -LiteralPath '{escaped_sentinel}' -Value called; $global:LASTEXITCODE=0 }}; "
+                f"function specify {{ Set-Content -LiteralPath '{escaped_sentinel}' -Value called; $global:LASTEXITCODE=0 }}; "
+                f"& '{script}' -Target '{escaped_target}' -InstallSpecKit"
+            )
+            result = subprocess.run([PWSH, '-NoProfile', '-Command', command], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(sentinel.exists())
+            self.assertFalse((target / '.agents').exists())
+            self.assertEqual((copilot_skill / 'unrelated.txt').read_text(encoding='utf-8'), 'keep')
 
     @unittest.skipUnless(PWSH, 'PowerShell 7 required')
     def test_installer_whatif_does_not_create_target(self):

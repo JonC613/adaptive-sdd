@@ -17,6 +17,9 @@ $sourceSkill = Join-Path $repoRoot "skills/adaptive-sdd"
 $targetSkills = Join-Path $targetPath ".agents/skills"
 $targetSkill = Join-Path $targetSkills "adaptive-sdd"
 $targetSkill = Assert-InstallPath -Destination $targetSkill -Source $sourceSkill -Marker 'SKILL.md'
+$copilotSkills = Join-Path $targetPath ".github/skills"
+$copilotSkill = Join-Path $copilotSkills "adaptive-sdd"
+$copilotSkill = Assert-InstallPath -Destination $copilotSkill -Source $sourceSkill -Marker 'SKILL.md'
 
 if (-not (Test-Path -LiteralPath (Join-Path $sourceSkill "SKILL.md"))) {
     throw "Adaptive SDD source skill is missing: $sourceSkill"
@@ -24,6 +27,9 @@ if (-not (Test-Path -LiteralPath (Join-Path $sourceSkill "SKILL.md"))) {
 
 if ((Test-Path -LiteralPath $targetSkill) -and -not $Force) {
     throw "Adaptive SDD already exists at $targetSkill. Review it and rerun with -Force to replace it."
+}
+if ((Test-Path -LiteralPath $copilotSkill) -and -not $Force) {
+    throw "Adaptive SDD already exists at $copilotSkill. Review it and rerun with -Force to replace it."
 }
 
 if ($InstallSpecKit) {
@@ -56,16 +62,30 @@ if ($PSCmdlet.ShouldProcess($targetPath, "Install Spec Kit $SpecKitVersion and i
 }
 }
 
-if ($PSCmdlet.ShouldProcess($targetSkill, "Install Adaptive SDD skill")) {
-    # Recheck after any external tooling initialization and before replacement.
-    $targetSkill = Assert-InstallPath -Destination $targetSkill -Source $sourceSkill -Marker 'SKILL.md'
-    Publish-Install -Destination $targetSkill -Populate {
-        param($stage)
-        foreach ($child in Get-ChildItem -LiteralPath $sourceSkill -Force) {
-            Copy-Item -LiteralPath $child.FullName -Destination $stage -Recurse
+# Recheck both destinations after any external tooling initialization and before replacement.
+$targetSkill = Assert-InstallPath -Destination $targetSkill -Source $sourceSkill -Marker 'SKILL.md'
+$copilotSkill = Assert-InstallPath -Destination $copilotSkill -Source $sourceSkill -Marker 'SKILL.md'
+if (-not $Force) {
+    foreach ($destination in @($targetSkill, $copilotSkill)) {
+        if (Test-Path -LiteralPath $destination) {
+            throw "Adaptive SDD already exists at $destination. Review it and rerun with -Force to replace it."
         }
     }
-    Write-Host "Installed Adaptive SDD at $targetSkill"
-    Write-Host "Activation required: start a new or reopen the Codex/Cursor task in the target repository before invoking the skill. Existing tasks may not discover skills installed after they start."
-    Write-Host "Verify with `$adaptive-sdd Help me define this feature. (Codex) or /adaptive-sdd Help me define this feature. (Cursor)."
+}
+$installed = $false
+foreach ($destination in @($targetSkill, $copilotSkill)) {
+    if ($PSCmdlet.ShouldProcess($destination, "Install Adaptive SDD skill")) {
+        Publish-Install -Destination $destination -Populate {
+            param($stage)
+            foreach ($child in Get-ChildItem -LiteralPath $sourceSkill -Force) {
+                Copy-Item -LiteralPath $child.FullName -Destination $stage -Recurse
+            }
+        }
+        Write-Host "Installed Adaptive SDD at $destination"
+        $installed = $true
+    }
+}
+if ($installed) {
+    Write-Host "Activation required: start a new or reopen the Codex, Cursor, or GitHub Copilot task in the target repository. Existing tasks may not discover skills installed after they start."
+    Write-Host "Verify with `$adaptive-sdd Help me define this feature. (Codex), /adaptive-sdd Help me define this feature. (Cursor), or ask Copilot naturally, e.g. 'Use Adaptive SDD to help me define this feature.'"
 }
