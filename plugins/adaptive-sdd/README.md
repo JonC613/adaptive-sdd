@@ -12,7 +12,7 @@ or tests passed.
 
 The goal is simple: use the least ceremony that still makes scope, behavior, implementation risk, and verification clear.
 
-Project Memory complements those point-in-time specifications with an optional, OKF-compatible living description of what the repository has become. It uses the same shared skill in Codex and Cursor and remains readable as ordinary Markdown without either tool.
+Project Memory complements those point-in-time specifications with an optional, OKF-compatible living description of what the repository has become. It uses the same shared skill in Codex, Cursor, and GitHub Copilot and remains readable as ordinary Markdown without those tools.
 
 | Tier | Artifacts | Use |
 |---|---:|---|
@@ -51,7 +51,7 @@ Clone this repository, then run the root bootstrap script:
 ./install-project.ps1 -Target C:\path\to\your-project
 ```
 
-The project installer uses `.agents/skills/`, which both Codex and Cursor officially discover. Skills are loaded when a task starts, so start a new task or reopen the existing task in the target repository after installation. Then invoke the matching form:
+The project installer places the shared skill in `.agents/skills/` for Codex and Cursor and `.github/skills/` for GitHub Copilot. Skills are loaded when a task starts, so start a new task or reopen the existing task in the target repository after installation. Then invoke the matching form:
 
 ```text
 $adaptive-sdd Help me define this feature.   # Codex
@@ -60,11 +60,13 @@ $adaptive-sdd Help me define this feature.   # Codex
 
 If the command is unavailable, confirm `.agents/skills/adaptive-sdd/SKILL.md` exists, then open a fresh task in that repository. Installing a skill does not retrofit it into an already-running task.
 
+In Copilot, describe a task covered by Adaptive SDD; no slash command is required. Confirm `.github/skills/adaptive-sdd/SKILL.md` exists if Copilot does not use the skill.
+
 ## Repository examples and QA tooling
 
-Examples and their test tooling are maintained with this source repository. They are not copied by the Codex or Cursor installers, which intentionally distribute only the shared `adaptive-sdd` skill. This keeps installed project guidance focused while preserving runnable reference applications and QA evidence for maintainers.
+Examples and their test tooling are maintained with this source repository. They are not copied by the project installer, which intentionally distributes only the shared `adaptive-sdd` skill to supported agent discovery locations. This keeps installed project guidance focused while preserving runnable reference applications and QA evidence for maintainers.
 
-The installer adds only `.agents/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
+The installer adds only the shared skill under `.agents/skills/adaptive-sdd` and `.github/skills/adaptive-sdd`. Use `-InstallSpecKit` when the target also needs the official full workflow:
 
 ```powershell
 ./install-project.ps1 -Target C:\path\to\your-project -InstallSpecKit
@@ -89,7 +91,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 ## Principles
 
 - One public orchestrator, not a menu of overlapping skills.
-- One portable Project Memory format and implementation across Codex and Cursor.
+- One portable Project Memory format and implementation across Codex, Cursor, and GitHub Copilot.
 - One focused discovery question at a time.
 - Reuse authorization for routine planning, implementation, checks, and affected documentation; ask only for consequential choices or work outside scope.
 - Native artifact conventions for each tier.
@@ -98,7 +100,7 @@ Reload Cursor, open Customize, and verify Adaptive SDD appears under Skills. See
 
 ## Repository contents
 
-- `skills/adaptive-sdd/` — installable Codex skill and all tier resources
+- `skills/adaptive-sdd/` — installable skill and all tier resources for Codex, Cursor, and GitHub Copilot
 - `../../install-project.ps1` — root bootstrap installer for new repositories
 - `scripts/install-project.ps1` — guarded plugin implementation
 - `plugin.json` — portable Agent Plugin manifest used by Cursor

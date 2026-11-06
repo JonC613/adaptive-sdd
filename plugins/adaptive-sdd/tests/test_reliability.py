@@ -151,6 +151,23 @@ class ReliabilityTests(unittest.TestCase):
             result = subprocess.run([PWSH, '-NoProfile', '-Command', command], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertTrue((Path(folder) / '.agents/skills/adaptive-sdd/SKILL.md').is_file())
+            self.assertTrue((Path(folder) / '.github/skills/adaptive-sdd/SKILL.md').is_file())
+
+    @unittest.skipUnless(PWSH, 'PowerShell 7 required')
+    def test_project_installer_preflights_both_skill_destinations(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            copilot_skill = root / '.github/skills/adaptive-sdd'
+            copilot_skill.mkdir(parents=True)
+            (copilot_skill / 'unrelated.txt').write_text('preserve', encoding='utf-8')
+            result = subprocess.run(
+                [PWSH, '-NoProfile', '-File', str(ROOT / 'scripts/install-project.ps1'), '-Target', folder],
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse((root / '.agents/skills/adaptive-sdd').exists())
+            self.assertEqual((copilot_skill / 'unrelated.txt').read_text(encoding='utf-8'), 'preserve')
 
     @unittest.skipUnless(PWSH, 'PowerShell 7 required')
     def test_installer_whatif_does_not_create_target(self):
@@ -159,3 +176,8 @@ class ReliabilityTests(unittest.TestCase):
             result = subprocess.run([PWSH, '-NoProfile', '-File', str(ROOT / 'scripts/install-cursor-local.ps1'), '-Destination', str(destination), '-WhatIf'], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertFalse(destination.exists())
+            result = subprocess.run([PWSH, '-NoProfile', '-File', str(ROOT / 'scripts/install-project.ps1'), '-Target', folder, '-WhatIf'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertFalse((Path(folder) / '.agents/skills/adaptive-sdd').exists())
+            self.assertFalse((Path(folder) / '.github/skills/adaptive-sdd').exists())
+            self.assertNotIn('Activation required', result.stdout)

@@ -1,6 +1,6 @@
 # Cursor support
 
-Adaptive SDD uses the open Agent Plugins and Agent Skills formats supported by Cursor. The root `plugin.json` identifies the repository as an Agent Plugin, while `skills/adaptive-sdd/SKILL.md` contains the shared workflow used by both Cursor and Codex.
+Adaptive SDD uses the open Agent Plugins and Agent Skills formats supported by Cursor. The root `plugin.json` identifies the repository as an Agent Plugin, while `skills/adaptive-sdd/SKILL.md` contains the shared workflow used by Cursor, Codex, and GitHub Copilot.
 
 ## Project installation
 
@@ -10,9 +10,9 @@ Run:
 ./install-project.ps1 -Target C:\path\to\project
 ```
 
-The installed `.agents/skills/adaptive-sdd/` path is discovered by both Cursor and Codex.
+The installer adds `.agents/skills/adaptive-sdd/` for Cursor and Codex and `.github/skills/adaptive-sdd/` for GitHub Copilot.
 
-Project Memory uses that same shared installation. Invoke `/adaptive-sdd initialize memory`, `/adaptive-sdd refresh memory`, or `/adaptive-sdd verify memory`; the committed OKF bundle and deterministic scripts are identical to the Codex workflow.
+Project Memory uses that same shared installation. Invoke `/adaptive-sdd initialize memory`, `/adaptive-sdd refresh memory`, or `/adaptive-sdd verify memory` in Cursor; Codex uses `$adaptive-sdd`, and Copilot selects the skill based on the task. The committed OKF bundle and deterministic scripts are identical across integrations.
 
 ## Local plugin installation
 
