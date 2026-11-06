@@ -289,7 +289,7 @@ class AdaptiveSDDTests(unittest.TestCase):
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         reference = (SKILL / "references" / "project-memory.md").read_text(encoding="utf-8")
         self.assertIn("Maintain Project Memory", skill)
-        self.assertIn("one shared workflow for Codex and Cursor", skill)
+        self.assertIn("one shared workflow for Codex, Cursor, and GitHub Copilot", skill)
         self.assertIn("TinySpec", reference)
         self.assertIn("LiteSpec", reference)
         self.assertIn("Spec Kit", reference)

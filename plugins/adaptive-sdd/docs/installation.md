@@ -4,7 +4,7 @@
 
 - Git
 - Python 3.11 or newer for validators
-- Codex or Cursor for the bundled skill
+- Codex, Cursor, or GitHub Copilot for the bundled skill
 - PowerShell 7 for the provided installer
 - `uv` only when installing full Spec Kit
 
@@ -27,18 +27,19 @@ retained in a sibling `.adaptive-sdd-backup-*` directory. Review and remove back
 manually when no longer needed. Failed staging is retained for inspection.
 `-WhatIf` performs checks without installing.
 
-The installer copies only the shared skill. It does not create TinySpec, LiteSpec, or Project Memory artifacts in the target. Initialize `.sdd/memory/` later through an explicit, review-gated request.
+The installer copies the shared skill to both `.agents/skills/adaptive-sdd/` (Codex and Cursor) and `.github/skills/adaptive-sdd/` (GitHub Copilot). It does not create TinySpec, LiteSpec, or Project Memory artifacts in the target. Initialize `.sdd/memory/` later through an explicit, review-gated request.
 
 The runnable examples, Playwright suite, QA catalog, screenshot baselines, and Node development dependencies remain in this source repository. They are maintainers' reference and validation assets, not installed plugin content.
 
 ## Activate the skill
 
-Codex and Cursor discover project skills when a task or agent session starts. After installation, start a new task in the target repository or reopen the existing one; an already-running task may not see a newly copied skill.
+Codex, Cursor, and GitHub Copilot discover project skills when a task or agent session starts. After installation, start a new task in the target repository or reopen the existing one; an already-running task may not see a newly copied skill. In Copilot, describe a task covered by Adaptive SDD; no slash command is required.
 
 Confirm the installed file exists:
 
 ```text
 .agents/skills/adaptive-sdd/SKILL.md
+.github/skills/adaptive-sdd/SKILL.md
 ```
 
 Then send one of these prompts in the fresh task:
@@ -48,7 +49,7 @@ $adaptive-sdd Help me define this feature.   # Codex
 /adaptive-sdd Help me define this feature.   # Cursor
 ```
 
-If neither command is available after reopening, verify the task's working directory is the target project and reinstall with `-Force` only after reviewing the installed copy.
+In Copilot, describe a task covered by Adaptive SDD; no slash command is required. If a command is unavailable after reopening, verify the task's working directory is the target project and reinstall with `-Force` only after reviewing the installed copy.
 
 ## Install Adaptive SDD and full Spec Kit
 
@@ -94,11 +95,12 @@ Confirm these paths:
 
 ```text
 .agents/skills/adaptive-sdd/SKILL.md       # Codex and Cursor
+.github/skills/adaptive-sdd/SKILL.md        # GitHub Copilot
 .agents/skills/speckit-*/SKILL.md   # only with full Spec Kit
 .specify/                           # only with full Spec Kit
 ```
 
-Start or reopen the task in the target repository, then invoke `$adaptive-sdd` in Codex or `/adaptive-sdd` in Cursor.
+Start or reopen the task in the target repository, then invoke `$adaptive-sdd` in Codex, `/adaptive-sdd` in Cursor, or describe the relevant task in GitHub Copilot.
 
 ## Local Cursor plugin installation
 

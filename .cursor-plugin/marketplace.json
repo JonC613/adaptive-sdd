@@ -4,7 +4,7 @@
     "name": "JonC613"
   },
   "metadata": {
-    "description": "Adaptive specification-driven development guidance for Codex and Cursor."
+    "description": "Adaptive specification-driven development guidance for Codex, Cursor, and GitHub Copilot."
   },
   "plugins": [
     {

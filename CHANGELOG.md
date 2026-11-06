@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Install the shared Adaptive SDD skill for GitHub Copilot under `.github/skills` alongside Codex/Cursor discovery under `.agents/skills`.
 - License Adaptive SDD under Apache-2.0; add the root `LICENSE` and attribution `NOTICE`.
 - Reject empty, malformed, and unsupported strict delivery criteria; preserve task-free TinySpec and recognize the documented legacy and Spec Kit formats.
 - Recheck discovered criteria, current evidence, and evidence-source fingerprints; a later failure supersedes an earlier pass. Old evidence lacking a source fingerprint must be rerun and recorded.
